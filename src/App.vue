@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Board from "@/components/Board.vue";
+</script>
 
 <template>
-  <h1>hello</h1>
+    <Board></Board>
 </template>
 
 <style scoped></style>
