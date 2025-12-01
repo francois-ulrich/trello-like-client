@@ -3,16 +3,21 @@ import BoardCardItem from "@/components/BoardCardItem.vue"
 import RoundedCard from "@/components/util/RoundedCard.vue"
 import type { Card } from "@/types/card"
 import type { Column } from "@/types/column"
-import { ref } from "vue"
+import { computed } from "vue"
 import draggable from "vuedraggable"
 
-const props = defineProps<{ column: Column }>()
+const props = defineProps<{ column: Column; cards: Card[] }>()
 
-const cards = ref<Card[]>(props.column.cards)
+const emit = defineEmits(["update:cards"])
+
+const cards = computed({
+    get: () => props.cards,
+    set: (value) => emit("update:cards", value),
+})
 </script>
 
 <template>
-    <RoundedCard class="bg-gray-200 flex flex-col gap-y-4">
+    <RoundedCard class="bg-gray-200 flex flex-col gap-y-4 board-column-item">
         <p class="font-medium">{{ props.column.name }}</p>
 
         <draggable
