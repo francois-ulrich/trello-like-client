@@ -6,7 +6,7 @@ const props = defineProps<{ card: Card }>()
 </script>
 
 <template>
-    <RoundedCard class="bg-gray-300 p-4">
+    <RoundedCard class="bg-gray-300 p-4 cursor-pointer">
         <p class="font-medium">{{ props.card.name }}</p>
     </RoundedCard>
 </template>
