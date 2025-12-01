@@ -5,6 +5,8 @@ import type { Card } from "@/types/card"
 import type { Column } from "@/types/column"
 import { computed } from "vue"
 import draggable from "vuedraggable"
+import { Plus } from "lucide-vue-next"
+import ButtonWithIcon from "@/components/util/ButtonWithIcon.vue"
 
 const props = defineProps<{ column: Column; cards: Card[] }>()
 
@@ -14,6 +16,10 @@ const cards = computed({
     get: () => props.cards,
     set: (value) => emit("update:cards", value),
 })
+
+const onAddCardButtonClick = () => {
+    console.log("onAddCardButtonClick")
+}
 </script>
 
 <template>
@@ -30,6 +36,8 @@ const cards = computed({
                 <BoardCardItem :card="element" />
             </template>
         </draggable>
+
+        <ButtonWithIcon :icon="Plus" @click="onAddCardButtonClick">Add card</ButtonWithIcon>
     </RoundedCard>
 </template>
 
