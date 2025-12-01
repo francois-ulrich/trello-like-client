@@ -1,42 +1,13 @@
 <script setup lang="ts">
 import BoardCard from "@/components/BoardItem.vue"
-import type { Board } from "@/types/board"
-import { ref } from "vue"
-import { v4 as uuidv4 } from "uuid"
+import { useBoardStore } from "@/stores/board"
 
-const boardId = uuidv4()
-
-const board = ref<Board>({
-    id: boardId,
-    name: "Test board",
-    columns: [
-        {
-            name: "To do",
-            cards: [
-                {
-                    name: "Task 1",
-                    id: uuidv4(),
-                },
-                {
-                    name: "Task 2",
-                    id: uuidv4(),
-                },
-                {
-                    name: "Task 3",
-                    id: uuidv4(),
-                },
-            ],
-            draggableGroup: boardId,
-        },
-        { name: "In progress", cards: [], draggableGroup: boardId },
-        { name: "Done", cards: [], draggableGroup: boardId },
-    ],
-})
+const { items } = useBoardStore()
 </script>
 
 <template>
     <div>
-        <BoardCard :board="board"></BoardCard>
+        <BoardCard v-if="items[0]" :board="items[0]"></BoardCard>
     </div>
 </template>
 
