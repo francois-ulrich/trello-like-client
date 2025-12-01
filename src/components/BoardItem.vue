@@ -1,0 +1,25 @@
+<script setup lang="ts">
+import BoardColumn from "@/components/BoardColumnItem.vue"
+import type { Board } from "@/types/board"
+
+const props = defineProps<{ board: Board }>()
+</script>
+
+<template>
+    <div>
+        <div class="p-4 flex flex-col gap-y-4 bg-gray-200">
+            <p class="text-lg font-medium">{{ props.board.name }}</p>
+        </div>
+        <div class="p-4 flex flex-col gap-y-4">
+            <div>
+                <ul class="flex flex-row gap-x-4">
+                    <li v-for="column in props.board.columns">
+                        <BoardColumn :column="column" />
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</template>
+
+<style scoped></style>
