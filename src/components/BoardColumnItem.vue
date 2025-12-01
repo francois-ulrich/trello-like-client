@@ -3,14 +3,17 @@ import BoardCardItem from "@/components/BoardCardItem.vue"
 import RoundedCard from "@/components/util/RoundedCard.vue"
 import type { Card } from "@/types/card"
 import type { Column } from "@/types/column"
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import draggable from "vuedraggable"
 import { Plus } from "lucide-vue-next"
-import ButtonWithIcon from "@/components/util/ButtonWithIcon.vue"
+import BoardColumnCardAddForm from "@/components/BoardColumnCardAddForm.vue"
+import BaseButton from "@/components/util/BaseButton.vue"
 
 const props = defineProps<{ column: Column; cards: Card[] }>()
 
 const emit = defineEmits(["update:cards"])
+
+const isInCardCreationMode = ref<boolean>(false)
 
 const cards = computed({
     get: () => props.cards,
@@ -18,7 +21,11 @@ const cards = computed({
 })
 
 const onAddCardButtonClick = () => {
-    console.log("onAddCardButtonClick")
+    isInCardCreationMode.value = true
+}
+
+const onCardCreationExitButtonClick = () => {
+    isInCardCreationMode.value = false
 }
 </script>
 
@@ -30,14 +37,21 @@ const onAddCardButtonClick = () => {
             v-model="cards"
             item-key="id"
             :group="props.column.draggableGroup"
-            class="w-80 flex flex-col gap-y-4"
+            class="w-80 max-w-80 flex flex-col gap-y-4"
         >
             <template #item="{ element }">
                 <BoardCardItem :card="element" />
             </template>
         </draggable>
 
-        <ButtonWithIcon :icon="Plus" @click="onAddCardButtonClick">Add card</ButtonWithIcon>
+        <BaseButton
+            v-if="!isInCardCreationMode"
+            :icon="Plus"
+            @click="onAddCardButtonClick"
+            color="lightgray"
+            >Add card</BaseButton
+        >
+        <BoardColumnCardAddForm v-else />
     </RoundedCard>
 </template>
 
