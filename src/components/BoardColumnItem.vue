@@ -9,7 +9,7 @@ import { Plus } from "lucide-vue-next"
 import BoardColumnCardAddForm from "@/components/BoardColumnCardAddForm.vue"
 import BaseButton from "@/components/util/BaseButton.vue"
 
-const props = defineProps<{ column: Column; cards: Card[] }>()
+const props = defineProps<{ column: Column; cards: Card[]; boardId: string }>()
 
 const emit = defineEmits(["update:cards"])
 
@@ -24,7 +24,7 @@ const onAddCardButtonClick = () => {
     isInCardCreationMode.value = true
 }
 
-const onCardCreationExitButtonClick = () => {
+const onCardCreationCancelButtonClick = () => {
     isInCardCreationMode.value = false
 }
 </script>
@@ -40,7 +40,7 @@ const onCardCreationExitButtonClick = () => {
             class="w-80 max-w-80 flex flex-col gap-y-4"
         >
             <template #item="{ element }">
-                <BoardCardItem :card="element" />
+                <BoardCardItem :card="element" :columnId="props.column.id" />
             </template>
         </draggable>
 
@@ -51,7 +51,12 @@ const onCardCreationExitButtonClick = () => {
             color="lightgray"
             >Add card</BaseButton
         >
-        <BoardColumnCardAddForm v-else />
+        <BoardColumnCardAddForm
+            v-else
+            @cancel="onCardCreationCancelButtonClick"
+            :boardId="props.boardId"
+            :columnId="props.column.id"
+        />
     </RoundedCard>
 </template>
 

@@ -14,6 +14,7 @@ export const useBoardStore = defineStore("board", () => {
             name: "Test board",
             columns: [
                 {
+                    id: uuidv4(),
                     name: "To do",
                     cards: [
                         {
@@ -31,11 +32,26 @@ export const useBoardStore = defineStore("board", () => {
                     ],
                     draggableGroup: boardId,
                 },
-                { name: "In progress", cards: [], draggableGroup: boardId },
-                { name: "Done", cards: [], draggableGroup: boardId },
+                { id: uuidv4(), name: "In progress", cards: [], draggableGroup: boardId },
+                { id: uuidv4(), name: "Done", cards: [], draggableGroup: boardId },
             ],
         },
     ]
 
-    return { ...crud }
+    const createCard = (cardName: string, boardId: string, columnId: string) => {
+        const board = crud.items.value.find((board) => board.id === boardId)
+        if (!board) return
+
+        const column = board.columns.find((column) => column.id === columnId)
+        if (!column) return
+
+        const newCard = {
+            id: uuidv4(),
+            name: cardName,
+        }
+
+        column.cards.push(newCard)
+    }
+
+    return { ...crud, createCard }
 })

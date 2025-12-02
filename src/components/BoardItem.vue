@@ -14,7 +14,11 @@ const props = defineProps<{ board: Board }>()
             <div>
                 <ul class="flex flex-row gap-x-4">
                     <li v-for="column in props.board.columns">
-                        <BoardColumn v-model:cards="column.cards" :column="column" />
+                        <BoardColumn
+                            v-model:cards="column.cards"
+                            :column="column"
+                            :boardId="props.board.id"
+                        />
                     </li>
                 </ul>
             </div>

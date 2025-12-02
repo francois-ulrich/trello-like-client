@@ -2,7 +2,7 @@
 import RoundedCard from "@/components/util/RoundedCard.vue"
 import type { Card } from "@/types/card"
 
-const props = defineProps<{ card: Card }>()
+const props = defineProps<{ card: Card; columnId: string }>()
 </script>
 
 <template>

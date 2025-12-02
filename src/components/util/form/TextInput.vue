@@ -20,19 +20,22 @@ const emit = defineEmits<{
 
 const value = computed({
     get: () => props.modelValue,
-    set: (val) => emit("update:modelValue", val),
+    set: (val) => {
+        console.log(val)
+        emit("update:modelValue", val)
+    },
 })
 </script>
 
 <template>
     <div class="form-group">
-        <label :for="props.id" v-if="!hideLabel">{{ props.label }}</label>
-        <component
-            :is="type === 'textarea' ? 'textarea' : 'input'"
-            v-model="value"
+        <label :for="props.id" v-if="!hideLabel">{{ label }}</label>
+        <input
+            :type="props.type"
             :id="props.id"
-            :placeholder="placeholder ?? placeholder"
+            :placeholder="placeholder"
+            v-model="value"
             class="bg-gray-300 w-100 p-2 rounded-md"
-        ></component>
+        ></input>
     </div>
 </template>

@@ -69,6 +69,7 @@ const onClick = () => {
         @click="onClick"
         class="p-2 cursor-pointer text-left flex flex-row transition-colors rounded-md"
         :class="classes"
+        :type="type"
     >
         <component
             v-if="icon !== undefined"
