@@ -16,6 +16,7 @@ const emit = defineEmits<{
 
 const cardName = ref<string>("")
 
+const formRef = ref<HTMLElement | null>(null)
 const cardNameInputRef = ref<InstanceType<typeof TextInput> | null>(null)
 defineExpose({ cardNameInputRef })
 
@@ -30,13 +31,27 @@ const onCancel = () => {
     emit("cancel")
 }
 
+const handleFocusOut = (event: FocusEvent) => {
+    if (
+        formRef.value === event.target ||
+        formRef.value?.contains(event.relatedTarget as HTMLElement | null)
+    )
+        return
+    emit("cancel")
+}
+
 onMounted(() => {
     cardNameInputRef.value?.inputRef?.focus()
 })
 </script>
 
 <template>
-    <form @submit.prevent="onSubmit" class="flex flex-col gap-2">
+    <form
+        @submit.prevent="onSubmit"
+        class="flex flex-col gap-2"
+        @focusout="handleFocusOut"
+        ref="formRef"
+    >
         <TextInput
             id="cardName"
             label="Name"
