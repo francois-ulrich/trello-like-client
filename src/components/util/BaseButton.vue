@@ -32,6 +32,11 @@ const colorClasses: Record<string, Record<string, string>> = {
         outline: "border border-gray-300 text-gray-800 hover:bg-gray-100",
         ghost: "text-gray-800 hover:bg-gray-200",
     },
+    white: {
+        solid: "bg-white hover:bg-gray-300 text-gray-800",
+        outline: "border border-gray-300 text-gray-800 hover:bg-gray-100",
+        ghost: "text-gray-800 hover:bg-gray-200",
+    },
 }
 
 const props = withDefaults(
@@ -39,7 +44,7 @@ const props = withDefaults(
         icon?: Component
         type?: "button" | "submit"
         as?: "button" | "a"
-        color?: "primary" | "secondary" | "danger" | "success" | "neutral" | "lightgray"
+        color?: "primary" | "secondary" | "danger" | "success" | "neutral" | "lightgray" | "white"
         variant?: "solid" | "outline" | "ghost"
     }>(),
     {
