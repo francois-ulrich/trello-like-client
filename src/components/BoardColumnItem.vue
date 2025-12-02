@@ -30,14 +30,14 @@ const onCardCreationCancelButtonClick = () => {
 </script>
 
 <template>
-    <RoundedCard class="bg-gray-200 flex flex-col gap-y-4 board-column-item">
+    <RoundedCard class="bg-gray-200 flex flex-col gap-y-4 board-column-item w-80">
         <p class="font-medium">{{ props.column.name }}</p>
 
         <draggable
             v-model="cards"
             item-key="id"
             :group="props.column.draggableGroup"
-            class="w-80 max-w-80 flex flex-col gap-y-4"
+            class="max-w-80 flex flex-col gap-y-4"
         >
             <template #item="{ element }">
                 <BoardCardItem :card="element" :columnId="props.column.id" />
@@ -51,6 +51,7 @@ const onCardCreationCancelButtonClick = () => {
             color="lightgray"
             >Add card</BaseButton
         >
+
         <BoardColumnCardAddForm
             v-else
             @cancel="onCardCreationCancelButtonClick"

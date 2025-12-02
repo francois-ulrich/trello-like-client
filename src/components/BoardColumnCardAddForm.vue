@@ -3,7 +3,7 @@ import BaseButton from "@/components/util/BaseButton.vue"
 import TextInput from "@/components/util/form/TextInput.vue"
 import { useBoardStore } from "@/stores/board"
 import { X } from "lucide-vue-next"
-import { ref } from "vue"
+import { onMounted, ref } from "vue"
 
 const props = defineProps<{
     boardId: string
@@ -14,29 +14,47 @@ const emit = defineEmits<{
     (e: "cancel"): void
 }>()
 
-const cardNameInput = ref<string>("")
+const cardName = ref<string>("")
+
+const cardNameInputRef = ref<InstanceType<typeof TextInput> | null>(null)
+defineExpose({ cardNameInputRef })
 
 const onSubmit = () => {
-    if (cardNameInput.value.length === 0) return
+    if (cardName.value.length === 0) return
     const { createCard } = useBoardStore()
-    createCard(cardNameInput.value, props.boardId, props.columnId)
+    createCard(cardName.value, props.boardId, props.columnId)
     emit("cancel")
 }
 
 const onCancel = () => {
     emit("cancel")
 }
+
+onMounted(() => {
+    cardNameInputRef.value?.inputRef?.focus()
+})
 </script>
 
 <template>
     <form @submit.prevent="onSubmit" class="flex flex-col gap-2">
-        <p>{{ cardNameInput }}</p>
+        <TextInput
+            id="cardName"
+            label="Name"
+            v-model="cardName"
+            :hide-label="true"
+            class="w-full"
+            ref="cardNameInputRef"
+        />
 
-        <TextInput id="cardName" label="Name" v-model="cardNameInput" :hide-label="true" />
-
-        <div class="flex flex-row">
-            <BaseButton type="submit">Add card</BaseButton>
-            <BaseButton :icon="X" @click="onCancel" type="button"></BaseButton>
+        <div class="flex flex-row gap-2">
+            <BaseButton type="submit" class="flex-auto">Add card</BaseButton>
+            <BaseButton
+                :icon="X"
+                @click="onCancel"
+                type="button"
+                class="flex-none"
+                color="lightgray"
+            ></BaseButton>
         </div>
     </form>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue"
+import { ref, computed } from "vue"
 
 interface Props {
     modelValue: string
@@ -20,11 +20,13 @@ const emit = defineEmits<{
 
 const value = computed({
     get: () => props.modelValue,
-    set: (val) => {
-        console.log(val)
+    set: (val) => 
         emit("update:modelValue", val)
-    },
+    ,
 })
+
+const inputRef = ref<HTMLInputElement | null>(null)
+defineExpose({ inputRef })
 </script>
 
 <template>
@@ -35,7 +37,8 @@ const value = computed({
             :id="props.id"
             :placeholder="placeholder"
             v-model="value"
-            class="bg-gray-300 w-100 p-2 rounded-md"
+            ref="inputRef"
+            class="bg-gray-300 p-2 rounded-md w-full"
         ></input>
     </div>
 </template>
