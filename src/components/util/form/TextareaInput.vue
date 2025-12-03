@@ -1,0 +1,42 @@
+<script setup lang="ts">
+import { ref, computed } from "vue"
+
+interface Props {
+    modelValue: string
+    id: string
+    label: string
+    hideLabel?: boolean
+    type?: string
+    placeholder?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    type: "text",
+})
+
+const emit = defineEmits<{
+    "update:modelValue": [value: string]
+}>()
+
+const value = computed({
+    get: () => props.modelValue,
+    set: (val) => emit("update:modelValue", val),
+})
+
+const inputRef = ref<HTMLInputElement | null>(null)
+defineExpose({ inputRef })
+</script>
+
+<template>
+    <div class="form-group">
+        <label :for="props.id" v-if="!hideLabel">{{ label }}</label>
+        <textarea
+            :type="props.type"
+            :id="props.id"
+            :placeholder="placeholder"
+            v-model="value"
+            ref="inputRef"
+            class="bg-gray-300 p-2 rounded-md w-full resize-none"
+        ></textarea>
+    </div>
+</template>

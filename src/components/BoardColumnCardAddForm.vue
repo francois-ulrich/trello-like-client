@@ -18,7 +18,6 @@ const cardName = ref<string>("")
 
 const formRef = ref<HTMLElement | null>(null)
 const cardNameInputRef = ref<InstanceType<typeof TextInput> | null>(null)
-defineExpose({ cardNameInputRef })
 
 const onSubmit = () => {
     if (cardName.value.length === 0) return
