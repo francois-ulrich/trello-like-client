@@ -3,31 +3,24 @@ import BoardCardItem from "@/components/BoardCardItem.vue"
 import RoundedCard from "@/components/util/RoundedCard.vue"
 import type { Card } from "@/types/card"
 import type { Column } from "@/types/column"
-import { computed, ref } from "vue"
+import { computed } from "vue"
 import draggable from "vuedraggable"
-import { Plus } from "lucide-vue-next"
-import BoardColumnCardAddForm from "@/components/CardAddForm.vue"
-import BaseButton from "@/components/util/BaseButton.vue"
 import ColumnContainer from "@/components/util/ColumnContainer.vue"
+import CardCreation from "@/components/CardCreation.vue"
+import { useCardStore } from "@/stores/card"
 
 const props = defineProps<{ column: Column; cards: Card[]; boardId: string }>()
 
 const emit = defineEmits(["update:cards"])
 
-const isInCardCreationMode = ref<boolean>(false)
+const cardStore = useCardStore()
 
 const cards = computed({
-    get: () => props.cards,
-    set: (value) => emit("update:cards", value),
+    get: () => cardStore.items.filter((card) => card.columnId === props.column.id),
+    set: (value) => {
+        console.log(value)
+    },
 })
-
-const onAddCardButtonClick = () => {
-    isInCardCreationMode.value = true
-}
-
-const onCardCreationCancelButtonClick = () => {
-    isInCardCreationMode.value = false
-}
 </script>
 
 <template>
@@ -46,20 +39,7 @@ const onCardCreationCancelButtonClick = () => {
                 </template>
             </draggable>
 
-            <BaseButton
-                v-if="!isInCardCreationMode"
-                :icon="Plus"
-                @click="onAddCardButtonClick"
-                color="lightgray"
-                >Add card</BaseButton
-            >
-
-            <BoardColumnCardAddForm
-                v-else
-                @cancel="onCardCreationCancelButtonClick"
-                :boardId="props.boardId"
-                :columnId="props.column.id"
-            />
+            <CardCreation :columnId="props.column.id" />
         </RoundedCard>
     </ColumnContainer>
 </template>

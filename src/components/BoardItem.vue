@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import BoardColumn from "@/components/ColumnItem.vue"
+import ColumnItem from "@/components/ColumnItem.vue"
 import type { Board } from "@/types/board"
 import ColumnCreation from "@/components/ColumnCreation.vue"
-import { computed, onBeforeMount, ref } from "vue"
+import { computed } from "vue"
 import { useColumnStore } from "@/stores/column"
-import type { Column } from "@/types/column"
 
 const props = defineProps<{ board: Board }>()
 
-// const columns = ref<Column[]>()
 const columns = computed(() => {
     return columnStore.items.filter((column) => column.boardId === props.board.id)
 })
@@ -24,7 +22,7 @@ const columnStore = useColumnStore()
             <div>
                 <ul class="flex flex-row gap-x-4">
                     <li v-for="column in columns">
-                        <BoardColumn
+                        <ColumnItem
                             v-model:cards="column.cards"
                             :column="column"
                             :boardId="props.board.id"
