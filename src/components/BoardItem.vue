@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import BoardColumn from "@/components/BoardColumnItem.vue"
+import BoardColumn from "@/components/ColumnItem.vue"
 import type { Board } from "@/types/board"
+import ColumnCreation from "@/components/ColumnCreation.vue"
 
 const props = defineProps<{ board: Board }>()
 </script>
@@ -21,6 +22,8 @@ const props = defineProps<{ board: Board }>()
                         />
                     </li>
                 </ul>
+
+                <ColumnCreation :boardId="props.board.id" />
             </div>
         </div>
     </div>

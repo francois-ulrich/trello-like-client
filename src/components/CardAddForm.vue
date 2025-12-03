@@ -1,14 +1,8 @@
 <script setup lang="ts">
 import BaseButton from "@/components/util/BaseButton.vue"
 import TextInput from "@/components/util/form/TextInput.vue"
-import { useBoardStore } from "@/stores/board"
 import { X } from "lucide-vue-next"
 import { onMounted, ref } from "vue"
-
-const props = defineProps<{
-    boardId: string
-    columnId: string
-}>()
 
 const emit = defineEmits<{
     (e: "cancel"): void
@@ -21,8 +15,7 @@ const cardNameInputRef = ref<InstanceType<typeof TextInput> | null>(null)
 
 const onSubmit = () => {
     if (cardName.value.length === 0) return
-    const { createCard } = useBoardStore()
-    createCard(cardName.value, props.boardId, props.columnId)
+
     emit("cancel")
 }
 
