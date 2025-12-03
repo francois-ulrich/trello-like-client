@@ -40,7 +40,7 @@ const onCardCreationCancelButtonClick = () => {
             class="max-w-80 flex flex-col gap-y-4"
         >
             <template #item="{ element }">
-                <BoardCardItem :card="element" :columnId="props.column.id" />
+                <BoardCardItem :card="element" :column="props.column" />
             </template>
         </draggable>
 

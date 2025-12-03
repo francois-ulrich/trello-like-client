@@ -31,7 +31,7 @@ const handleClose = () => {
                 </BaseButton>
                 <slot name="header"></slot>
             </header>
-            <main class="p-4">
+            <main class="p-6">
                 <slot></slot>
             </main>
         </div>
