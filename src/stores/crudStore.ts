@@ -6,7 +6,7 @@ export function crudStore<T extends { id: string }>() {
 
     function create(item: Omit<T, "id">) {
         const itemId = uuidv4()
-        items.value.push({ ...item, id: itemId } as T)
+        items.value.push({ id: itemId, ...item } as T)
     }
 
     function get(id: T["id"]) {

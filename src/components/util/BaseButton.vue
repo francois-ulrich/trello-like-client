@@ -33,7 +33,7 @@ const colorClasses: Record<string, Record<string, string>> = {
         ghost: "text-gray-800 hover:bg-gray-200",
     },
     white: {
-        solid: "bg-white hover:bg-gray-300 text-gray-800",
+        solid: "bg-white hover:bg-gray-100 text-gray-800",
         outline: "border border-gray-300 text-gray-800 hover:bg-gray-100",
         ghost: "text-gray-800 hover:bg-gray-200",
     },

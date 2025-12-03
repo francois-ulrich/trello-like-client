@@ -1,21 +1,22 @@
 <script setup lang="ts">
-import BoardCard from "@/components/BoardItem.vue"
-// import ModalDialog from "@/components/ModalDialog.vue"
+import BoardItem from "@/components/BoardItem.vue"
 import { useBoardStore } from "@/stores/board"
+import type { Board } from "@/types/board"
+import { onBeforeMount, ref } from "vue"
 
-const { items } = useBoardStore()
+const boardStore = useBoardStore()
+const board = ref<Board>()
+
+onBeforeMount(() => {
+    if (boardStore.items.length === 0) boardStore.create({ name: "Test board" })
+    board.value = boardStore.items[0]
+})
 </script>
 
 <template>
     <div>
-        <BoardCard v-if="items[0]" :board="items[0]"></BoardCard>
+        <BoardItem v-if="board" :board="board"></BoardItem>
     </div>
-    <!-- <ModalDialog>
-        <template #header>
-            <h1>Here might be a page title</h1>
-        </template>
-        <p>hey</p>
-    </ModalDialog> -->
 </template>
 
 <style scoped></style>

@@ -24,7 +24,7 @@ const handleCloseForm = () => {
             v-if="!isFormOpened"
             :icon="Plus"
             @click="handleOpenForm"
-            color="lightgray"
+            color="white"
             class="w-full"
             >{{ props.addButtonLabel }}</BaseButton
         >
