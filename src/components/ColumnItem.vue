@@ -8,21 +8,23 @@ import draggable from "vuedraggable"
 import ColumnContainer from "@/components/util/ColumnContainer.vue"
 import CardCreation from "@/components/CardCreation.vue"
 import { useCardStore } from "@/stores/card"
+import type { DraggableChangeEvent } from "@/types/draggable"
 
 const props = defineProps<{ column: Column }>()
 
 const cardStore = useCardStore()
 
-const column = ref<Column>(props.column)
+// const column = ref<Column>(props.column)
 const cards = ref<Card[]>(cardStore.items.filter((card) => card.columnId === props.column.id))
 
-const handleCardsMove = (e: any) => {
-    cardStore.items = cards.value
+const handleCardsMove = (e: DraggableChangeEvent<Card>) => {
+    if (e.added) {
+        const updatedCard = { ...e.added.element, columnId: props.column.id }
+        cardStore.update(updatedCard)
+    }
 }
 
 const handleCreateCard = (card: Card) => {
-    console.log({ createdCard: card })
-
     cards.value.push(card)
 }
 </script>
