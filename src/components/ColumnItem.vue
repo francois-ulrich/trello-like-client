@@ -14,10 +14,24 @@ const props = defineProps<{ column: Column }>()
 
 const cardStore = useCardStore()
 
-// const column = ref<Column>(props.column)
-const cards = ref<Card[]>(cardStore.items.filter((card) => card.columnId === props.column.id))
+const cardsPositionCompare = (a: Card, b: Card) => {
+    if (a.position < b.position) return -1
+    else if (a.position > b.position) return 1
+    return 0
+}
+
+const cards = ref<Card[]>(
+    cardStore.items.filter((card) => card.columnId === props.column.id).sort(cardsPositionCompare),
+)
 
 const handleCardsMove = (e: DraggableChangeEvent<Card>) => {
+    if (e.moved) {
+        cards.value.forEach((card, index) => {
+            const updatedCard = { ...card, position: index }
+            cardStore.update(updatedCard)
+        })
+    }
+
     if (e.added) {
         const updatedCard = { ...e.added.element, columnId: props.column.id }
         cardStore.update(updatedCard)
@@ -46,7 +60,7 @@ const handleCreateCard = (card: Card) => {
                 </template>
             </draggable>
 
-            <CardCreation :columnId="column.id" @createCard="handleCreateCard" />
+            <CardCreation :column="column" @createCard="handleCreateCard" />
         </RoundedCard>
     </ColumnContainer>
 </template>
