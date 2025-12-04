@@ -21,6 +21,8 @@ const onSubmit = () => {
     if (elementName.value.length === 0) return
 
     emit("submit", elementName.value)
+    elementName.value = ""
+    onClose()
 }
 
 const onClose = () => {
@@ -33,7 +35,8 @@ const handleFocusOut = (event: FocusEvent) => {
         formRef.value?.contains(event.relatedTarget as HTMLElement | null)
     )
         return
-    emit("close")
+
+    onClose()
 }
 
 onMounted(() => {

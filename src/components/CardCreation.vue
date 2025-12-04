@@ -17,7 +17,6 @@ const handleSubmit = (name: string) => {
             <ItemCreationForm
                 @close="handleClose"
                 @submit="handleSubmit"
-                :columnId="props.columnId"
                 :addButtonLabel="addButtonLabel"
             />
         </template>

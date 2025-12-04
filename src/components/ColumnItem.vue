@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BoardCardItem from "@/components/BoardCardItem.vue"
+import CardItem from "@/components/CardItem.vue"
 import RoundedCard from "@/components/util/RoundedCard.vue"
 import type { Card } from "@/types/card"
 import type { Column } from "@/types/column"
@@ -35,7 +35,7 @@ const cards = computed({
                 class="max-w-80 flex flex-col gap-y-4"
             >
                 <template #item="{ element }">
-                    <BoardCardItem :card="element" :column="props.column" />
+                    <CardItem :card="element" :column="props.column" />
                 </template>
             </draggable>
 

@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import ColumnAddForm from "@/components/ColumnAddForm.vue"
 import AddButtonSwitchToForm from "@/components/util/AddButtonSwitchToForm.vue"
 import ColumnContainer from "@/components/util/ColumnContainer.vue"
+import ItemCreationForm from "@/components/util/ItemCreationForm.vue"
+import { useColumnStore } from "@/stores/column"
 
 const props = defineProps<{ boardId: string }>()
+const columnStore = useColumnStore()
+
+const handleSubmit = (name: string) => {
+    columnStore.create({ boardId: props.boardId, name, cards: [] })
+}
 </script>
 
 <template>
     <ColumnContainer>
         <AddButtonSwitchToForm addButtonLabel="Add new column">
             <template #default="{ handleClose, addButtonLabel }">
-                <ColumnAddForm
-                    :boardId="props.boardId"
+                <ItemCreationForm
                     @close="handleClose"
+                    @submit="handleSubmit"
                     :addButtonLabel="addButtonLabel"
                 />
             </template>
