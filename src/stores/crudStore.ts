@@ -4,9 +4,11 @@ import { v4 as uuidv4 } from "uuid"
 export function crudStore<T extends { id: string }>() {
     const items = ref<T[]>([]) as Ref<T[]>
 
-    function create(item: Omit<T, "id">) {
+    function create(item: Omit<T, "id">): T {
         const itemId = uuidv4()
-        items.value.push({ id: itemId, ...item } as T)
+        const newItem = { id: itemId, ...item } as T
+        items.value.push(newItem)
+        return newItem
     }
 
     function get(id: T["id"]) {

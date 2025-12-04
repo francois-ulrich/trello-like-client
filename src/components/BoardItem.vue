@@ -22,11 +22,7 @@ const columnStore = useColumnStore()
             <div>
                 <ul class="flex flex-row gap-x-4">
                     <li v-for="column in columns">
-                        <ColumnItem
-                            v-model:cards="column.cards"
-                            :column="column"
-                            :boardId="props.board.id"
-                        />
+                        <ColumnItem :column="column" />
                     </li>
 
                     <li><ColumnCreation :boardId="props.board.id" /></li>

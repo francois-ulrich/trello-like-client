@@ -8,7 +8,7 @@ const props = defineProps<{ boardId: string }>()
 const columnStore = useColumnStore()
 
 const handleSubmit = (name: string) => {
-    columnStore.create({ boardId: props.boardId, name, cards: [] })
+    columnStore.create({ boardId: props.boardId, name })
 }
 </script>
 

@@ -2,12 +2,17 @@
 import AddButtonSwitchToForm from "@/components/util/AddButtonSwitchToForm.vue"
 import ItemCreationForm from "@/components/util/ItemCreationForm.vue"
 import { useCardStore } from "@/stores/card"
+import type { Card } from "@/types/card"
 
 const props = defineProps<{ columnId: string }>()
 const cardStore = useCardStore()
+const emit = defineEmits<{
+    createCard: [value: Card]
+}>()
 
 const handleSubmit = (name: string) => {
-    cardStore.create({ columnId: props.columnId, name })
+    const newCard = cardStore.create({ columnId: props.columnId, name })
+    emit("createCard", newCard)
 }
 </script>
 
