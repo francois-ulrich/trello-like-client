@@ -1,19 +1,7 @@
 <script setup lang="ts">
-import { useBoardStore } from "@/stores/board"
-import type { Board } from "@/types/board"
-import BoardView from "@/views/Board/BoardView.vue"
-import { onBeforeMount, ref } from "vue"
 import { RouterView } from "vue-router"
 
 const title = "Trello like"
-
-const boardStore = useBoardStore()
-const board = ref<Board>()
-
-// onBeforeMount(() => {
-//     if (boardStore.items.length === 0) boardStore.create({ name: "Test board" })
-//     board.value = boardStore.items[0]
-// })
 </script>
 
 <template>
@@ -26,7 +14,7 @@ const board = ref<Board>()
                 >{{ title }}</RouterLink
             >
         </header>
-        <main class="p-4 flex flex-col gap-y-4 overflow-x-auto flex-auto bg-gray-200">
+        <main class="p-4 flex flex-col gap-y-4 overflow-x-auto flex-auto bg-gray-100">
             <RouterView />
         </main>
     </div>
