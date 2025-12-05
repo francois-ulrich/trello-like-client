@@ -6,7 +6,7 @@ const title = "Trello like"
 
 <template>
     <div class="h-screen flex flex-col divide-y">
-        <header class="p-3 flex flex-col gap-y-4 bg-gray-200 flex-none border-gray-400">
+        <header class="p-3 flex flex-col gap-y-4 bg-gray-200 flex-none border-gray-300">
             <h1 class="hidden">{{ title }}</h1>
             <RouterLink
                 :to="{ name: 'home' }"
