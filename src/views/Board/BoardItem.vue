@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ColumnItem from "@/components/ColumnItem.vue"
 import type { Board } from "@/types/board"
-import ColumnCreation from "@/components/ColumnCreation.vue"
 import { computed } from "vue"
 import { useColumnStore } from "@/stores/column"
+import ColumnCreation from "@/views/Board/ColumnCreation.vue"
+import ColumnItem from "@/views/Board/ColumnItem.vue"
 
 const props = defineProps<{ board: Board }>()
 

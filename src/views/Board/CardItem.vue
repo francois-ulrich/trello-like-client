@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import ModalDialog from "@/components/ModalDialog.vue"
-import TextareaInput from "@/components/util/form/TextareaInput.vue"
-import TextInput from "@/components/util/form/TextInput.vue"
-import RoundedCard from "@/components/util/RoundedCard.vue"
+import ModalDialog from "@/views/Board/ModalDialog.vue"
+import TextareaInput from "@/components/form/TextareaInput.vue"
+import TextInput from "@/components/form/TextInput.vue"
+import RoundedCard from "@/components/RoundedCard.vue"
 import type { Card } from "@/types/card"
 import type { CardForm } from "@/types/cardForm"
 import type { Column } from "@/types/column"

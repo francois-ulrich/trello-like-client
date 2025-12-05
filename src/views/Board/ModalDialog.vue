@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BaseButton from "@/components/util/BaseButton.vue"
-import RoundedCard from "@/components/util/RoundedCard.vue"
+import BaseButton from "@/components/BaseButton.vue"
+import RoundedCard from "@/components/RoundedCard.vue"
 import { X } from "lucide-vue-next"
 
 const emit = defineEmits<{

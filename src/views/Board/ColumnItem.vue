@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import CardItem from "@/components/CardItem.vue"
-import RoundedCard from "@/components/util/RoundedCard.vue"
+import CardItem from "@/views/Board/CardItem.vue"
+import RoundedCard from "@/components/RoundedCard.vue"
 import type { Card } from "@/types/card"
 import type { Column } from "@/types/column"
 import { ref } from "vue"
 import draggable from "vuedraggable"
-import ColumnContainer from "@/components/util/ColumnContainer.vue"
-import CardCreation from "@/components/CardCreation.vue"
+import ColumnContainer from "@/components/ColumnContainer.vue"
+import CardCreation from "@/views/Board/CardCreation.vue"
 import { useCardStore } from "@/stores/card"
 import type { DraggableChangeEvent } from "@/types/draggable"
 

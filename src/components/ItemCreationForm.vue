@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BaseButton from "@/components/util/BaseButton.vue"
-import TextInput from "@/components/util/form/TextInput.vue"
+import BaseButton from "@/components/BaseButton.vue"
+import TextInput from "@/components/form/TextInput.vue"
 import { X } from "lucide-vue-next"
 import { onMounted, ref } from "vue"
 

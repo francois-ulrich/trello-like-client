@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import BoardItem from "@/components/BoardItem.vue"
 import { useBoardStore } from "@/stores/board"
 import type { Board } from "@/types/board"
+import BoardItem from "@/views/Board/BoardItem.vue"
 import { onBeforeMount, ref } from "vue"
 
 const boardStore = useBoardStore()
