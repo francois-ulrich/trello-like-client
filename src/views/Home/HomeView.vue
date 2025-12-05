@@ -8,6 +8,10 @@ import { ref } from "vue"
 const boardStore = useBoardStore()
 
 const boards = ref<Board[]>(boardStore.items)
+
+const handleCreateBoardButton = () => {
+    console.log("handleCreateBoardButton")
+}
 </script>
 
 <template>
@@ -15,11 +19,14 @@ const boards = ref<Board[]>(boardStore.items)
 
     <ul class="flex flex-row gap-4">
         <li v-for="board in boards">
-            <BoardItem :board="board" />
+            <RouterLink :to="{ name: 'board', params: { id: board.id } }">
+                <BoardItem :board="board" />
+            </RouterLink>
         </li>
         <li>
             <BoardItemBase
                 class="bg-gray-200 flex justify-center items-center text-gray-600 font-semibold text-sm"
+                @click="handleCreateBoardButton"
             >
                 <p>Create new board</p>
             </BoardItemBase>

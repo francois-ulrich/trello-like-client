@@ -11,7 +11,7 @@ export function crudStore<T extends { id: string }>() {
         return newItem
     }
 
-    function get(id: T["id"]) {
+    function get(id: string) {
         return items.value.find((i) => i.id === id)
     }
 

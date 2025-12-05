@@ -4,17 +4,23 @@ import { computed } from "vue"
 import { useColumnStore } from "@/stores/column"
 import ColumnCreation from "@/views/Board/ColumnCreation.vue"
 import ColumnItem from "@/views/Board/ColumnItem.vue"
+import { useRoute } from "vue-router"
+import { useBoardStore } from "@/stores/board"
 
-const props = defineProps<{ board: Board }>()
+const route = useRoute()
+
+const board = computed(() => useBoardStore().get(route.params.id as string))
 
 const columns = computed(() => {
-    return columnStore.items.filter((column) => column.boardId === props.board.id)
+    if (board.value === undefined) return []
+
+    return columnStore.items.filter((column) => column.boardId === board.value?.id)
 })
 const columnStore = useColumnStore()
 </script>
 
 <template>
-    <div class="h-screen flex flex-col">
+    <div class="h-screen flex flex-col" v-if="board !== undefined">
         <div class="p-4 flex flex-col gap-y-4 bg-gray-200 flex-none">
             <p class="text-lg font-medium">{{ board.name }}</p>
         </div>
@@ -25,7 +31,7 @@ const columnStore = useColumnStore()
                         <ColumnItem :column="column" />
                     </li>
 
-                    <li><ColumnCreation :boardId="props.board.id" /></li>
+                    <li><ColumnCreation :boardId="board.id" /></li>
                 </ul>
             </div>
         </div>
