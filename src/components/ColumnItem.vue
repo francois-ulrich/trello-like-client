@@ -24,17 +24,39 @@ const cards = ref<Card[]>(
     cardStore.items.filter((card) => card.columnId === props.column.id).sort(cardsPositionCompare),
 )
 
+const updateCardsInStore = () => {
+    cards.value.forEach((card) => cardStore.update(card))
+}
+
+const updateCardsPositions = () => {
+    cards.value = cards.value.map((card, index) => ({ ...card, position: index }))
+    cards.value = cards.value.sort(cardsPositionCompare)
+}
+
 const handleCardsMove = (e: DraggableChangeEvent<Card>) => {
     if (e.moved) {
-        cards.value.forEach((card, index) => {
-            const updatedCard = { ...card, position: index }
-            cardStore.update(updatedCard)
-        })
+        updateCardsPositions()
+        updateCardsInStore()
     }
 
     if (e.added) {
-        const updatedCard = { ...e.added.element, columnId: props.column.id }
-        cardStore.update(updatedCard)
+        updateCardsPositions()
+
+        const index = cards.value.findIndex((_, index) => index === e.added.newIndex)
+
+        if (index !== -1 && cards.value[index]) {
+            cards.value[index] = {
+                ...cards.value[index],
+                columnId: props.column.id,
+            }
+        }
+
+        updateCardsInStore()
+    }
+
+    if (e.removed) {
+        updateCardsPositions()
+        updateCardsInStore()
     }
 }
 
