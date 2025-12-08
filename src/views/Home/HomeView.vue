@@ -1,25 +1,29 @@
 <script setup lang="ts">
-import ModalDialog from "@/views/Board/ModalDialog.vue"
+import ModalDialog from "@/components/ModalDialog.vue"
 import BoardItemBase from "@/components/BoardItemBase.vue"
 import { useBoardStore } from "@/stores/board"
 import type { Board } from "@/types/board"
 import BoardItem from "@/views/Home/BoardItem.vue"
-import { ref } from "vue"
+import { nextTick, ref, useTemplateRef } from "vue"
 import TextInput from "@/components/form/TextInput.vue"
 import BaseButton from "@/components/BaseButton.vue"
+import type { ComponentExposed } from "vue-component-type-helpers"
 
 const boardStore = useBoardStore()
 
 const boards = ref<Board[]>(boardStore.items)
+const textInputRef = useTemplateRef<ComponentExposed<typeof TextInput>>("textInputRef")
 
-const cardEditForm = ref<{ name: string }>({
+const boardCreationForm = ref<{ name: string }>({
     name: "",
 })
 
 const showBoardCreationModal = ref<boolean>(false)
 
-const handleBoardCreationModalOpen = () => {
+const handleBoardCreationModalOpen = async () => {
     showBoardCreationModal.value = true
+    await nextTick()
+    textInputRef.value?.inputRef?.focus()
 }
 
 const handleBoardCreationModalClose = () => {
@@ -27,17 +31,19 @@ const handleBoardCreationModalClose = () => {
 }
 
 const handleBoardCreationFormSubmit = () => {
-    if (cardEditForm.value.name.length === 0) return
-    const newBoard = { name: cardEditForm.value.name }
+    if (boardCreationForm.value.name.length === 0) return
+    const newBoard = { name: boardCreationForm.value.name }
     boardStore.create(newBoard)
-    cardEditForm.value.name = ""
+    boardCreationForm.value.name = ""
     handleBoardCreationModalClose()
 }
 </script>
 
 <template>
-    <div>
-        <h2 class="text-xl font-medium uppercase">Your boards</h2>
+    <div class="flex flex-col gap-4">
+        <div>
+            <h2 class="text-xl font-medium uppercase">Your boards</h2>
+        </div>
 
         <ul class="flex flex-row gap-4">
             <li v-for="board in boards">
@@ -65,8 +71,9 @@ const handleBoardCreationFormSubmit = () => {
                     <TextInput
                         id="name"
                         label="Name"
-                        v-model="cardEditForm.name"
+                        v-model="boardCreationForm.name"
                         class="w-full mb-2"
+                        ref="textInputRef"
                     />
 
                     <div>

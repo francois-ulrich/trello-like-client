@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue"
+import { computed, useTemplateRef } from "vue"
 
 interface Props {
     modelValue: string
@@ -25,8 +25,12 @@ const value = computed({
     ,
 })
 
-const inputRef = ref<HTMLInputElement | null>(null)
-defineExpose({ inputRef })
+const focus = () => {
+  inputRef.value?.focus()
+}
+
+const inputRef = useTemplateRef('input-ref');
+defineExpose({ inputRef, focus })
 </script>
 
 <template>
@@ -37,7 +41,7 @@ defineExpose({ inputRef })
             :id="props.id"
             :placeholder="placeholder"
             v-model="value"
-            ref="inputRef"
+            ref="input-ref"
             class="bg-gray-300 p-2 rounded-md w-full"
         ></input>
     </div>

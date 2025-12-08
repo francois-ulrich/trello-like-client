@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ModalDialog from "@/views/Board/ModalDialog.vue"
+import ModalDialog from "@/components/ModalDialog.vue"
 import TextareaInput from "@/components/form/TextareaInput.vue"
 import TextInput from "@/components/form/TextInput.vue"
 import RoundedCard from "@/components/RoundedCard.vue"
