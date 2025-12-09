@@ -41,9 +41,9 @@ const props = withDefaults(
         <div :id="modalContainerElementId" class="relative"></div>
 
         <Teleport :to="'#' + modalContainerElementId" v-if="showModal">
-            <ModalDialog @close="handleModalClose" positioning="absolute">
+            <ModalDialog @close="handleModalClose" positioning="absoluteAlignRight">
                 <template #header>
-                    <p class="font-medium">Liste des actions</p>
+                    <p class="font-medium text-center">Liste des actions</p>
                 </template>
             </ModalDialog>
         </Teleport>

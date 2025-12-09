@@ -7,7 +7,7 @@ const props = withDefaults(
     defineProps<{
         class?: string
         withBackdrop?: boolean
-        positioning?: "screenCenter" | "absolute"
+        positioning?: "screenCenter" | "absolute" | "absoluteAlignRight"
     }>(),
     {
         class: "",
@@ -20,7 +20,8 @@ const { positioning } = props
 
 const positioningClassesOptions = {
     screenCenter: "fixed! top-1/2 left-1/2 -translate-1/2",
-    absolute: "absolute",
+    absolute: "absolute!",
+    absoluteAlignRight: "absolute! right-0! left-auto!",
 }
 
 const positioningClasses = positioningClassesOptions[positioning]
