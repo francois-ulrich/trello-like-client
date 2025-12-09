@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useSlots, type Component } from "vue"
 
-const colorClasses: Record<string, Record<string, string>> = {
+const colorClassesOptions: Record<string, Record<string, string>> = {
     primary: {
         solid: "bg-blue-600 text-white hover:bg-blue-700",
         outline: "border border-blue-600 text-blue-600 hover:bg-blue-50",
@@ -35,8 +35,13 @@ const colorClasses: Record<string, Record<string, string>> = {
     white: {
         solid: "bg-white hover:bg-gray-100 text-gray-800",
         outline: "border border-gray-300 text-gray-800 hover:bg-gray-100",
-        ghost: "text-gray-800 hover:bg-gray-200",
+        ghost: "text-gray-800 hover:bg-gray-400",
     },
+}
+
+const shapeClassesOptions: Record<string, string> = {
+    rectangle: "",
+    rounded: "rounded-md",
 }
 
 const props = withDefaults(
@@ -46,18 +51,23 @@ const props = withDefaults(
         as?: "button" | "a"
         color?: "primary" | "secondary" | "danger" | "success" | "neutral" | "lightgray" | "white"
         variant?: "solid" | "outline" | "ghost"
+        shape?: "rounded" | "rectangle"
     }>(),
     {
         as: "button",
         variant: "solid",
         type: "button",
         color: "primary",
+        shape: "rounded",
     },
 )
 
-const { color, variant } = props
+const { color, variant, shape } = props
 
-const classes = colorClasses[color]?.[variant] ?? ""
+const colorClasses = colorClassesOptions[color]?.[variant] ?? ""
+const shapeClasses = shapeClassesOptions[shape] ?? ""
+
+const classes = colorClasses + " " + shapeClasses
 
 const emit = defineEmits<{
     (e: "click"): void
@@ -72,7 +82,7 @@ const onClick = () => {
     <component
         :is="props.as"
         @click="onClick"
-        class="p-2 cursor-pointer text-left flex flex-row transition-colors rounded-md"
+        class="p-2 cursor-pointer text-left flex flex-row transition-colors"
         :class="classes"
         :type="type"
     >

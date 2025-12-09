@@ -3,6 +3,30 @@ import BaseButton from "@/components/BaseButton.vue"
 import RoundedCard from "@/components/RoundedCard.vue"
 import { X } from "lucide-vue-next"
 
+const props = withDefaults(
+    defineProps<{
+        class?: string
+        withBackdrop?: boolean
+        positioning?: "screenCenter" | "absolute"
+    }>(),
+    {
+        class: "",
+        withBackdrop: false,
+        positioning: "screenCenter",
+    },
+)
+
+const { positioning } = props
+
+const positioningClassesOptions = {
+    screenCenter: "fixed! top-1/2 left-1/2 -translate-1/2",
+    absolute: "absolute",
+}
+
+const positioningClasses = positioningClassesOptions[positioning]
+
+const classes = props.class + positioningClasses
+
 const emit = defineEmits<{
     (e: "close"): void
 }>()
@@ -14,12 +38,11 @@ const handleClose = () => {
 
 <template>
     <div
+        v-if="props.withBackdrop"
         @click="handleClose"
         class="fixed top-0 left-0 w-full h-full bg-black opacity-50 cursor-pointer z-10"
     ></div>
-    <RoundedCard
-        class="fixed w-xl top-1/2 left-1/2 z-20 bg-gray-50 modal-dialog__body p-0! divide-gray-400"
-    >
+    <RoundedCard class="fixed w-xl z-20 bg-gray-50 p-0! divide-gray-400" :class="classes">
         <div class="relative">
             <header class="p-4">
                 <BaseButton
@@ -37,9 +60,3 @@ const handleClose = () => {
         </div>
     </RoundedCard>
 </template>
-
-<style scoped>
-.modal-dialog__body {
-    transform: translate(-50%, -50%);
-}
-</style>

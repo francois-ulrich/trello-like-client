@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import type { Board } from "@/types/board"
 import { computed } from "vue"
 import { useColumnStore } from "@/stores/column"
 import ColumnCreation from "@/views/Board/ColumnCreation.vue"
 import ColumnItem from "@/views/Board/ColumnItem.vue"
 import { useRoute } from "vue-router"
 import { useBoardStore } from "@/stores/board"
+import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
+import ActionsDropdown from "@/components/ActionsDropdown.vue"
 
 const route = useRoute()
 
@@ -20,12 +21,16 @@ const columnStore = useColumnStore()
 </script>
 
 <template>
-    <div class="h-screen flex flex-col" v-if="board !== undefined">
-        <div class="p-4 flex flex-col gap-y-4 bg-gray-200 flex-none">
+    <div class="flex flex-col" v-if="board !== undefined">
+        <HeaderWithTitleAndOptions>
             <p class="text-lg font-medium">{{ board.name }}</p>
-        </div>
-        <div class="p-4 flex flex-col gap-y-4 overflow-x-auto flex-auto">
-            <div>
+            <template #options>
+                <ActionsDropdown :size="24" teleportTo=""> </ActionsDropdown>
+            </template>
+        </HeaderWithTitleAndOptions>
+
+        <div class="flex flex-col gap-y-4 flex-auto w-screen overflow-x-scroll">
+            <div class="p-4">
                 <ul class="flex flex-row gap-x-4">
                     <li v-for="column in columns">
                         <ColumnItem :column="column" />

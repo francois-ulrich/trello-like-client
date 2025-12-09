@@ -38,7 +38,7 @@ const handleFormSubmit = () => {}
         <SquarePen class="absolute top-2 right-2 opacity-0 group-hover:opacity-100" :size="16" />
 
         <Teleport to="body" v-if="showModal">
-            <ModalDialog @close="handleModalClose">
+            <ModalDialog @close="handleModalClose" :withBackdrop="true" positioning="screenCenter">
                 <template #header>
                     <p class="font-medium">{{ props.column.name }}</p>
                 </template>
