@@ -40,19 +40,19 @@ const props = withDefaults(
         /></BaseButton>
         <div :id="modalContainerElementId" class="relative"></div>
 
-        <Teleport :to="'#' + modalContainerElementId" v-if="showModal">
-            <ModalDialog
-                @close="handleModalClose"
-                positioning="absoluteAlignRight"
-                width="md"
-                classOnBody="pb-4"
-            >
-                <template #header>
-                    <p class="font-medium text-center">Actions list</p>
-                </template>
+        <ModalDialog
+            :isOpened="showModal"
+            :teleport-to="'#' + modalContainerElementId"
+            @close="handleModalClose"
+            positioning="absoluteAlignRight"
+            width="md"
+            classOnBody="pb-4"
+        >
+            <template #header>
+                <p class="font-medium text-center">Actions list</p>
+            </template>
 
-                <slot></slot>
-            </ModalDialog>
-        </Teleport>
+            <slot></slot>
+        </ModalDialog>
     </div>
 </template>

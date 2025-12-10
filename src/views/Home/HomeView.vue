@@ -62,30 +62,25 @@ const handleBoardCreationFormSubmit = () => {
                 </li>
             </ul>
 
-            <Teleport to="body" v-if="showBoardCreationModal">
-                <ModalDialog @close="handleBoardCreationModalClose">
-                    <template #header>
-                        <p class="font-medium">Create new board</p>
-                    </template>
+            <ModalDialog :isOpened="showBoardCreationModal" @close="handleBoardCreationModalClose">
+                <template #header>
+                    <p class="font-medium">Create new board</p>
+                </template>
 
-                    <form
-                        @submit.prevent="handleBoardCreationFormSubmit"
-                        class="flex flex-col gap-2"
-                    >
-                        <TextInput
-                            id="name"
-                            label="Name"
-                            v-model="boardCreationForm.name"
-                            class="w-full mb-2"
-                            ref="textInputRef"
-                        />
+                <form @submit.prevent="handleBoardCreationFormSubmit" class="flex flex-col gap-2">
+                    <TextInput
+                        id="name"
+                        label="Name"
+                        v-model="boardCreationForm.name"
+                        class="w-full mb-2"
+                        ref="textInputRef"
+                    />
 
-                        <div>
-                            <BaseButton type="submit">Create board</BaseButton>
-                        </div>
-                    </form>
-                </ModalDialog>
-            </Teleport>
+                    <div>
+                        <BaseButton type="submit">Create board</BaseButton>
+                    </div>
+                </form>
+            </ModalDialog>
         </div>
     </div>
 </template>

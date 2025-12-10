@@ -93,8 +93,6 @@ const onClick = () => {
             :is="icon"
             :class="{ 'mr-2': !!useSlots().default?.() }"
         />
-        <span>
-            <slot></slot>
-        </span>
+        <slot></slot>
     </component>
 </template>

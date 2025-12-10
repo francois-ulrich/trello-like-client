@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from "vue"
+import { computed, ref } from "vue"
 import { useColumnStore } from "@/stores/column"
 import ColumnCreation from "@/views/Board/ColumnCreation.vue"
 import ColumnItem from "@/views/Board/ColumnItem.vue"
@@ -8,17 +8,33 @@ import { useBoardStore } from "@/stores/board"
 import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
 import ActionsDropdown from "@/components/ActionsDropdown.vue"
 import BaseButton from "@/components/BaseButton.vue"
+import ModalDialog from "@/components/ModalDialog.vue"
 
 const route = useRoute()
 
 const board = computed(() => useBoardStore().get(route.params.id as string))
+
+const boardDeletionModalOpened = ref<boolean>(false)
+
+const handleBoardDeleteModalOpen = () => {
+    boardDeletionModalOpened.value = true
+}
+
+const handleBoardDeleteModalClose = () => {
+    boardDeletionModalOpened.value = false
+}
 
 const columns = computed(() => {
     if (board.value === undefined) return []
 
     return columnStore.items.filter((column) => column.boardId === board.value?.id)
 })
+
 const columnStore = useColumnStore()
+
+const onClickOptionDelete = () => {
+    handleBoardDeleteModalOpen()
+}
 </script>
 
 <template>
@@ -28,7 +44,13 @@ const columnStore = useColumnStore()
             <template #options>
                 <ActionsDropdown :buttonIconSize="24" teleportTo="">
                     <BaseButton color="white" shape="rectangle" class="w-full">Rename</BaseButton>
-                    <BaseButton color="white" shape="rectangle" class="w-full">Delete</BaseButton>
+                    <BaseButton
+                        color="white"
+                        shape="rectangle"
+                        class="w-full"
+                        @click="onClickOptionDelete"
+                        >Delete</BaseButton
+                    >
                 </ActionsDropdown>
             </template>
         </HeaderWithTitleAndOptions>
@@ -44,6 +66,24 @@ const columnStore = useColumnStore()
                 </ul>
             </div>
         </div>
+
+        <ModalDialog
+            @close="handleBoardDeleteModalClose"
+            :withBackdrop="true"
+            :isOpened="boardDeletionModalOpened"
+        >
+            <template #header><p class="text-center font-medium">Delete board ?</p> </template>
+
+            <div class="flex flex-col gap-4">
+                <p>
+                    Are you sure you want to delete this board&nbsp;? This action is irreversible.
+                </p>
+
+                <BaseButton color="danger">
+                    <p class="text-center">Delete board</p>
+                </BaseButton>
+            </div>
+        </ModalDialog>
     </div>
 </template>
 
