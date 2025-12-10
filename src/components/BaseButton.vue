@@ -52,6 +52,7 @@ const props = withDefaults(
         color?: "primary" | "secondary" | "danger" | "success" | "neutral" | "lightgray" | "white"
         variant?: "solid" | "outline" | "ghost"
         shape?: "rounded" | "rectangle"
+        class?: string
     }>(),
     {
         as: "button",
@@ -59,6 +60,7 @@ const props = withDefaults(
         type: "button",
         color: "primary",
         shape: "rounded",
+        class: "",
     },
 )
 
@@ -67,7 +69,7 @@ const { color, variant, shape } = props
 const colorClasses = colorClassesOptions[color]?.[variant] ?? ""
 const shapeClasses = shapeClassesOptions[shape] ?? ""
 
-const classes = colorClasses + " " + shapeClasses
+const classes = [colorClasses, shapeClasses, props.class].join(" ")
 
 const emit = defineEmits<{
     (e: "click"): void

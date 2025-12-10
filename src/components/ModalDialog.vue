@@ -10,11 +10,13 @@ const props = withDefaults(
         withBackdrop?: boolean
         positioning?: "screenCenter" | "absolute" | "absoluteAlignRight"
         width?: "xl" | "lg" | "md" | "sm"
+        classOnBody?: string
     }>(),
     {
         withBackdrop: false,
         positioning: "screenCenter",
         width: "md",
+        classOnBody: "p-4",
     },
 )
 
@@ -74,7 +76,7 @@ const handleClose = () => {
                 </BaseButton>
                 <slot name="header"></slot>
             </header>
-            <main class="p-6">
+            <main :class="classOnBody">
                 <slot></slot>
             </main>
         </div>

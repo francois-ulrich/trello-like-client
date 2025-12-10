@@ -7,6 +7,7 @@ import { useRoute } from "vue-router"
 import { useBoardStore } from "@/stores/board"
 import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
 import ActionsDropdown from "@/components/ActionsDropdown.vue"
+import BaseButton from "@/components/BaseButton.vue"
 
 const route = useRoute()
 
@@ -25,7 +26,10 @@ const columnStore = useColumnStore()
         <HeaderWithTitleAndOptions>
             <p class="text-lg font-medium">{{ board.name }}</p>
             <template #options>
-                <ActionsDropdown :size="24" teleportTo=""> </ActionsDropdown>
+                <ActionsDropdown :buttonIconSize="24" teleportTo="">
+                    <BaseButton color="white" shape="rectangle" class="w-full">Rename</BaseButton>
+                    <BaseButton color="white" shape="rectangle" class="w-full">Delete</BaseButton>
+                </ActionsDropdown>
             </template>
         </HeaderWithTitleAndOptions>
 

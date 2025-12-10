@@ -23,11 +23,11 @@ const toggleModal = () => {
 
 const props = withDefaults(
     defineProps<{
-        size?: number
+        buttonIconSize?: number
         align?: "right" | "center" | "left"
     }>(),
     {
-        size: 16,
+        buttonIconSize: 16,
         align: "left",
     },
 )
@@ -36,15 +36,22 @@ const props = withDefaults(
 <template>
     <div>
         <BaseButton color="white" variant="ghost" @click="toggleModal"
-            ><Ellipsis :size="props.size"
+            ><Ellipsis :size="props.buttonIconSize"
         /></BaseButton>
         <div :id="modalContainerElementId" class="relative"></div>
 
         <Teleport :to="'#' + modalContainerElementId" v-if="showModal">
-            <ModalDialog @close="handleModalClose" positioning="absoluteAlignRight" width="md">
+            <ModalDialog
+                @close="handleModalClose"
+                positioning="absoluteAlignRight"
+                width="md"
+                classOnBody="pb-4"
+            >
                 <template #header>
-                    <p class="font-medium text-center">Liste des actions</p>
+                    <p class="font-medium text-center">Actions list</p>
                 </template>
+
+                <slot></slot>
             </ModalDialog>
         </Teleport>
     </div>
