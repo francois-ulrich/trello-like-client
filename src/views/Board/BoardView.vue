@@ -14,16 +14,6 @@ const route = useRoute()
 
 const board = computed(() => useBoardStore().get(route.params.id as string))
 
-const boardDeletionModalOpened = ref<boolean>(false)
-
-const handleBoardDeleteModalOpen = () => {
-    boardDeletionModalOpened.value = true
-}
-
-const handleBoardDeleteModalClose = () => {
-    boardDeletionModalOpened.value = false
-}
-
 const columns = computed(() => {
     if (board.value === undefined) return []
 
@@ -32,8 +22,10 @@ const columns = computed(() => {
 
 const columnStore = useColumnStore()
 
-const onClickOptionDelete = () => {
-    handleBoardDeleteModalOpen()
+const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
+
+const handleBoardDeleteModalOpen = async () => {
+    if (boardDeleteModalRef.value != null) boardDeleteModalRef.value.open()
 }
 </script>
 
@@ -47,7 +39,8 @@ const onClickOptionDelete = () => {
                         color="white"
                         shape="rectangle"
                         class="w-full"
-                        @click="onClickOptionDelete"
+                        v-if="boardDeleteModalRef != null"
+                        @click="handleBoardDeleteModalOpen"
                         >Delete</BaseButton
                     >
                 </ActionsDropdown>
@@ -66,11 +59,7 @@ const onClickOptionDelete = () => {
             </div>
         </div>
 
-        <ModalDialog
-            @close="handleBoardDeleteModalClose"
-            :withBackdrop="true"
-            :isOpened="boardDeletionModalOpened"
-        >
+        <ModalDialog ref="boardDeleteModalRef" :withBackdrop="true">
             <template #header><p class="text-center font-medium">Delete board ?</p> </template>
 
             <div class="flex flex-col gap-4">

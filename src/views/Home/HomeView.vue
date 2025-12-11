@@ -13,21 +13,18 @@ const boardStore = useBoardStore()
 
 const boards = ref<Board[]>(boardStore.items)
 const textInputRef = useTemplateRef<ComponentExposed<typeof TextInput>>("textInputRef")
+const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 
 const boardCreationForm = ref<{ name: string }>({
     name: "",
 })
 
-const showBoardCreationModal = ref<boolean>(false)
-
 const handleBoardCreationModalOpen = async () => {
-    showBoardCreationModal.value = true
+    if (boardDeleteModalRef?.value === null) return
+
+    boardDeleteModalRef?.value?.open()
     await nextTick()
     textInputRef.value?.inputRef?.focus()
-}
-
-const handleBoardCreationModalClose = () => {
-    showBoardCreationModal.value = false
 }
 
 const handleBoardCreationFormSubmit = () => {
@@ -35,7 +32,7 @@ const handleBoardCreationFormSubmit = () => {
     const newBoard = { name: boardCreationForm.value.name }
     boardStore.create(newBoard)
     boardCreationForm.value.name = ""
-    handleBoardCreationModalClose()
+    if (boardDeleteModalRef?.value !== null) boardDeleteModalRef?.value.close
 }
 </script>
 
@@ -62,7 +59,7 @@ const handleBoardCreationFormSubmit = () => {
                 </li>
             </ul>
 
-            <ModalDialog :isOpened="showBoardCreationModal" @close="handleBoardCreationModalClose">
+            <ModalDialog ref="boardDeleteModalRef" :withBackdrop="true">
                 <template #header>
                     <p class="font-medium">Create new board</p>
                 </template>

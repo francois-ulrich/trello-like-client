@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue"
 import ModalDialog from "@/components/ModalDialog.vue"
-import useModal from "@/composables/useModal"
 import { Ellipsis } from "lucide-vue-next"
 import { v4 as uuidv4 } from "uuid"
+import { ref } from "vue"
 
 const modalContainerElementId = `modal-container-${uuidv4()}`
-const modalId = `modal-${uuidv4()}`
-
-const { closeModal, isModalOpen, toggleModal } = useModal()
 
 const props = withDefaults(
     defineProps<{
@@ -20,19 +17,25 @@ const props = withDefaults(
         align: "left",
     },
 )
+
+const modalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
+
+const handleButtonClick = () => {
+    if (modalRef.value == null) return
+    modalRef.value.toggle()
+}
 </script>
 
 <template>
     <div>
-        <BaseButton color="white" variant="ghost" @click="toggleModal(modalId)"
+        <BaseButton color="white" variant="ghost" @click="handleButtonClick"
             ><Ellipsis :size="props.buttonIconSize"
         /></BaseButton>
         <div :id="modalContainerElementId" class="relative"></div>
 
         <ModalDialog
-            :isOpened="isModalOpen(modalId)"
+            ref="modalRef"
             :teleport-to="'#' + modalContainerElementId"
-            @close="closeModal"
             positioning="absoluteAlignRight"
             width="md"
             classOnBody="pb-4"

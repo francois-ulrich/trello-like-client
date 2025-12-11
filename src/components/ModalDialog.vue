@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue"
 import RoundedCard from "@/components/RoundedCard.vue"
+import useModal from "@/composables/useModal"
 import { X } from "lucide-vue-next"
+import { v4 as uuidv4 } from "uuid"
+
+const { openModal, closeModal, isModalOpen, toggleModal } = useModal()
+const modalId = `modal-${uuidv4()}`
 
 type ModalSizes = "xl" | "lg" | "md" | "sm"
 
 const props = withDefaults(
     defineProps<{
-        isOpened: boolean
         withBackdrop?: boolean
         positioning?: "screenCenter" | "absolute" | "absoluteAlignRight"
         width?: "xl" | "lg" | "md" | "sm"
@@ -56,23 +60,38 @@ const emit = defineEmits<{
     (e: "close"): void
 }>()
 
-const handleClose = () => {
+const open = () => {
+    openModal(modalId)
+}
+
+const toggle = () => {
+    toggleModal(modalId)
+}
+
+const close = () => {
+    closeModal()
     emit("close")
 }
+
+defineExpose({
+    open,
+    close,
+    toggle,
+})
 </script>
 
 <template>
-    <Teleport :to="teleportTo" v-if="props.isOpened">
+    <Teleport :to="teleportTo" v-if="isModalOpen(modalId)">
         <div
             v-if="props.withBackdrop"
-            @click="handleClose"
+            @click="close"
             class="fixed top-0 left-0 w-full h-full bg-black opacity-50 cursor-pointer z-10"
         ></div>
         <RoundedCard class="z-20 bg-gray-50 p-0! divide-gray-400" :class="classes">
             <div class="relative">
                 <header class="p-4">
                     <BaseButton
-                        @click="handleClose"
+                        @click="close"
                         color="white"
                         class="absolute top-3 right-3 group-hover:opacity-100 cursor-pointer color rounded-full!"
                     >
