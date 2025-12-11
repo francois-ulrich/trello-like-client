@@ -8,10 +8,11 @@ import type { CardForm } from "@/types/cardForm"
 import type { Column } from "@/types/column"
 import { SquarePen } from "lucide-vue-next"
 import { ref } from "vue"
+import useModal from "@/composables/useModal"
 
 const props = defineProps<{ card: Card; column: Column }>()
 
-const showModal = ref<boolean>(false)
+const { openModal, closeModal, isModalOpen } = useModal()
 
 const cardEditForm = ref<CardForm>({
     name: props.card.name,
@@ -19,14 +20,16 @@ const cardEditForm = ref<CardForm>({
 })
 
 const handleModalOpen = () => {
-    showModal.value = true
+    openModal(modalId)
 }
 
 const handleModalClose = () => {
-    showModal.value = false
+    closeModal()
 }
 
 const handleFormSubmit = () => {}
+
+const modalId = `cardEdit-${props.card.id}`
 </script>
 
 <template>
@@ -38,7 +41,7 @@ const handleFormSubmit = () => {}
         <SquarePen class="absolute top-2 right-2 opacity-0 group-hover:opacity-100" :size="16" />
 
         <ModalDialog
-            :isOpened="showModal"
+            :isOpened="isModalOpen(modalId)"
             @close="handleModalClose"
             :withBackdrop="true"
             positioning="screenCenter"

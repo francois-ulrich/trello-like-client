@@ -42,8 +42,7 @@ const onClickOptionDelete = () => {
         <HeaderWithTitleAndOptions>
             <p class="text-lg font-medium">{{ board.name }}</p>
             <template #options>
-                <ActionsDropdown :buttonIconSize="24" teleportTo="">
-                    <BaseButton color="white" shape="rectangle" class="w-full">Rename</BaseButton>
+                <ActionsDropdown :buttonIconSize="24">
                     <BaseButton
                         color="white"
                         shape="rectangle"
