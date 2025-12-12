@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue"
+import { computed, ref, watchEffect } from "vue"
 import { useColumnStore } from "@/stores/column"
 import ColumnCreation from "@/views/Board/ColumnCreation.vue"
 import ColumnItem from "@/views/Board/ColumnItem.vue"
@@ -9,10 +9,16 @@ import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vu
 import ActionsDropdown from "@/components/ActionsDropdown.vue"
 import BaseButton from "@/components/BaseButton.vue"
 import ModalDialog from "@/components/ModalDialog.vue"
+import router from "@/router"
+import { useGlobalStore } from "@/stores/global"
 
 const route = useRoute()
 
-const board = computed(() => useBoardStore().get(route.params.id as string))
+const globalStore = useGlobalStore()
+const boardStore = useBoardStore()
+const columnStore = useColumnStore()
+
+const board = computed(() => boardStore.get(route.params.id as string))
 
 const columns = computed(() => {
     if (board.value === undefined) return []
@@ -20,13 +26,21 @@ const columns = computed(() => {
     return columnStore.items.filter((column) => column.boardId === board.value?.id)
 })
 
-const columnStore = useColumnStore()
-
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 
 const handleBoardDeleteModalOpen = async () => {
     if (boardDeleteModalRef.value != null) boardDeleteModalRef.value.open()
 }
+
+const handleBoardDeletion = () => {
+    if (board.value === undefined) return
+    globalStore.removeBoard(board.value.id)
+    router.push({ name: "home" })
+}
+
+watchEffect(() => {
+    if (board.value === undefined) router.push({ name: "home" })
+})
 </script>
 
 <template>
@@ -67,7 +81,7 @@ const handleBoardDeleteModalOpen = async () => {
                     Are you sure you want to delete this board&nbsp;? This action is irreversible.
                 </p>
 
-                <BaseButton color="danger">
+                <BaseButton color="danger" @click="handleBoardDeletion">
                     <p class="text-center">Delete board</p>
                 </BaseButton>
             </div>

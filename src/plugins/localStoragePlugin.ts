@@ -3,14 +3,16 @@ import type { PiniaPluginContext } from "pinia"
 const localStoragePlugin = (context: PiniaPluginContext) => {
     const { store } = context
 
-    const storedState = localStorage.getItem(store.$id)
+    const keyPrefix = `trelloLike-${store.$id}`
+
+    const storedState = localStorage.getItem(keyPrefix)
 
     if (storedState) {
         store.$patch(JSON.parse(storedState))
     }
 
     store.$subscribe((_, state) => {
-        localStorage.setItem(store.$id, JSON.stringify(state))
+        localStorage.setItem(keyPrefix, JSON.stringify(state))
     })
 }
 

@@ -32,7 +32,7 @@ const handleBoardCreationFormSubmit = () => {
     const newBoard = { name: boardCreationForm.value.name }
     boardStore.create(newBoard)
     boardCreationForm.value.name = ""
-    if (boardDeleteModalRef?.value !== null) boardDeleteModalRef?.value.close
+    if (boardDeleteModalRef?.value !== null) boardDeleteModalRef.value.close()
 }
 </script>
 

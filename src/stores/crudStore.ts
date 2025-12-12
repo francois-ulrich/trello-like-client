@@ -24,5 +24,9 @@ export function crudStore<T extends { id: string }>() {
         items.value = items.value.filter((i) => i.id !== id)
     }
 
-    return { items, create, get, update, remove }
+    function removeWhere(predicate: (item: T) => boolean) {
+        items.value = items.value.filter((i) => !predicate(i))
+    }
+
+    return { items, create, get, update, remove, removeWhere }
 }
