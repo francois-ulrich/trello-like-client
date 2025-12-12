@@ -13,7 +13,7 @@ type ModalSizes = "xl" | "lg" | "md" | "sm"
 const props = withDefaults(
     defineProps<{
         withBackdrop?: boolean
-        positioning?: "screenCenter" | "absolute" | "absoluteAlignRight"
+        positioning?: "screenCenter" | "absolute" | "absoluteAlignRight" | "absoluteAlignLeft"
         width?: "xl" | "lg" | "md" | "sm"
         classOnBody?: string
         teleportTo?: string
@@ -33,6 +33,7 @@ const positioningClassesOptions = {
     screenCenter: "fixed top-1/2 left-1/2 -translate-1/2",
     absolute: "absolute",
     absoluteAlignRight: "absolute right-0! left-auto!",
+    absoluteAlignLeft: "absolute left-0! right-auto!",
 }
 
 const positioningClasses = positioningClassesOptions[positioning]

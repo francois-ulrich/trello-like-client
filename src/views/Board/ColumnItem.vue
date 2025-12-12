@@ -9,6 +9,9 @@ import ColumnContainer from "@/components/ColumnContainer.vue"
 import CardCreation from "@/views/Board/CardCreation.vue"
 import { useCardStore } from "@/stores/card"
 import type { DraggableChangeEvent } from "@/types/draggable"
+import BaseButton from "@/components/BaseButton.vue"
+import ActionsDropdown from "@/components/ActionsDropdown.vue"
+import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
 
 const props = defineProps<{ column: Column }>()
 
@@ -68,7 +71,20 @@ const handleCreateCard = (card: Card) => {
 <template>
     <ColumnContainer>
         <RoundedCard class="bg-gray-200 flex flex-col gap-y-4 board-column-item w-full">
-            <p class="font-medium">{{ column.name }}</p>
+            <HeaderWithTitleAndOptions>
+                <p class="font-medium">{{ column.name }}</p>
+                <template #options>
+                    <ActionsDropdown :buttonIconSize="24">
+                        <template #header>
+                            <p class="font-medium text-center">Column actions</p>
+                        </template>
+
+                        <BaseButton color="white" shape="rectangle" class="w-full"
+                            >Delete</BaseButton
+                        >
+                    </ActionsDropdown>
+                </template>
+            </HeaderWithTitleAndOptions>
 
             <draggable
                 v-model="cards"

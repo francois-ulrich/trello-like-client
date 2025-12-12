@@ -10,11 +10,11 @@ const modalContainerElementId = `modal-container-${uuidv4()}`
 const props = withDefaults(
     defineProps<{
         buttonIconSize?: number
-        align?: "right" | "center" | "left"
+        alignModal?: "right" | "left"
     }>(),
     {
         buttonIconSize: 16,
-        align: "left",
+        alignModal: "left",
     },
 )
 
@@ -24,6 +24,8 @@ const handleButtonClick = () => {
     if (modalRef.value == null) return
     modalRef.value.toggle()
 }
+
+const positioningValue = props.alignModal === "left" ? "absoluteAlignLeft" : "absoluteAlignRight"
 </script>
 
 <template>
@@ -36,12 +38,14 @@ const handleButtonClick = () => {
         <ModalDialog
             ref="modalRef"
             :teleport-to="'#' + modalContainerElementId"
-            positioning="absoluteAlignRight"
+            :positioning="positioningValue"
             width="md"
             classOnBody="pb-4"
         >
             <template #header>
-                <p class="font-medium text-center">Actions list</p>
+                <slot name="header">
+                    <p class="font-medium text-center">Actions list</p>
+                </slot>
             </template>
 
             <slot></slot>

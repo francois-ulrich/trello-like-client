@@ -4,6 +4,7 @@ const currentModal = ref<string | null>(null)
 const previousModal = ref<string | null>(null)
 
 const openModal = (name: string) => {
+    closeModal()
     currentModal.value = name
     previousModal.value = name
 }
@@ -13,6 +14,11 @@ const closeModal = () => {
 }
 
 const toggleModal = (name: string) => {
+    if (currentModal.value !== name) {
+        openModal(name)
+        return
+    }
+
     if (currentModal.value !== null) closeModal()
     else openModal(name)
 }

@@ -45,10 +45,14 @@ watchEffect(() => {
 
 <template>
     <div class="flex flex-col" v-if="board !== undefined">
-        <HeaderWithTitleAndOptions>
+        <HeaderWithTitleAndOptions class="p-4">
             <p class="text-lg font-medium">{{ board.name }}</p>
             <template #options>
-                <ActionsDropdown :buttonIconSize="24">
+                <ActionsDropdown :buttonIconSize="24" alignModal="right">
+                    <template #header>
+                        <p class="font-medium text-center">Board actions</p>
+                    </template>
+
                     <BaseButton
                         color="white"
                         shape="rectangle"
