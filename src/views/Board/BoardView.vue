@@ -11,6 +11,7 @@ import BaseButton from "@/components/BaseButton.vue"
 import ModalDialog from "@/components/ModalDialog.vue"
 import router from "@/router"
 import { useGlobalStore } from "@/stores/global"
+import Renamable from "@/components/Renamable.vue"
 
 const route = useRoute()
 
@@ -41,12 +42,31 @@ const handleBoardDeletion = () => {
 watchEffect(() => {
     if (board.value === undefined) router.push({ name: "home" })
 })
+
+const handleBoardNameUpdate = (value: string) => {
+    if (board.value === undefined) return
+
+    let boardToUpdate = boardStore.items.find((currentBoard) => currentBoard.id === board.value?.id)
+
+    if (boardToUpdate === undefined) return
+
+    boardToUpdate.name = value
+
+    boardStore.update(boardToUpdate)
+}
 </script>
 
 <template>
     <div class="flex flex-col" v-if="board !== undefined">
         <HeaderWithTitleAndOptions class="p-4">
-            <p class="text-lg font-medium">{{ board.name }}</p>
+            <h2 class="hidden">{{ board.name }}</h2>
+
+            <Renamable
+                textClass="text-lg font-medium"
+                :text="board.name"
+                @textUpdate="handleBoardNameUpdate"
+            ></Renamable>
+
             <template #options>
                 <ActionsDropdown :buttonIconSize="24" alignModal="right">
                     <template #header>
