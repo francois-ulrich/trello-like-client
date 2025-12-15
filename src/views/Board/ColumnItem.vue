@@ -12,9 +12,12 @@ import type { DraggableChangeEvent } from "@/types/draggable"
 import BaseButton from "@/components/BaseButton.vue"
 import ActionsDropdown from "@/components/ActionsDropdown.vue"
 import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
+import ModalDialog from "@/components/ModalDialog.vue"
+import { useGlobalStore } from "@/stores/global"
 
 const props = defineProps<{ column: Column }>()
 
+const globalStore = useGlobalStore()
 const cardStore = useCardStore()
 
 const cardsPositionCompare = (a: Card, b: Card) => {
@@ -66,6 +69,17 @@ const handleCardsMove = (e: DraggableChangeEvent<Card>) => {
 const handleCreateCard = (card: Card) => {
     cards.value.push(card)
 }
+
+const columnDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
+
+const handleBoardDeletion = () => {
+    globalStore.removeColumn(props.column.id)
+    columnDeleteModalRef.value?.close()
+}
+
+const handleBoardDeleteModalOpen = async () => {
+    columnDeleteModalRef.value?.open()
+}
 </script>
 
 <template>
@@ -79,7 +93,11 @@ const handleCreateCard = (card: Card) => {
                             <p class="font-medium text-center">Column actions</p>
                         </template>
 
-                        <BaseButton color="white" shape="rectangle" class="w-full"
+                        <BaseButton
+                            color="white"
+                            shape="rectangle"
+                            class="w-full"
+                            @click="handleBoardDeleteModalOpen"
                             >Delete</BaseButton
                         >
                     </ActionsDropdown>
@@ -100,6 +118,20 @@ const handleCreateCard = (card: Card) => {
 
             <CardCreation :column="column" @createCard="handleCreateCard" />
         </RoundedCard>
+
+        <ModalDialog ref="columnDeleteModalRef" :withBackdrop="true">
+            <template #header><p class="text-center font-medium">Delete board ?</p> </template>
+
+            <div class="flex flex-col gap-4">
+                <p>
+                    Are you sure you want to delete this column&nbsp;? This action is irreversible.
+                </p>
+
+                <BaseButton color="danger" @click="handleBoardDeletion">
+                    <p class="text-center">Delete board</p>
+                </BaseButton>
+            </div>
+        </ModalDialog>
     </ColumnContainer>
 </template>
 
