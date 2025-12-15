@@ -14,10 +14,13 @@ import ActionsDropdown from "@/components/ActionsDropdown.vue"
 import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
 import ModalDialog from "@/components/ModalDialog.vue"
 import { useGlobalStore } from "@/stores/global"
+import { useColumnStore } from "@/stores/column"
+import Renamable from "@/components/Renamable.vue"
 
 const props = defineProps<{ column: Column }>()
 
 const globalStore = useGlobalStore()
+const columnStore = useColumnStore()
 const cardStore = useCardStore()
 
 const cardsPositionCompare = (a: Card, b: Card) => {
@@ -80,13 +83,30 @@ const handleBoardDeletion = () => {
 const handleBoardDeleteModalOpen = async () => {
     columnDeleteModalRef.value?.open()
 }
+
+const handleBoardNameUpdate = (value: string) => {
+    if (props.column === undefined) return
+    let columnToUpdate = columnStore.items.find(
+        (currentColumn) => currentColumn.id === props.column.id,
+    )
+    if (columnToUpdate === undefined) return
+    columnToUpdate.name = value
+    columnStore.update(columnToUpdate)
+}
 </script>
 
 <template>
     <ColumnContainer>
         <RoundedCard class="bg-gray-200 flex flex-col gap-y-4 board-column-item w-full">
             <HeaderWithTitleAndOptions>
-                <p class="font-medium">{{ column.name }}</p>
+                <!-- <p class="font-medium">{{ column.name }}</p> -->
+
+                <Renamable
+                    textClass="font-medium"
+                    :text="column.name"
+                    @textUpdate="handleBoardNameUpdate"
+                ></Renamable>
+
                 <template #options>
                     <ActionsDropdown :buttonIconSize="24">
                         <template #header>

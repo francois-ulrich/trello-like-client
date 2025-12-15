@@ -22,6 +22,8 @@ const handleFocusOut = () => {
 }
 
 const handleSubmit = () => {
+    if (inputValue.value === "") inputValue.value = props.text
+
     isInEditMode.value = false
 
     if (inputValue.value !== props.text) emit("textUpdate", inputValue.value)

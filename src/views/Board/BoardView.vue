@@ -45,13 +45,9 @@ watchEffect(() => {
 
 const handleBoardNameUpdate = (value: string) => {
     if (board.value === undefined) return
-
     let boardToUpdate = boardStore.items.find((currentBoard) => currentBoard.id === board.value?.id)
-
     if (boardToUpdate === undefined) return
-
     boardToUpdate.name = value
-
     boardStore.update(boardToUpdate)
 }
 </script>
