@@ -4,11 +4,9 @@ import RoundedCard from "@/components/RoundedCard.vue"
 
 <template>
     <RoundedCard
-        class="boardItem p-0! overflow-hidden shadow-md shadow-gray-400 transition-opacity opacity-100 hover:opacity-60"
+        class="boardItem p-0! shadow-md shadow-gray-400 transition-opacity opacity-100 hover:opacity-60"
     >
-        <button class="w-full h-full cursor-pointer">
-            <slot></slot>
-        </button>
+        <slot></slot>
     </RoundedCard>
 </template>
 

@@ -19,6 +19,9 @@ const globalStore = useGlobalStore()
 const boardStore = useBoardStore()
 const columnStore = useColumnStore()
 
+const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
+const renamableRef = ref<InstanceType<typeof Renamable> | null>(null)
+
 const board = computed(() => boardStore.get(route.params.id as string))
 
 const columns = computed(() => {
@@ -27,10 +30,8 @@ const columns = computed(() => {
     return columnStore.items.filter((column) => column.boardId === board.value?.id)
 })
 
-const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
-
 const handleBoardDeleteModalOpen = async () => {
-    if (boardDeleteModalRef.value != null) boardDeleteModalRef.value.open()
+    boardDeleteModalRef.value?.open()
 }
 
 const handleBoardDeletion = () => {
@@ -50,6 +51,11 @@ const handleBoardNameUpdate = (value: string) => {
     boardToUpdate.name = value
     boardStore.update(boardToUpdate)
 }
+
+const handleBoardRename = () => {
+    renamableRef.value?.open()
+    boardDeleteModalRef.value?.close()
+}
 </script>
 
 <template>
@@ -58,6 +64,7 @@ const handleBoardNameUpdate = (value: string) => {
             <h2 class="hidden">{{ board.name }}</h2>
 
             <Renamable
+                ref="renamableRef"
                 textClass="text-lg font-medium"
                 :text="board.name"
                 @textUpdate="handleBoardNameUpdate"
@@ -68,6 +75,14 @@ const handleBoardNameUpdate = (value: string) => {
                     <template #header>
                         <p class="font-medium text-center">Board actions</p>
                     </template>
+
+                    <BaseButton
+                        color="white"
+                        shape="rectangle"
+                        class="w-full"
+                        @click="handleBoardRename"
+                        >Rename</BaseButton
+                    >
 
                     <BaseButton
                         color="white"

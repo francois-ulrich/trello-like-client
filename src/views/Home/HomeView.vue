@@ -3,7 +3,6 @@ import ModalDialog from "@/components/ModalDialog.vue"
 import BoardItemBase from "@/components/BoardItemBase.vue"
 import { useBoardStore } from "@/stores/board"
 import type { Board } from "@/types/board"
-import BoardItem from "@/views/Home/BoardItem.vue"
 import { nextTick, ref, useTemplateRef } from "vue"
 import TextInput from "@/components/form/TextInput.vue"
 import BaseButton from "@/components/BaseButton.vue"
@@ -45,16 +44,29 @@ const handleBoardCreationFormSubmit = () => {
 
             <ul class="flex flex-row gap-4">
                 <li v-for="board in boards">
-                    <RouterLink :to="{ name: 'board', params: { id: board.id } }">
-                        <BoardItem :board="board" />
-                    </RouterLink>
+                    <BoardItemBase>
+                        <RouterLink :to="{ name: 'board', params: { id: board.id } }">
+                            <div class="flex flex-col-reverse h-full overflow-hidden">
+                                <div class="bg-gray-200 p-2 flex-none text-center">
+                                    <h3 class="text-gray-800 font-semibold text-sm">
+                                        {{ board.name }}
+                                    </h3>
+                                </div>
+                                <div
+                                    class="bg-linear-to-b from-gray-300 to-gray-400 to-100% flex-auto"
+                                ></div>
+                            </div>
+                        </RouterLink>
+                    </BoardItemBase>
                 </li>
                 <li>
                     <BoardItemBase
                         class="bg-gray-200 flex justify-center items-center text-gray-600 font-semibold text-sm"
                         @click="handleBoardCreationModalOpen"
                     >
-                        <p>Create new board</p>
+                        <button class="cursor-pointer w-full h-full">
+                            <p>Create new board</p>
+                        </button>
                     </BoardItemBase>
                 </li>
             </ul>

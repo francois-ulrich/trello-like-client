@@ -28,6 +28,14 @@ const handleSubmit = () => {
 
     if (inputValue.value !== props.text) emit("textUpdate", inputValue.value)
 }
+
+const open = () => {
+    handleSwitchToEditMode()
+}
+
+defineExpose({
+    open,
+})
 </script>
 
 <template>

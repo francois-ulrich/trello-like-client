@@ -23,6 +23,8 @@ const globalStore = useGlobalStore()
 const columnStore = useColumnStore()
 const cardStore = useCardStore()
 
+const renamableRef = ref<InstanceType<typeof Renamable> | null>(null)
+
 const cardsPositionCompare = (a: Card, b: Card) => {
     if (a.position < b.position) return -1
     else if (a.position > b.position) return 1
@@ -75,16 +77,16 @@ const handleCreateCard = (card: Card) => {
 
 const columnDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 
-const handleBoardDeletion = () => {
+const handleColumnDeletion = () => {
     globalStore.removeColumn(props.column.id)
     columnDeleteModalRef.value?.close()
 }
 
-const handleBoardDeleteModalOpen = async () => {
+const handleColumnDeleteModalOpen = async () => {
     columnDeleteModalRef.value?.open()
 }
 
-const handleBoardNameUpdate = (value: string) => {
+const handleColumnNameUpdate = (value: string) => {
     if (props.column === undefined) return
     let columnToUpdate = columnStore.items.find(
         (currentColumn) => currentColumn.id === props.column.id,
@@ -93,18 +95,22 @@ const handleBoardNameUpdate = (value: string) => {
     columnToUpdate.name = value
     columnStore.update(columnToUpdate)
 }
+
+const handleColumnRename = () => {
+    renamableRef.value?.open()
+    columnDeleteModalRef.value?.close()
+}
 </script>
 
 <template>
     <ColumnContainer>
         <RoundedCard class="bg-gray-200 flex flex-col gap-y-4 board-column-item w-full">
             <HeaderWithTitleAndOptions>
-                <!-- <p class="font-medium">{{ column.name }}</p> -->
-
                 <Renamable
+                    ref="renamableRef"
                     textClass="font-medium"
                     :text="column.name"
-                    @textUpdate="handleBoardNameUpdate"
+                    @textUpdate="handleColumnNameUpdate"
                 ></Renamable>
 
                 <template #options>
@@ -117,8 +123,16 @@ const handleBoardNameUpdate = (value: string) => {
                             color="white"
                             shape="rectangle"
                             class="w-full"
-                            @click="handleBoardDeleteModalOpen"
+                            @click="handleColumnDeleteModalOpen"
                             >Delete</BaseButton
+                        >
+
+                        <BaseButton
+                            color="white"
+                            shape="rectangle"
+                            class="w-full"
+                            @click="handleColumnRename"
+                            >Rename</BaseButton
                         >
                     </ActionsDropdown>
                 </template>
@@ -147,7 +161,7 @@ const handleBoardNameUpdate = (value: string) => {
                     Are you sure you want to delete this column&nbsp;? This action is irreversible.
                 </p>
 
-                <BaseButton color="danger" @click="handleBoardDeletion">
+                <BaseButton color="danger" @click="handleColumnDeletion">
                     <p class="text-center">Delete board</p>
                 </BaseButton>
             </div>
