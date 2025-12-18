@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect } from "vue"
+import { computed, nextTick, ref, watchEffect } from "vue"
 import { useColumnStore } from "@/stores/column"
 import ColumnCreation from "@/views/Board/ColumnCreation.vue"
 import ColumnItem from "@/views/Board/ColumnItem.vue"
@@ -52,9 +52,10 @@ const handleBoardNameUpdate = (value: string) => {
     boardStore.update(boardToUpdate)
 }
 
-const handleBoardRename = () => {
-    renamableRef.value?.open()
+const handleBoardRename = async () => {
     boardDeleteModalRef.value?.close()
+    // await nextTick()
+    renamableRef.value?.open()
 }
 </script>
 

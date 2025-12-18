@@ -62,9 +62,11 @@ const handleBoardCreationFormSubmit = () => {
                 <li>
                     <BoardItemBase
                         class="bg-gray-200 flex justify-center items-center text-gray-600 font-semibold text-sm"
-                        @click="handleBoardCreationModalOpen"
                     >
-                        <button class="cursor-pointer w-full h-full">
+                        <button
+                            class="cursor-pointer w-full h-full"
+                            @click="handleBoardCreationModalOpen"
+                        >
                             <p>Create new board</p>
                         </button>
                     </BoardItemBase>
