@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { nextTick, ref, useTemplateRef } from "vue"
 
-const props = defineProps<{ text: string; textClass?: string }>()
+const props = withDefaults(
+    defineProps<{ text: string; textClass?: string; inputType?: "input" | "textarea" }>(),
+    { inputType: "input" },
+)
 
-const inputRef = useTemplateRef("inputRef")
+const inputRef = useTemplateRef<HTMLInputElement | HTMLTextAreaElement>("inputRef")
 const inputValue = ref<string>(props.text)
 const isInEditMode = ref<boolean>(false)
 
@@ -36,6 +39,9 @@ const open = () => {
 defineExpose({
     open,
 })
+
+const textareaElClass =
+    props.inputType === "textarea" ? `${props.textClass} resize-none w-full h-32` : props.textClass
 </script>
 
 <template>
@@ -43,12 +49,22 @@ defineExpose({
         <div v-if="!isInEditMode" class="cursor-pointer" @click="handleSwitchToEditMode">
             <span :class="textClass">{{ inputValue }}</span>
         </div>
-        <div v-else>
+        <div v-else class="w-full">
             <form @submit.prevent="handleSubmit">
+                <textarea
+                    v-if="props.inputType === 'textarea'"
+                    ref="inputRef"
+                    :class="textareaElClass"
+                    v-model="inputValue"
+                    @focusout="handleFocusOut"
+                    >{{ inputValue }}</textarea
+                >
+
                 <input
+                    v-else
                     type="text"
                     ref="inputRef"
-                    :class="textClass"
+                    :class="props.textClass"
                     v-model="inputValue"
                     @focusout="handleFocusOut"
                 />

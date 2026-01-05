@@ -14,7 +14,7 @@ const handleSubmit = (name: string) => {
 
 <template>
     <ColumnContainer>
-        <AddButtonSwitchToForm addButtonLabel="Add new column">
+        <AddButtonSwitchToForm addButtonLabel="Add new column" buttonColor="lightgray">
             <template #default="{ handleClose, addButtonLabel }">
                 <ItemCreationForm
                     @close="handleClose"

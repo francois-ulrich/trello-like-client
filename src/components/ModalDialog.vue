@@ -124,7 +124,7 @@ defineExpose({
                 >
                     <div class="relative">
                         <div>
-                            <header class="p-4">
+                            <header class="p-4 border-b border-gray-400">
                                 <BaseButton
                                     @click="close"
                                     color="white"
@@ -134,7 +134,7 @@ defineExpose({
                                 </BaseButton>
                                 <slot name="header"></slot>
                             </header>
-                            <main :class="classOnBody">
+                            <main :class="classOnBody + ' p-4'">
                                 <slot></slot>
                             </main>
                         </div>

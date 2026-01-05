@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import ModalDialog from "@/components/ModalDialog.vue"
-import TextareaInput from "@/components/form/TextareaInput.vue"
-import TextInput from "@/components/form/TextInput.vue"
 import RoundedCard from "@/components/RoundedCard.vue"
 import type { Card } from "@/types/card"
 import type { CardForm } from "@/types/cardForm"
 import type { Column } from "@/types/column"
 import { SquarePen, TextAlignStart } from "lucide-vue-next"
 import { ref } from "vue"
+import Renamable from "@/components/Renamable.vue"
 import BaseButton from "@/components/BaseButton.vue"
 
 const props = defineProps<{ card: Card; column: Column }>()
 
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
+// const titleFieldRef = ref<InstanceType<typeof Renamable> | null>(null)
+// const descriptionFieldRef = ref<InstanceType<typeof Renamable> | null>(null)
 
 const cardEditForm = ref<CardForm>({
     name: props.card.name,
@@ -42,22 +43,32 @@ const handleFormSubmit = () => {
 
         <ModalDialog :withBackdrop="true" positioning="screenCenter" ref="boardDeleteModalRef">
             <template #header>
-                <p class="font-medium">{{ props.column.name }}</p>
+                <p class="text-gray-700">{{ props.column.name }}</p>
             </template>
 
-            <form @submit.prevent="handleFormSubmit">
-                <TextInput id="name" label="Name" v-model="cardEditForm.name" class="w-full mb-2" />
-
-                <TextareaInput
-                    id="description"
-                    label="Description"
-                    v-model="cardEditForm.description"
-                    class="w-full"
-                />
+            <form @submit.prevent="handleFormSubmit" class="space-y-8">
+                <Renamable
+                    ref="titleFieldRef"
+                    textClass="text-xl font-medium"
+                    :text="cardEditForm.name"
+                ></Renamable>
 
                 <div>
-                    <BaseButton type="submit">Save changes</BaseButton>
+                    <div class="space-y-2 flex flex-row items-start gap-1">
+                        <TextAlignStart :size="16" />
+                        <p class="font-semibold leading-none">Description&nbsp;:</p>
+                    </div>
+
+                    <Renamable
+                        ref="titleFieldRef"
+                        :text="cardEditForm.description"
+                        inputType="textarea"
+                    ></Renamable>
                 </div>
+
+                <!-- <div>
+                    <BaseButton type="submit">Save changes</BaseButton>
+                </div> -->
             </form>
         </ModalDialog>
     </RoundedCard>

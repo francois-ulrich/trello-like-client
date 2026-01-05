@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ButtonsColor } from "@/types/buttonsColor"
 import { useSlots, type Component } from "vue"
 
 const colorClassesOptions: Record<string, Record<string, string>> = {
@@ -49,7 +50,7 @@ const props = withDefaults(
         icon?: Component
         type?: "button" | "submit"
         as?: "button" | "a"
-        color?: "primary" | "secondary" | "danger" | "success" | "neutral" | "lightgray" | "white"
+        color?: ButtonsColor
         variant?: "solid" | "outline" | "ghost"
         shape?: "rounded" | "rectangle"
         class?: string
