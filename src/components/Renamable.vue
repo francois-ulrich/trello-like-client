@@ -2,8 +2,13 @@
 import { nextTick, ref, useTemplateRef } from "vue"
 
 const props = withDefaults(
-    defineProps<{ text: string; textClass?: string; inputType?: "input" | "textarea" }>(),
-    { inputType: "input" },
+    defineProps<{
+        text: string
+        textClass?: string
+        inputType?: "input" | "textarea"
+        closeOnFocusOut?: boolean
+    }>(),
+    { inputType: "input", closeOnFocusOut: true },
 )
 
 const inputRef = useTemplateRef<HTMLInputElement | HTMLTextAreaElement>("inputRef")
@@ -21,7 +26,7 @@ const handleSwitchToEditMode = async () => {
 }
 
 const handleFocusOut = () => {
-    handleSubmit()
+    if (props.closeOnFocusOut) handleSubmit()
 }
 
 const handleSubmit = () => {
@@ -41,14 +46,18 @@ defineExpose({
 })
 
 const textareaElClass =
-    props.inputType === "textarea" ? `${props.textClass} resize-none w-full h-32` : props.textClass
+    props.inputType === "textarea" ? `${props.textClass} outline-input` : props.textClass
 </script>
 
 <template>
     <div>
         <div v-if="!isInEditMode" class="cursor-pointer" @click="handleSwitchToEditMode">
-            <span :class="textClass">{{ inputValue }}</span>
+            <span :class="textClass" v-if="inputValue.length > 0">{{ inputValue }}</span>
+            <div v-else>
+                <slot name="if-value-empty"></slot>
+            </div>
         </div>
+
         <div v-else class="w-full">
             <form @submit.prevent="handleSubmit">
                 <textarea

@@ -3,7 +3,7 @@ import CardItem from "@/views/Board/CardItem.vue"
 import RoundedCard from "@/components/RoundedCard.vue"
 import type { Card } from "@/types/card"
 import type { Column } from "@/types/column"
-import { ref } from "vue"
+import { computed, ref } from "vue"
 import draggable from "vuedraggable"
 import ColumnContainer from "@/components/ColumnContainer.vue"
 import CardCreation from "@/views/Board/CardCreation.vue"
@@ -34,6 +34,8 @@ const cardsPositionCompare = (a: Card, b: Card) => {
 const cards = ref<Card[]>(
     cardStore.items.filter((card) => card.columnId === props.column.id).sort(cardsPositionCompare),
 )
+
+const cardIds = computed<string[]>(() => cards.value.map((c) => c.id))
 
 const updateCardsInStore = () => {
     cards.value.forEach((card) => cardStore.update(card))
@@ -139,14 +141,14 @@ const handleColumnRename = () => {
             </HeaderWithTitleAndOptions>
 
             <draggable
-                v-model="cards"
+                v-model="cardIds"
                 item-key="id"
                 :group="column.boardId"
                 class="max-w-80 flex flex-col gap-y-4"
                 @change="handleCardsMove"
             >
                 <template #item="{ element }">
-                    <CardItem :card="element" :column="column" />
+                    <CardItem :card-id="element" :column="column" />
                 </template>
             </draggable>
 

@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+@layer components {
+    .outline-input {
+        @apply resize-none w-full h-32 p-3 outline rounded-xs outline-gray-600 focus:outline-gray-400 focus:outline-2;
+    }
+}
