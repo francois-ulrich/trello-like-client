@@ -117,7 +117,7 @@ defineExpose({
 
             <div ref="rootElementRef">
                 <RoundedCard
-                    class="z-20 bg-gray-50 p-0! divide-gray-400"
+                    class="z-20 bg-gray-50 p-0! divide-gray-400 max-w-screen"
                     :class="classes"
                     @keydown.esc="close"
                     v-if="isModalOpen(modalId)"
