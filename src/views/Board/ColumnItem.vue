@@ -35,8 +35,6 @@ const cards = ref<Card[]>(
     cardStore.items.filter((card) => card.columnId === props.column.id).sort(cardsPositionCompare),
 )
 
-const cardIds = computed<string[]>(() => cards.value.map((c) => c.id))
-
 const updateCardsInStore = () => {
     cards.value.forEach((card) => cardStore.update(card))
 }
@@ -141,14 +139,14 @@ const handleColumnRename = () => {
             </HeaderWithTitleAndOptions>
 
             <draggable
-                v-model="cardIds"
+                v-model="cards"
                 item-key="id"
                 :group="column.boardId"
                 class="max-w-80 flex flex-col gap-y-4"
                 @change="handleCardsMove"
             >
-                <template #item="{ element }">
-                    <CardItem :card-id="element" :column="column" />
+                <template #item="{ element }: { element: Card }">
+                    <CardItem :card-id="element.id" :column="column" />
                 </template>
             </draggable>
 
@@ -170,5 +168,3 @@ const handleColumnRename = () => {
         </ModalDialog>
     </ColumnContainer>
 </template>
-
-<style scoped></style>
