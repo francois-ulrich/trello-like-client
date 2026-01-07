@@ -42,7 +42,7 @@ const handleBoardCreationFormSubmit = () => {
                 <h2 class="text-xl font-medium uppercase">Your boards</h2>
             </div>
 
-            <ul class="flex flex-row gap-4 flex-auto overflow-x-auto pb-4 w-full bg-red-400">
+            <ul class="flex flex-row gap-4 flex-auto overflow-x-auto pb-4 w-full">
                 <li v-for="board in boards">
                     <BoardItemBase>
                         <RouterLink :to="{ name: 'board', params: { id: board.id } }">
