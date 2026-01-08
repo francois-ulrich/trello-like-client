@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ModalDialog from "@/components/ModalDialog.vue"
 import RoundedCard from "@/components/RoundedCard.vue"
-import { SquarePen, TextAlignStart } from "lucide-vue-next"
+import { GripHorizontal, SquarePen, TextAlignStart } from "lucide-vue-next"
 import { computed, ref } from "vue"
 import Renamable from "@/components/Renamable.vue"
 import { useCardStore } from "@/stores/card"
@@ -53,6 +53,14 @@ const handleDescriptionUpdate = (value: string) => {
         @click="handleModalOpen"
         v-if="card"
     >
+        <div class="w-full flex flex-row gap-2 sm:hidden">
+            <div
+                class="handle w-10 h-10 border-gray-600 bg-gray-400 mb-2 rounded-sm flex justify-center items-center cursor-move"
+            >
+                <GripHorizontal class="text-gray-500" :size="16" />
+            </div>
+        </div>
+
         <p class="font-medium">{{ card.name }}</p>
 
         <TextAlignStart v-if="card?.description !== undefined" :size="14" class="m-1" />

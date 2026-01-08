@@ -3,7 +3,7 @@ import CardItem from "@/views/Board/CardItem.vue"
 import RoundedCard from "@/components/RoundedCard.vue"
 import type { Card } from "@/types/card"
 import type { Column } from "@/types/column"
-import { ref } from "vue"
+import { computed, ref } from "vue"
 import draggable from "vuedraggable"
 import ColumnContainer from "@/components/ColumnContainer.vue"
 import CardCreation from "@/views/Board/CardCreation.vue"
@@ -144,6 +144,7 @@ const handleColumnRename = () => {
                 :group="column.boardId"
                 class="max-w-80 flex flex-col gap-y-4"
                 @change="handleCardsMove"
+                handle=".handle"
             >
                 <template #item="{ element }: { element: Card }">
                     <CardItem :card-id="element.id" :column="column" />
