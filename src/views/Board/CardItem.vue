@@ -53,7 +53,7 @@ const handleDescriptionUpdate = (value: string) => {
         @click="handleModalOpen"
         v-if="card"
     >
-        <div class="w-full flex flex-row gap-2 sm:hidden">
+        <div class="w-full flex flex-row gap-2">
             <div
                 class="handle w-10 h-10 border-gray-600 bg-gray-400 mb-2 rounded-sm flex justify-center items-center cursor-move"
             >
