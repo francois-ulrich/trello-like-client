@@ -6,7 +6,7 @@ interface Props {
     id: string
     label: string
     hideLabel?: boolean
-    type?: string
+    type?: "text" | "password"
     placeholder?: string
 }
 
@@ -43,6 +43,7 @@ defineExpose({ inputRef, focus })
             v-model="value"
             ref="input-ref"
             class="bg-gray-300 p-2 rounded-md w-full"
+            autocomplete="on"
         ></input>
     </div>
 </template>

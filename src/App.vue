@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { House } from "lucide-vue-next"
+import { House, LogIn } from "lucide-vue-next"
 import { RouterView } from "vue-router"
 
 const title = "Trello like"
@@ -19,8 +19,14 @@ const title = "Trello like"
                 class="text-gray-600 bg-gray-300 hover:bg-gray-400 px-2 py-1 w-fit transition-colors rounded-full header-rounded-button flex justify-center items-center"
                 ><House :size="32" />
             </RouterLink>
+
+            <RouterLink
+                :to="{ name: 'login' }"
+                class="text-gray-600 bg-gray-300 hover:bg-gray-400 px-2 py-1 w-fit transition-colors rounded-full header-rounded-button flex justify-center items-center"
+                ><LogIn :size="32" />
+            </RouterLink>
         </header>
-        <main class="flex flex-auto">
+        <main>
             <RouterView />
         </main>
     </div>

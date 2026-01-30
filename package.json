@@ -12,6 +12,7 @@
     "@tailwindcss/vite": "^4.1.17",
     "@vueuse/integrations": "^14.1.0",
     "async-validator": "^4.2.5",
+    "axios": "^1.13.4",
     "focus-trap": "^7.6.6",
     "lucide-vue-next": "^0.555.0",
     "pinia": "^3.0.4",
