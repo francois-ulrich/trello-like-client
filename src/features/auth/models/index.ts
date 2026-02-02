@@ -11,3 +11,10 @@ export interface LoginFormData {
 export interface LoginResponse {
     data: LoginFormData
 }
+
+export interface RegisterFormData {
+    name: string
+    email: string
+    password: string
+    passwordConfirmation: string
+}

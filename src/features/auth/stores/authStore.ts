@@ -1,4 +1,4 @@
-import type { LoginFormData, User } from "@/features/auth/models"
+import type { LoginFormData, RegisterFormData, User } from "@/features/auth/models"
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import business from "@/features/auth/services/auth.application"
@@ -12,5 +12,11 @@ export const useAuthStore = defineStore("auth", () => {
         })
     }
 
-    return { user, logIn }
+    const register = (data: RegisterFormData) => {
+        business.register(data).then((res) => {
+            console.log(res)
+        })
+    }
+
+    return { user, logIn, register }
 })

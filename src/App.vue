@@ -36,7 +36,7 @@ const title = "Trello like"
                 <template #options>
                     <div class="flex flex-row gap-2">
                         <BaseButton color="lightgray" to="login">Login</BaseButton>
-                        <BaseButton color="lightgray">Register</BaseButton>
+                        <BaseButton color="lightgray" to="register">Register</BaseButton>
                     </div>
                 </template>
             </HeaderWithTitleAndOptions>

@@ -1,19 +1,33 @@
-import type { LoginFormData, LoginResponse } from "@/features/auth/models"
-import { getAuthenticatedUserFromApi, getLoginFromApi } from "./auth.infrastructure"
-import type { PostOneUser } from "@/features/auth/custom-types"
+import type { LoginFormData, LoginResponse, RegisterFormData } from "@/features/auth/models"
+import {
+    getAuthenticatedUserFromApi,
+    getLoginFromApi,
+    getRegisterFromApi,
+} from "./auth.infrastructure"
+import type { PostOneUser, RegisterOneUser } from "@/features/auth/custom-types"
 
 async function logIn(formData: LoginFormData, api: PostOneUser): Promise<LoginResponse> {
     const result = await api(formData)
     return result
 }
 
-function factoryLogInUser(loginFormData: LoginFormData): Promise<LoginResponse> {
-    return logIn(loginFormData, getLoginFromApi)
+async function register(formData: RegisterFormData, api: RegisterOneUser): Promise<LoginResponse> {
+    const result = await api(formData)
+    return result
+}
+
+function factoryLogInUser(formData: LoginFormData): Promise<LoginResponse> {
+    return logIn(formData, getLoginFromApi)
+}
+
+function factoryRegisterUser(formData: RegisterFormData): Promise<LoginResponse> {
+    return register(formData, getRegisterFromApi)
 }
 
 const business = {
     getAuthenticatedUser: getAuthenticatedUserFromApi,
     login: factoryLogInUser,
+    register: factoryRegisterUser,
 }
 
 export default business
