@@ -60,7 +60,7 @@ const handleBoardRename = async () => {
 
 <template>
     <div class="flex flex-col" v-if="board !== undefined">
-        <HeaderWithTitleAndOptions class="p-4">
+        <HeaderWithTitleAndOptions class="p-4 bg-gray-200">
             <h2 class="hidden">{{ board.name }}</h2>
 
             <Renamable

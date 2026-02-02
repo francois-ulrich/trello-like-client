@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-    <div class="flex flex-row gap-4 bg-gray-200 flex-none items-center">
+    <div class="flex flex-row gap-4 flex-none items-center w-full">
         <div class="flex-none">
             <slot></slot>
         </div>

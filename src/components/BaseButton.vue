@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ButtonsColor } from "@/types/buttonsColor"
 import { useSlots, type Component } from "vue"
+import router from "@/router"
 
 const colorClassesOptions: Record<string, Record<string, string>> = {
     primary: {
@@ -54,6 +55,7 @@ const props = withDefaults(
         variant?: "solid" | "outline" | "ghost"
         shape?: "rounded" | "rectangle"
         class?: string
+        to?: string | null
     }>(),
     {
         as: "button",
@@ -62,6 +64,7 @@ const props = withDefaults(
         color: "primary",
         shape: "rounded",
         class: "",
+        to: null,
     },
 )
 
@@ -77,6 +80,11 @@ const emit = defineEmits<{
 }>()
 
 const onClick = () => {
+    if (props.to != null) {
+        router.push({ name: props.to })
+        return
+    }
+
     emit("click")
 }
 </script>
@@ -88,6 +96,7 @@ const onClick = () => {
         class="p-2 cursor-pointer text-left flex flex-row transition-colors"
         :class="classes"
         :type="type"
+        :to="props.to"
     >
         <component
             v-if="icon !== undefined"

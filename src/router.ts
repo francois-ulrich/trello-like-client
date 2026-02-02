@@ -10,7 +10,7 @@ const routes = [
         component: BoardView,
     },
     {
-        path: "/",
+        path: "/login",
         name: "login",
         component: LoginView,
     },
