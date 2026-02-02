@@ -19,20 +19,27 @@ const handleSubmit = () => {
 </script>
 
 <template>
-    <p>Sign in</p>
+    <div class="p-4">
+        <p>Sign in</p>
 
-    <div>
-        <form @submit.prevent="handleSubmit" class="flex flex-col gap-2">
-            <TextInput id="email" label="Email ID" v-model="formData.email" class="w-full mb-2" />
-            <TextInput
-                id="password"
-                label="Password"
-                v-model="formData.password"
-                class="w-full mb-2"
-                type="password"
-            />
+        <div>
+            <form @submit.prevent="handleSubmit" class="flex flex-col gap-2">
+                <TextInput
+                    id="email"
+                    label="Email ID"
+                    v-model="formData.email"
+                    class="w-full mb-2"
+                />
+                <TextInput
+                    id="password"
+                    label="Password"
+                    v-model="formData.password"
+                    class="w-full mb-2"
+                    type="password"
+                />
 
-            <BaseButton @click="handleSubmit">Submit</BaseButton>
-        </form>
+                <BaseButton type="submit">Submit</BaseButton>
+            </form>
+        </div>
     </div>
 </template>
