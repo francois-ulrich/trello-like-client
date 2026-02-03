@@ -8,13 +8,13 @@ export interface LoginFormData {
     password: string
 }
 
-export interface LoginResponse {
-    data: LoginFormData
-}
-
 export interface RegisterFormData {
     name: string
     email: string
     password: string
     passwordConfirmation: string
+}
+
+export interface UserResponseData {
+    user: User
 }

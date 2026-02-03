@@ -1,5 +1,7 @@
-import type { LoginFormData, LoginResponse, RegisterFormData } from "@/features/auth/models"
-import type { PostOne } from "@/shared/models/custom.types"
+import type { LoginFormData, UserResponseData, RegisterFormData } from "@/features/auth/models"
+import type { Post, PostOne } from "@/shared/custom-types"
+import type { ApiResponse } from "@/shared/models"
 
-export type PostOneUser = PostOne<LoginFormData, LoginResponse>
-export type RegisterOneUser = PostOne<RegisterFormData, LoginResponse>
+export type PostOneUser = PostOne<LoginFormData, ApiResponse<UserResponseData>>
+export type RegisterOneUser = PostOne<RegisterFormData, ApiResponse<UserResponseData>>
+export type LogoutOneUser = Post<ApiResponse<null>>

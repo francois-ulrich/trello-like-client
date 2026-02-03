@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue"
 import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
+import { useAuthStore } from "@/features/auth/stores/authStore"
 import { House, LogIn } from "lucide-vue-next"
 import { RouterView } from "vue-router"
 
 const title = "Trello like"
+
+const authStore = useAuthStore()
+
+const handleLogout = () => {
+    authStore.logout()
+}
 </script>
 
 <template>
@@ -35,8 +42,17 @@ const title = "Trello like"
 
                 <template #options>
                     <div class="flex flex-row gap-2">
-                        <BaseButton color="lightgray" to="login">Login</BaseButton>
-                        <BaseButton color="lightgray" to="register">Register</BaseButton>
+                        <div class="flex flex-row gap-2">
+                            <template v-if="authStore.user == null">
+                                <BaseButton color="lightgray" to="login">Login</BaseButton>
+                                <BaseButton color="lightgray" to="register">Register</BaseButton>
+                            </template>
+                            <template v-else>
+                                <BaseButton color="lightgray" @click="handleLogout"
+                                    >Log out</BaseButton
+                                >
+                            </template>
+                        </div>
                     </div>
                 </template>
             </HeaderWithTitleAndOptions>

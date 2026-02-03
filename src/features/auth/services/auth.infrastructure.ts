@@ -1,34 +1,30 @@
 import api from "@/api"
-import type { LoginFormData, LoginResponse, RegisterFormData } from "@/features/auth/models"
-import type { AxiosResponse } from "axios"
+import type { LoginFormData, RegisterFormData, UserResponseData } from "@/features/auth/models"
+import type { ApiResponse } from "@/shared/models"
 
 // login
 
-export async function getLoginFromApi(formLoginData: LoginFormData): Promise<LoginResponse> {
+export async function getLoginFromApi(
+    formLoginData: LoginFormData,
+): Promise<ApiResponse<UserResponseData>> {
     const { email, password } = formLoginData
 
-    const response = api.post<LoginResponse>("/auth/login", {
+    const response = api.post<LoginFormData, ApiResponse<UserResponseData>>("/auth/login", {
         email,
         password,
     })
 
     const result = await response
 
-    return result.data
-}
-
-export async function getAuthenticatedUserFromApi(): Promise<AxiosResponse<LoginResponse>> {
-    const response = api.get<LoginResponse>("/me")
-    const result = await response
     return result
 }
 
-// register
-
-export async function getRegisterFromApi(formLoginData: RegisterFormData): Promise<LoginResponse> {
+export async function getRegisterFromApi(
+    formLoginData: RegisterFormData,
+): Promise<ApiResponse<UserResponseData>> {
     const { name, email, password, passwordConfirmation } = formLoginData
 
-    const response = api.post<LoginResponse>("/auth/register", {
+    const response = api.post<RegisterFormData, ApiResponse<UserResponseData>>("/auth/register", {
         name,
         email,
         password,
@@ -37,5 +33,13 @@ export async function getRegisterFromApi(formLoginData: RegisterFormData): Promi
 
     const result = await response
 
-    return result.data
+    return result
+}
+
+// logout
+
+export async function getLogoutFromApi(): Promise<ApiResponse<null>> {
+    const response = api.post<null, ApiResponse<null>>("/auth/logout")
+    const result = await response
+    return result
 }

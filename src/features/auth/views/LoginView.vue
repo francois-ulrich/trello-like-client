@@ -10,7 +10,7 @@ const formData = ref<LoginFormData>({ email: "", password: "" })
 const authStore = useAuthStore()
 
 const handleSubmit = () => {
-    authStore.logIn(formData.value)
+    authStore.login(formData.value)
 }
 </script>
 
