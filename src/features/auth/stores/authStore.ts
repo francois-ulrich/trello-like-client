@@ -9,13 +9,13 @@ export const useAuthStore = defineStore("auth", () => {
     const register = (data: RegisterFormData) => {
         business.register(data).then((res) => {
             console.log(res)
-            user.value = res.data.data.user
+            user.value = res.data.user
         })
     }
 
     const login = (data: LoginFormData) => {
         business.login(data).then((res) => {
-            user.value = res.data.data.user
+            user.value = res.data.user
         })
     }
 

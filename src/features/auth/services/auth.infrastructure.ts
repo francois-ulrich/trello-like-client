@@ -7,16 +7,8 @@ import type { ApiResponse } from "@/shared/models"
 export async function getLoginFromApi(
     formLoginData: LoginFormData,
 ): Promise<ApiResponse<UserResponseData>> {
-    const { email, password } = formLoginData
-
-    const response = api.post<LoginFormData, ApiResponse<UserResponseData>>("/auth/login", {
-        email,
-        password,
-    })
-
-    const result = await response
-
-    return result
+    const response = await api.post<ApiResponse<UserResponseData>>("/auth/login", formLoginData)
+    return response.data
 }
 
 export async function getRegisterFromApi(
@@ -24,22 +16,19 @@ export async function getRegisterFromApi(
 ): Promise<ApiResponse<UserResponseData>> {
     const { name, email, password, passwordConfirmation } = formLoginData
 
-    const response = api.post<RegisterFormData, ApiResponse<UserResponseData>>("/auth/register", {
+    const response = await api.post<ApiResponse<UserResponseData>>("/auth/register", {
         name,
         email,
         password,
         password_confirmation: passwordConfirmation,
     })
 
-    const result = await response
-
-    return result
+    return response.data
 }
 
 // logout
 
 export async function getLogoutFromApi(): Promise<ApiResponse<null>> {
-    const response = api.post<null, ApiResponse<null>>("/auth/logout")
-    const result = await response
-    return result
+    const response = await api.post<ApiResponse<null>>("/auth/logout")
+    return response.data
 }
