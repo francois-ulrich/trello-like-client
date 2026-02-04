@@ -19,8 +19,8 @@ export function createLocalStoragePlugin(options: LocalStoragePluginOptions | un
         }
 
         store.$subscribe((_, state) => {
-            if (ignoredStoreIds.includes(store.$id)) return
-            localStorage.setItem(keyPrefix, JSON.stringify(state))
+            if (!ignoredStoreIds.includes(store.$id))
+                localStorage.setItem(keyPrefix, JSON.stringify(state))
         })
     }
 }

@@ -26,9 +26,12 @@ export async function getRegisterFromApi(
     return response.data
 }
 
-// logout
-
 export async function getLogoutFromApi(): Promise<ApiResponse<null>> {
     const response = await api.post<ApiResponse<null>>("/auth/logout")
+    return response.data
+}
+
+export async function getMeFromApi(): Promise<ApiResponse<UserResponseData>> {
+    const response = await api.get<ApiResponse<UserResponseData>>("/auth/me")
     return response.data
 }

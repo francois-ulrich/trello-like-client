@@ -43,7 +43,7 @@ const handleLogout = () => {
                 <template #options>
                     <div class="flex flex-row gap-2">
                         <div class="flex flex-row gap-2">
-                            <template v-if="authStore.user == null">
+                            <template v-if="!authStore.isAuthenticated">
                                 <BaseButton color="lightgray" to="login">Login</BaseButton>
                                 <BaseButton color="lightgray" to="register">Register</BaseButton>
                             </template>

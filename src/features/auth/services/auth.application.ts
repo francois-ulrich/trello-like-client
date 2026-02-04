@@ -1,6 +1,16 @@
 import type { LoginFormData, RegisterFormData, UserResponseData } from "@/features/auth/models"
-import { getLoginFromApi, getRegisterFromApi, getLogoutFromApi } from "./auth.infrastructure"
-import type { LogoutOneUser, PostOneUser, RegisterOneUser } from "@/features/auth/custom-types"
+import {
+    getLoginFromApi,
+    getRegisterFromApi,
+    getLogoutFromApi,
+    getMeFromApi,
+} from "./auth.infrastructure"
+import type {
+    GetOneUser,
+    LogoutOneUser,
+    PostOneUser,
+    RegisterOneUser,
+} from "@/features/auth/custom-types"
 import type { ApiResponse } from "@/shared/models"
 
 async function register(
@@ -24,7 +34,16 @@ async function logout(api: LogoutOneUser): Promise<ApiResponse<null>> {
     return result
 }
 
+async function getMe(api: GetOneUser): Promise<ApiResponse<UserResponseData>> {
+    const result = await api()
+    return result
+}
+
 // factories
+
+function factoryGetMe(): Promise<ApiResponse<UserResponseData>> {
+    return getMe(getMeFromApi)
+}
 
 function factoryRegisterUser(formData: RegisterFormData): Promise<ApiResponse<UserResponseData>> {
     return register(formData, getRegisterFromApi)
@@ -39,7 +58,7 @@ function factoryLogOutUser(): Promise<ApiResponse<null>> {
 }
 
 const business = {
-    // getAuthenticatedUser: getAuthenticatedUserFromApi,
+    getMe: factoryGetMe,
     login: factoryLogInUser,
     logout: factoryLogOutUser,
     register: factoryRegisterUser,
