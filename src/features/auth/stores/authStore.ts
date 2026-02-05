@@ -8,32 +8,32 @@ export const useAuthStore = defineStore("auth", () => {
     const isAuthenticated = computed(() => user.value !== null)
 
     const fetchMe = async () => {
-        business.getMe().then((res) => {
-            console.log(res)
+        try {
+            const res = await business.getMe()
             user.value = res.data.user
-        })
-    }
-
-    const register = (data: RegisterFormData) => {
-        business.register(data).then((res) => {
-            console.log(res)
-            user.value = res.data.user
-        })
-    }
-
-    const login = (data: LoginFormData) => {
-        business.login(data).then((res) => {
-            user.value = res.data.user
-        })
-    }
-
-    const logout = () => {
-        business.logout().then(() => {
+        } catch {
             user.value = null
-        })
+        }
     }
 
-    fetchMe()
+    const register = async (data: RegisterFormData) => {
+        const res = await business.register(data)
+        user.value = res.data.user
+    }
 
-    return { isAuthenticated, user, register, login, logout }
+    const login = async (data: LoginFormData) => {
+        const res = await business.login(data)
+        user.value = res.data.user
+    }
+
+    const logout = async () => {
+        await business.logout()
+        user.value = null
+    }
+
+    const initialize = async () => {
+        await fetchMe()
+    }
+
+    return { isAuthenticated, user, initialize, register, login, logout }
 })
