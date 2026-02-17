@@ -1,4 +1,4 @@
-import { useBoardStore } from "@/stores/board"
+import { useBoardStore } from "@/features/boards/stores/board.store"
 import { useCardStore } from "@/stores/card"
 import { useColumnStore } from "@/stores/column"
 import { defineStore } from "pinia"

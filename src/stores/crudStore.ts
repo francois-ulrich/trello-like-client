@@ -1,17 +1,15 @@
 import { ref, type Ref } from "vue"
-import { v4 as uuidv4 } from "uuid"
 
-export function crudStore<T extends { id: string }>() {
+export function crudStore<T extends { id: number }>() {
     const items = ref<T[]>([]) as Ref<T[]>
 
     function create(item: Omit<T, "id">): T {
-        const itemId = uuidv4()
-        const newItem = { id: itemId, ...item } as T
+        const newItem = { ...item } as T
         items.value.push(newItem)
         return newItem
     }
 
-    function get(id: string) {
+    function get(id: number) {
         return items.value.find((i) => i.id === id)
     }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import BoardItemBase from "@/components/BoardItemBase.vue"
-import type { Board } from "@/types/board"
+import type { Board } from "@/features/boards/domain/board.model"
 
 const props = defineProps<{ board: Board }>()
 </script>

@@ -1,5 +1,5 @@
 import { crudStore } from "@/stores/crudStore"
-import type { Board } from "@/types/board"
+import type { Board } from "@/features/boards/domain/board.model"
 import { defineStore } from "pinia"
 
 export const useBoardStore = defineStore("board", () => {

@@ -4,13 +4,22 @@ import TextInput from "@/components/form/TextInput.vue"
 import type { LoginFormData } from "@/features/auth/models"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import { ref } from "vue"
+import router from "@/router"
 
 const formData = ref<LoginFormData>({ email: "", password: "" })
 
 const authStore = useAuthStore()
 
+const tryLogin = async () => {
+    try {
+        await authStore.login(formData.value)
+
+        if (authStore.isAuthenticated) router.push({ name: "home" })
+    } catch {}
+}
+
 const handleSubmit = () => {
-    authStore.login(formData.value)
+    tryLogin()
 }
 </script>
 

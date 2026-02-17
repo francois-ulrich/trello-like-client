@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import ModalDialog from "@/components/ModalDialog.vue"
 import BoardItemBase from "@/components/BoardItemBase.vue"
-import { useBoardStore } from "@/stores/board"
-import type { Board } from "@/types/board"
+import { useBoardStore } from "@/features/boards/stores/board.store"
+import type { Board } from "@/features/boards/domain/board.model"
 import { nextTick, ref, useTemplateRef } from "vue"
 import TextInput from "@/components/form/TextInput.vue"
 import BaseButton from "@/components/BaseButton.vue"
 import type { ComponentExposed } from "vue-component-type-helpers"
+import { useAuthStore } from "@/features/auth/stores/authStore"
 
+const authStore = useAuthStore()
 const boardStore = useBoardStore()
 
 const boards = ref<Board[]>(boardStore.items)
@@ -38,6 +40,10 @@ const handleBoardCreationFormSubmit = () => {
 <template>
     <div class="p-4 w-full">
         <div class="flex flex-col gap-4">
+            <div v-if="authStore.isAuthenticated">
+                <p>Welcome, {{ authStore.user?.name }}</p>
+            </div>
+
             <div>
                 <h2 class="text-xl font-medium uppercase">Your boards</h2>
             </div>
