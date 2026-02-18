@@ -1,7 +1,7 @@
 import { useBoardStore } from "@/features/boards/stores/board.store"
-import { useCardStore } from "@/stores/card"
-import { useColumnStore } from "@/stores/column"
-import type { Card } from "@/types/card"
+import { useCardStore } from "@/features/cards/stores/card"
+import { useColumnStore } from "@/features/columns/stores/column"
+import type { Card } from "@/features/cards/domain/card.model"
 import { defineStore } from "pinia"
 
 export const useGlobalStore = defineStore("global", () => {

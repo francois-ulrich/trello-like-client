@@ -1,5 +1,6 @@
 import api from "@/api"
-import type { Board, CreateBoardDTO, UpdateBoardDTO } from "@/features/boards/domain/board.model"
+import type { Board } from "@/features/boards/domain/board.model"
+import type { CreateBoardDTO, UpdateBoardDTO } from "@/features/boards/infrastructure/board.dto"
 import type { ApiResponse, Repository } from "@/shared/models"
 
 const get = async (id: number): Promise<ApiResponse<Board>> => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from "vue"
-import { useColumnStore } from "@/stores/column"
+import { useColumnStore } from "@/features/columns/stores/column"
 import ColumnCreation from "@/views/Board/ColumnCreation.vue"
 import ColumnItem from "@/views/Board/ColumnItem.vue"
 import { useRoute } from "vue-router"
@@ -10,7 +10,7 @@ import ActionsDropdown from "@/components/ActionsDropdown.vue"
 import BaseButton from "@/components/BaseButton.vue"
 import ModalDialog from "@/components/ModalDialog.vue"
 import router from "@/router"
-import { useGlobalStore } from "@/stores/global"
+import { useGlobalStore } from "@/shared/stores/global"
 import Renamable from "@/components/Renamable.vue"
 
 const route = useRoute()

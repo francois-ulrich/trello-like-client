@@ -4,9 +4,9 @@ import RoundedCard from "@/components/RoundedCard.vue"
 import { SquarePen, TextAlignStart } from "lucide-vue-next"
 import { computed, ref } from "vue"
 import Renamable from "@/components/Renamable.vue"
-import { useCardStore } from "@/stores/card"
-import type { Card } from "@/types/card"
-import type { Column } from "@/types/column"
+import { useCardStore } from "@/features/cards/stores/card"
+import type { Card } from "@/features/cards/domain/card.model"
+import type { Column } from "@/features/columns/domain/column.model"
 
 const props = defineProps<{ cardId: string; column: Column }>()
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import AddButtonSwitchToForm from "@/components/AddButtonSwitchToForm.vue"
 import ItemCreationForm from "@/components/ItemCreationForm.vue"
-import { useCardStore } from "@/stores/card"
-import type { Card } from "@/types/card"
-import type { Column } from "@/types/column"
+import { useCardStore } from "@/features/cards/stores/card"
+import type { Card } from "@/features/cards/domain/card.model"
+import type { Column } from "@/features/columns/domain/column.model"
 
 const props = defineProps<{ column: Column }>()
 const cardStore = useCardStore()
