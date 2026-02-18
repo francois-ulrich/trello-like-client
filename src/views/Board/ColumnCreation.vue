@@ -4,7 +4,7 @@ import ColumnContainer from "@/components/ColumnContainer.vue"
 import ItemCreationForm from "@/components/ItemCreationForm.vue"
 import { useColumnStore } from "@/stores/column"
 
-const props = defineProps<{ boardId: string }>()
+const props = defineProps<{ boardId: number }>()
 const columnStore = useColumnStore()
 
 const handleSubmit = (name: string) => {

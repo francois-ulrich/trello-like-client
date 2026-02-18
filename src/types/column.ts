@@ -1,5 +1,5 @@
 export interface Column {
-    id: string
-    boardId: string
+    id: number
+    boardId: number
     name: string
 }

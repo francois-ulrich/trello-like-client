@@ -22,7 +22,7 @@ const columnStore = useColumnStore()
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 const renamableRef = ref<InstanceType<typeof Renamable> | null>(null)
 
-const board = computed(() => boardStore.get(route.params.id as string))
+const board = computed(() => boardStore.get(Number(route.params.id)))
 
 const columns = computed(() => {
     if (board.value === undefined) return []

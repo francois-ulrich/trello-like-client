@@ -1,6 +1,6 @@
 export interface Card {
-    id: string
-    columnId: string
+    id: number
+    columnId: number
     name: string
     position: number
     description?: string

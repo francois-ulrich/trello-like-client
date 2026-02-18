@@ -3,7 +3,7 @@ import ModalDialog from "@/components/ModalDialog.vue"
 import BoardItemBase from "@/components/BoardItemBase.vue"
 import { useBoardStore } from "@/features/boards/stores/board.store"
 import type { Board } from "@/features/boards/domain/board.model"
-import { nextTick, ref, useTemplateRef } from "vue"
+import { computed, nextTick, ref, useTemplateRef } from "vue"
 import TextInput from "@/components/form/TextInput.vue"
 import BaseButton from "@/components/BaseButton.vue"
 import type { ComponentExposed } from "vue-component-type-helpers"
@@ -12,13 +12,14 @@ import { useAuthStore } from "@/features/auth/stores/authStore"
 const authStore = useAuthStore()
 const boardStore = useBoardStore()
 
-const boards = ref<Board[]>(boardStore.items)
 const textInputRef = useTemplateRef<ComponentExposed<typeof TextInput>>("textInputRef")
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 
 const boardCreationForm = ref<{ name: string }>({
     name: "",
 })
+
+const boards = computed<Board[]>(() => boardStore.items)
 
 const handleBoardCreationModalOpen = async () => {
     if (boardDeleteModalRef?.value === null) return

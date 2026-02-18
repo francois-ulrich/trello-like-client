@@ -2,13 +2,15 @@
 import BaseButton from "@/components/BaseButton.vue"
 import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
 import { useAuthStore } from "@/features/auth/stores/authStore"
+import { useBoardStore } from "@/features/boards/stores/board.store"
 import { House } from "lucide-vue-next"
-import { onMounted } from "vue"
+import { onMounted, watch } from "vue"
 import { RouterView } from "vue-router"
 
 const title = "Trello like"
 
 const authStore = useAuthStore()
+const boardStore = useBoardStore()
 
 const handleLogout = () => {
     authStore.logout()
@@ -17,6 +19,15 @@ const handleLogout = () => {
 onMounted(() => {
     authStore.initialize()
 })
+
+watch(
+    () => authStore.isAuthenticated,
+    async (isAuth) => {
+        if (isAuth) {
+            await boardStore.getAll()
+        }
+    },
+)
 </script>
 
 <template>
