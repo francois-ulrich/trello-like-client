@@ -3,10 +3,10 @@ export interface ApiResponse<TResponse> {
     message?: string
 }
 
-export interface Repository<TModel, TCreateDTO, TUpdateDTO> {
-    get: (id: number) => Promise<ApiResponse<TModel>>
-    getAll: () => Promise<ApiResponse<TModel[]>>
-    create: (id: number, payload: TCreateDTO) => Promise<ApiResponse<TModel>>
-    update: (id: number, payload: TUpdateDTO) => Promise<ApiResponse<TModel>>
-    remove: (id: number) => Promise<ApiResponse<TModel>>
+export interface Repository<TModelDTO, TCreateDTO, TUpdateDTO> {
+    get: (id: number) => Promise<ApiResponse<TModelDTO>>
+    getAll: () => Promise<ApiResponse<TModelDTO[]>>
+    create: (id: number, payload: TCreateDTO) => Promise<ApiResponse<TModelDTO>>
+    update: (id: number, payload: TUpdateDTO) => Promise<ApiResponse<TModelDTO>>
+    remove: (id: number) => Promise<ApiResponse<TModelDTO>>
 }
