@@ -1,6 +1,9 @@
 import type { Board } from "@/features/boards/domain/board.model"
 import { boardApi } from "@/features/boards/infrastructure/board.api"
-import type { CreateBoardResponseDTO } from "@/features/boards/infrastructure/board.response.dto"
+import type {
+    CreateBoardResponseDTO,
+    UpdateBoardResponseDTO,
+} from "@/features/boards/infrastructure/board.response.dto"
 import { useColumnStore } from "@/features/columns/stores/column"
 import { useCardStore } from "@/features/cards/stores/card"
 import { defineStore } from "pinia"
@@ -66,5 +69,17 @@ export const useBoardStore = defineStore("board", () => {
         }
     }
 
-    return { items, get, getAll, create }
+    async function update(boardId: number, payload: UpdateBoardResponseDTO) {
+        try {
+            const res = await boardApi.update(boardId, payload)
+
+            const { id, name } = res.data
+
+            items.value = [...items.value, { id, name }]
+        } catch (e: unknown) {
+            console.error(e)
+        }
+    }
+
+    return { items, get, getAll, create, update }
 })

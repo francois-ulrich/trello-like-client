@@ -44,12 +44,15 @@ watchEffect(() => {
     if (board.value === undefined) router.push({ name: "home" })
 })
 
-const handleBoardNameUpdate = (value: string) => {
+const handleBoardNameUpdate = async (value: string) => {
     if (board.value === undefined) return
-    let boardToUpdate = boardStore.items.find((currentBoard) => currentBoard.id === board.value?.id)
-    if (boardToUpdate === undefined) return
-    boardToUpdate.name = value
-    boardStore.update(boardToUpdate)
+
+    try {
+        await boardStore.update(board.value.id, { name: value })
+        board.value.name = value
+    } catch (e: unknown) {
+        console.error(e)
+    }
 }
 
 const handleBoardRename = async () => {
