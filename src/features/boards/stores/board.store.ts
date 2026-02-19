@@ -1,20 +1,21 @@
 import type { Board } from "@/features/boards/domain/board.model"
 import { boardApi } from "@/features/boards/infrastructure/board.api"
-import type { CreateBoardDTO, UpdateBoardDTO } from "@/features/boards/infrastructure/board.dto"
+import type { CreateBoardResponseDTO } from "@/features/boards/infrastructure/board.response.dto"
 import { useColumnStore } from "@/features/columns/stores/column"
 import { useCardStore } from "@/features/cards/stores/card"
-import { crudStore } from "@/shared/stores/crudStore"
 import { defineStore } from "pinia"
+import { ref } from "vue"
 
 export const useBoardStore = defineStore("board", () => {
-    const store = crudStore<Board, CreateBoardDTO, UpdateBoardDTO>(boardApi)
     const columnStore = useColumnStore()
     const cardStore = useCardStore()
+
+    const items = ref<Board[]>([])
 
     async function getAll() {
         const res = await boardApi.getAll()
 
-        store.items.value = res.data.map((board) => ({
+        items.value = res.data.map((board) => ({
             id: board.id,
             name: board.name,
         }))
@@ -49,5 +50,21 @@ export const useBoardStore = defineStore("board", () => {
         )
     }
 
-    return { ...store, getAll }
+    function get(id: number) {
+        return items.value.find((i) => i.id === id)
+    }
+
+    async function create(payload: CreateBoardResponseDTO) {
+        try {
+            const res = await boardApi.create(payload)
+
+            const { id, name } = res.data
+
+            items.value = [...items.value, { id, name }]
+        } catch (e: unknown) {
+            console.error(e)
+        }
+    }
+
+    return { items, get, getAll, create }
 })
