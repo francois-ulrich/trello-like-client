@@ -27,7 +27,18 @@ const update = async (
     return res.data
 }
 
+const remove = async (
+    boardId: number,
+    columnId: number,
+): Promise<ApiResponse<ColumnResponseDTO>> => {
+    const res = await api.delete<ApiResponse<ColumnResponseDTO>>(
+        `/boards/${boardId}/columns/${columnId}`,
+    )
+    return res.data
+}
+
 export const columnApi = {
     create,
     update,
+    remove,
 }

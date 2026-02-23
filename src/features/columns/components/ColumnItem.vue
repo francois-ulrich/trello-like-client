@@ -77,7 +77,7 @@ const handleCreateCard = (card: Card) => {
 const columnDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 
 const handleColumnDeletion = () => {
-    // globalStore.removeColumn(props.column.id)
+    columnStore.remove(props.column.boardId, props.column.id)
     columnDeleteModalRef.value?.close()
 }
 
@@ -153,7 +153,9 @@ const handleColumnRename = () => {
         </RoundedCard>
 
         <ModalDialog ref="columnDeleteModalRef" :withBackdrop="true">
-            <template #header><p class="text-center font-medium">Delete board ?</p> </template>
+            <template #header
+                ><p class="text-center font-medium">Delete column "{{ column.name }}" ?</p>
+            </template>
 
             <div class="flex flex-col gap-4">
                 <p>
@@ -161,7 +163,7 @@ const handleColumnRename = () => {
                 </p>
 
                 <BaseButton color="danger" @click="handleColumnDeletion">
-                    <p class="text-center">Delete board</p>
+                    <p class="text-center">Delete column</p>
                 </BaseButton>
             </div>
         </ModalDialog>
