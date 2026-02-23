@@ -14,12 +14,11 @@ import ActionsDropdown from "@/components/ActionsDropdown.vue"
 import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
 import ModalDialog from "@/components/ModalDialog.vue"
 import { useGlobalStore } from "@/shared/stores/global"
-import { useColumnStore } from "@/features/columns/stores/column"
+import { useColumnStore } from "@/features/columns/stores/column.store"
 import Renamable from "@/components/Renamable.vue"
 
 const props = defineProps<{ column: Column }>()
 
-const globalStore = useGlobalStore()
 const columnStore = useColumnStore()
 const cardStore = useCardStore()
 
@@ -78,7 +77,7 @@ const handleCreateCard = (card: Card) => {
 const columnDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 
 const handleColumnDeletion = () => {
-    globalStore.removeColumn(props.column.id)
+    // globalStore.removeColumn(props.column.id)
     columnDeleteModalRef.value?.close()
 }
 
@@ -88,12 +87,12 @@ const handleColumnDeleteModalOpen = async () => {
 
 const handleColumnNameUpdate = (value: string) => {
     if (props.column === undefined) return
-    let columnToUpdate = columnStore.items.find(
-        (currentColumn) => currentColumn.id === props.column.id,
-    )
-    if (columnToUpdate === undefined) return
-    columnToUpdate.name = value
-    columnStore.update(columnToUpdate)
+
+    try {
+        columnStore.update(props.column.boardId, props.column.id, { name: value })
+    } catch (e: unknown) {
+        console.error(e)
+    }
 }
 
 const handleColumnRename = () => {

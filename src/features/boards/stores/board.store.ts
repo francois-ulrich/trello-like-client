@@ -1,13 +1,13 @@
 import type { Board } from "@/features/boards/domain/board.model"
 import { boardApi } from "@/features/boards/infrastructure/board.api"
-import type {
-    CreateBoardResponseDTO,
-    UpdateBoardResponseDTO,
-} from "@/features/boards/infrastructure/board.response.dto"
-import { useColumnStore } from "@/features/columns/stores/column"
+import { useColumnStore } from "@/features/columns/stores/column.store"
 import { useCardStore } from "@/features/cards/stores/card"
 import { defineStore } from "pinia"
 import { ref } from "vue"
+import type {
+    CreateBoardRequestDTO,
+    UpdateBoardRequestDTO,
+} from "@/features/boards/infrastructure/board.request.dto"
 
 export const useBoardStore = defineStore("board", () => {
     const columnStore = useColumnStore()
@@ -57,7 +57,7 @@ export const useBoardStore = defineStore("board", () => {
         return items.value.find((i) => i.id === id)
     }
 
-    async function create(payload: CreateBoardResponseDTO) {
+    async function create(payload: CreateBoardRequestDTO) {
         try {
             const res = await boardApi.create(payload)
 
@@ -69,13 +69,13 @@ export const useBoardStore = defineStore("board", () => {
         }
     }
 
-    async function update(boardId: number, payload: UpdateBoardResponseDTO) {
+    async function update(boardId: number, payload: UpdateBoardRequestDTO) {
         try {
             const res = await boardApi.update(boardId, payload)
 
             const { id, name } = res.data
 
-            items.value = [...items.value, { id, name }]
+            items.value = [...items.value.filter((item) => item.id != id), { id, name }]
         } catch (e: unknown) {
             console.error(e)
         }

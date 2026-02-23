@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watchEffect } from "vue"
-import { useColumnStore } from "@/features/columns/stores/column"
-import ColumnCreation from "@/views/Board/ColumnCreation.vue"
-import ColumnItem from "@/views/Board/ColumnItem.vue"
+import { useColumnStore } from "@/features/columns/stores/column.store"
 import { useRoute } from "vue-router"
 import { useBoardStore } from "@/features/boards/stores/board.store"
 import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
@@ -11,6 +9,8 @@ import BaseButton from "@/components/BaseButton.vue"
 import ModalDialog from "@/components/ModalDialog.vue"
 import router from "@/router"
 import Renamable from "@/components/Renamable.vue"
+import ColumnCreation from "@/features/columns/components/ColumnCreation.vue"
+import ColumnItem from "@/features/columns/components/ColumnItem.vue"
 
 const route = useRoute()
 
