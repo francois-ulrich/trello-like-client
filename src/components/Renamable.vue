@@ -14,12 +14,14 @@ const props = withDefaults(
 const inputRef = useTemplateRef<HTMLInputElement | HTMLTextAreaElement>("inputRef")
 const inputValue = ref<string>(props.text)
 const isInEditMode = ref<boolean>(false)
+const hasBeenSubmited = ref<boolean>(false)
 
 const emit = defineEmits<{
     textUpdate: [value: string]
 }>()
 
 const handleSwitchToEditMode = async () => {
+    hasBeenSubmited.value = false
     isInEditMode.value = true
     await nextTick()
     inputRef.value?.focus()
@@ -30,11 +32,13 @@ const handleFocusOut = () => {
 }
 
 const handleSubmit = () => {
+    if (hasBeenSubmited.value) return
     if (inputValue.value === "") inputValue.value = props.text
-
     isInEditMode.value = false
-
-    if (inputValue.value !== props.text) emit("textUpdate", inputValue.value)
+    if (inputValue.value !== props.text) {
+        emit("textUpdate", inputValue.value)
+        hasBeenSubmited.value = true
+    }
 }
 
 const open = () => {
