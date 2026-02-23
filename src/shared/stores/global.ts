@@ -9,12 +9,6 @@ export const useGlobalStore = defineStore("global", () => {
     const columnStore = useColumnStore()
     const cardStore = useCardStore()
 
-    const removeBoard = (boardId: number) => {
-        const columnsToDelete = columnStore.items.filter((column) => column.boardId === boardId)
-        columnsToDelete.forEach((column) => removeColumn(column.id))
-        boardStore.remove(boardId)
-    }
-
     const removeColumn = (columnId: number) => {
         cardStore.removeWhere((card: Card) => card.columnId === columnId)
         columnStore.remove(columnId)

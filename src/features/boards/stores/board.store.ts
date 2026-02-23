@@ -81,5 +81,22 @@ export const useBoardStore = defineStore("board", () => {
         }
     }
 
-    return { items, get, getAll, create, update }
+    async function remove(boardId: number) {
+        try {
+            await boardApi.remove(boardId)
+            items.value = items.value.filter((item) => item.id !== boardId)
+
+            columnStore.items.forEach((column) => {
+                cardStore.items.filter((card) => card.columnId !== column.id)
+            })
+
+            columnStore.items = columnStore.items.filter((item) => item.boardId !== boardId)
+
+            console.log(items.value)
+        } catch (e: unknown) {
+            console.error(e)
+        }
+    }
+
+    return { items, get, getAll, create, update, remove }
 })

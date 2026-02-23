@@ -10,12 +10,10 @@ import ActionsDropdown from "@/components/ActionsDropdown.vue"
 import BaseButton from "@/components/BaseButton.vue"
 import ModalDialog from "@/components/ModalDialog.vue"
 import router from "@/router"
-import { useGlobalStore } from "@/shared/stores/global"
 import Renamable from "@/components/Renamable.vue"
 
 const route = useRoute()
 
-const globalStore = useGlobalStore()
 const boardStore = useBoardStore()
 const columnStore = useColumnStore()
 
@@ -36,7 +34,7 @@ const handleBoardDeleteModalOpen = async () => {
 
 const handleBoardDeletion = () => {
     if (board.value === undefined) return
-    globalStore.removeBoard(board.value.id)
+    boardStore.remove(board.value.id)
     router.push({ name: "home" })
 }
 
