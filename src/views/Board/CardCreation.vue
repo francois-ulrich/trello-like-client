@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AddButtonSwitchToForm from "@/shared/components/AddButtonSwitchToForm.vue"
 import ItemCreationForm from "@/shared/components/ItemCreationForm.vue"
-import { useCardStore } from "@/features/cards/stores/card"
+import { useCardStore } from "@/features/cards/stores/card.store"
 import type { Card } from "@/features/cards/domain/card.model"
 import type { Column } from "@/features/columns/domain/column.model"
 
@@ -12,12 +12,9 @@ const emit = defineEmits<{
 }>()
 
 const handleSubmit = (name: string) => {
-    const newCard = cardStore.create({
-        columnId: props.column.id,
+    cardStore.create(props.column.boardId, props.column.id, {
         name,
-        position: cardStore.items.filter((card) => card.columnId === props.column.id).length,
     })
-    emit("createCard", newCard)
 }
 </script>
 

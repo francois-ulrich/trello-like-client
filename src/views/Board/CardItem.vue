@@ -4,11 +4,11 @@ import RoundedCard from "@/shared/components/RoundedCard.vue"
 import { SquarePen, TextAlignStart } from "lucide-vue-next"
 import { computed, ref } from "vue"
 import Renamable from "@/shared/components/Renamable.vue"
-import { useCardStore } from "@/features/cards/stores/card"
+import { useCardStore } from "@/features/cards/stores/card.store"
 import type { Card } from "@/features/cards/domain/card.model"
 import type { Column } from "@/features/columns/domain/column.model"
 
-const props = defineProps<{ cardId: string; column: Column }>()
+const props = defineProps<{ cardId: number; column: Column }>()
 
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 const cardStore = useCardStore()

@@ -4,13 +4,15 @@ import HeaderWithTitleAndOptions from "@/shared/components/HeaderWithTitleAndOpt
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import { House } from "lucide-vue-next"
 import { RouterView } from "vue-router"
+import router from "@/router"
 
 const title = "Trello like"
 
 const authStore = useAuthStore()
 
-const handleLogout = () => {
-    authStore.logout()
+const handleLogout = async () => {
+    await authStore.logout()
+    router.push({ name: "home" })
 }
 </script>
 

@@ -2,7 +2,7 @@ import type {
     CreateBoardRequestDTO,
     UpdateBoardRequestDTO,
 } from "@/features/boards/infrastructure/board.request.dto"
-import { useCardStore } from "@/features/cards/stores/card"
+import { useCardStore } from "@/features/cards/stores/card.store"
 import type { Column } from "@/features/columns/domain/column.model"
 import { columnApi } from "@/features/columns/infrastructure/column.api"
 import { defineStore } from "pinia"

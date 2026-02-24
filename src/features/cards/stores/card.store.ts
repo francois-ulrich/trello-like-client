@@ -1,0 +1,43 @@
+import type { Card } from "@/features/cards/domain/card.model"
+import { cardApi } from "@/features/cards/infrastructure/card.api"
+import type {
+    CardMoveRequestDTO,
+    CardRequestDTO,
+} from "@/features/cards/infrastructure/card.request.dto"
+import { defineStore } from "pinia"
+import { ref, type Ref } from "vue"
+
+export const useCardStore = defineStore("card", () => {
+    const items = ref<Card[]>([]) as Ref<Card[]>
+
+    async function create(boardId: number, columnId: number, payload: CardRequestDTO) {
+        try {
+            const res = await cardApi.create(boardId, columnId, payload)
+            const { id, column_id, name, position, description } = res.data
+            items.value = [...items.value, { id, columnId: column_id, name, position, description }]
+        } catch (e: unknown) {
+            console.error(e)
+        }
+    }
+
+    async function moveInsideColumn(
+        boardId: number,
+        columnId: number,
+        cardId: number,
+        payload: CardMoveRequestDTO,
+    ) {
+        await cardApi.moveInsideColumn(boardId, columnId, cardId, payload)
+    }
+
+    function getCardsInColumn(columnId: number): Card[] {
+        return items.value
+            .filter((card) => card.columnId === columnId)
+            .sort((cardA, cardB) => cardA.position - cardB.position)
+    }
+
+    // function findByColumnAndPosition(columnId: number, position: number) {
+    //     return items.value.find((c) => c.columnId === columnId && c.position === position) ?? null
+    // }
+
+    return { items, getCardsInColumn, create, moveInsideColumn }
+})

@@ -3,17 +3,16 @@ import CardItem from "@/views/Board/CardItem.vue"
 import RoundedCard from "@/shared/components/RoundedCard.vue"
 import type { Card } from "@/features/cards/domain/card.model"
 import type { Column } from "@/features/columns/domain/column.model"
-import { ref } from "vue"
+import { computed, ref } from "vue"
 import draggable from "vuedraggable"
 import ColumnContainer from "@/shared/components/ColumnContainer.vue"
 import CardCreation from "@/views/Board/CardCreation.vue"
-import { useCardStore } from "@/features/cards/stores/card"
+import { useCardStore } from "@/features/cards/stores/card.store"
 import type { DraggableChangeEvent } from "@/types/draggable"
 import BaseButton from "@/shared/components/BaseButton.vue"
 import ActionsDropdown from "@/shared/components/ActionsDropdown.vue"
 import HeaderWithTitleAndOptions from "@/shared/components/HeaderWithTitleAndOptions.vue"
 import ModalDialog from "@/shared/components/ModalDialog.vue"
-import { useGlobalStore } from "@/shared/stores/global"
 import { useColumnStore } from "@/features/columns/stores/column.store"
 import Renamable from "@/shared/components/Renamable.vue"
 
@@ -30,22 +29,44 @@ const cardsPositionCompare = (a: Card, b: Card) => {
     return 0
 }
 
-const cards = ref<Card[]>(
-    cardStore.items.filter((card) => card.columnId === props.column.id).sort(cardsPositionCompare),
-)
+const cards = ref<Card[]>(cardStore.getCardsInColumn(props.column.id))
+
+// const cards = computed<Card[]>(() =>
+//     cardStore.items
+//         .filter((card) => card.columnId === props.column.id)
+//         .sort((cardA, cardB) => cardA.position - cardB.position),
+// )
 
 const updateCardsInStore = () => {
-    cards.value.forEach((card) => cardStore.update(card))
+    // cards.value.forEach((card) => cardStore.update(card))
 }
 
-const updateCardsPositions = () => {
-    cards.value = cards.value.map((card, index) => ({ ...card, position: index }))
-    cards.value = cards.value.sort(cardsPositionCompare)
+const updateCardsPositions = async (move: { element: Card; newIndex: number }) => {
+    try {
+        await cardStore.moveInsideColumn(
+            props.column.boardId,
+            move.element.columnId,
+            move.element.id,
+            {
+                targetPosition: move.newIndex,
+            },
+        )
+    } catch (e: unknown) {
+        cards.value = cardStore.getCardsInColumn(props.column.id)
+    }
+
+    // try {
+    // var res = await cardStore.move(props.column.boardId, props.column.id, {
+    //     name,
+    // })
+    // } catch (e: unknown) {
+    //     cards.value = previousValues
+    // }
 }
 
 const handleCardsMove = (e: DraggableChangeEvent<Card>) => {
     if (e.moved) {
-        updateCardsPositions()
+        updateCardsPositions(e.moved)
         updateCardsInStore()
     }
 
@@ -68,10 +89,6 @@ const handleCardsMove = (e: DraggableChangeEvent<Card>) => {
         updateCardsPositions()
         updateCardsInStore()
     }
-}
-
-const handleCreateCard = (card: Card) => {
-    cards.value.push(card)
 }
 
 const columnDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
@@ -149,7 +166,7 @@ const handleColumnRename = () => {
                 </template>
             </draggable>
 
-            <CardCreation :column="column" @createCard="handleCreateCard" />
+            <CardCreation :column="column" />
         </RoundedCard>
 
         <ModalDialog ref="columnDeleteModalRef" :withBackdrop="true">

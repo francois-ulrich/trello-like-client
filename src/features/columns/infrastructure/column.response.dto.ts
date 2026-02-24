@@ -1,4 +1,4 @@
-import type { CardResponseDTO } from "@/features/cards/domain/card.dto"
+import type { CardResponseDTO } from "@/features/cards/infrastructure/card.response.dto"
 
 export interface ColumnResponseDTO {
     id: number

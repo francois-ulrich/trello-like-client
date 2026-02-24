@@ -1,7 +1,7 @@
 import type { Board } from "@/features/boards/domain/board.model"
 import { boardApi } from "@/features/boards/infrastructure/board.api"
 import { useColumnStore } from "@/features/columns/stores/column.store"
-import { useCardStore } from "@/features/cards/stores/card"
+import { useCardStore } from "@/features/cards/stores/card.store"
 import { defineStore } from "pinia"
 import { ref } from "vue"
 import type {
