@@ -4,6 +4,8 @@ import "./style.css"
 import App from "./App.vue"
 // import { createLocalStoragePlugin } from "@/plugins/localStoragePlugin"
 import router from "@/router"
+import { useAuthStore } from "@/features/auth/stores/authStore"
+import { useBoardStore } from "@/features/boards/stores/board.store"
 
 const app = createApp(App)
 
@@ -11,6 +13,12 @@ const pinia = createPinia()
 
 // pinia.use(createLocalStoragePlugin({ ignoredStores: ["auth"] }))
 app.use(pinia)
+
+const authStore = useAuthStore()
+const boardStore = useBoardStore()
+
+await authStore.initialize()
+boardStore.getAll()
 
 app.use(router)
 

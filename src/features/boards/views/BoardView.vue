@@ -11,9 +11,11 @@ import router from "@/router"
 import Renamable from "@/components/Renamable.vue"
 import ColumnCreation from "@/features/columns/components/ColumnCreation.vue"
 import ColumnItem from "@/features/columns/components/ColumnItem.vue"
+import { useAuthStore } from "@/features/auth/stores/authStore"
 
 const route = useRoute()
 
+const authStore = useAuthStore()
 const boardStore = useBoardStore()
 const columnStore = useColumnStore()
 
@@ -39,7 +41,7 @@ const handleBoardDeletion = () => {
 }
 
 watchEffect(() => {
-    if (board.value === undefined) router.push({ name: "home" })
+    if (authStore.isAuthenticated && board.value === null) router.push({ name: "home" }) // move to route guard async
 })
 
 const handleBoardNameUpdate = async (value: string) => {
