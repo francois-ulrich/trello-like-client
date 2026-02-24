@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BaseButton from "@/components/BaseButton.vue"
-import TextInput from "@/components/form/TextInput.vue"
+import BaseButton from "@/shared/components/BaseButton.vue"
+import TextInput from "@/shared/components/form/TextInput.vue"
 import type { RegisterFormData } from "@/features/auth/models"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import { ref } from "vue"

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import ModalDialog from "@/components/ModalDialog.vue"
-import TextInput from "@/components/form/TextInput.vue"
-import BaseButton from "@/components/BaseButton.vue"
+import ModalDialog from "@/shared/components/ModalDialog.vue"
+import TextInput from "@/shared/components/form/TextInput.vue"
+import BaseButton from "@/shared/components/BaseButton.vue"
 import type { ComponentExposed } from "vue-component-type-helpers"
 import { nextTick, ref, useTemplateRef } from "vue"
 import { useBoardStore } from "@/features/boards/stores/board.store"
-import BoardItemBase from "@/components/BoardItemBase.vue"
+import BoardItemBase from "@/shared/components/BoardItemBase.vue"
 
 const boardStore = useBoardStore()
 

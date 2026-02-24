@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import RoundedCard from "@/components/RoundedCard.vue"
+import RoundedCard from "@/shared/components/RoundedCard.vue"
 </script>
 
 <template>

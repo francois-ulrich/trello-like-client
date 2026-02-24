@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BaseButton from "@/components/BaseButton.vue"
-import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
+import BaseButton from "@/shared/components/BaseButton.vue"
+import HeaderWithTitleAndOptions from "@/shared/components/HeaderWithTitleAndOptions.vue"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import { House } from "lucide-vue-next"
 import { RouterView } from "vue-router"

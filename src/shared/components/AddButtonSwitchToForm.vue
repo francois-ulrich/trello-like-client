@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue"
 import { Plus } from "lucide-vue-next"
-import BaseButton from "@/components/BaseButton.vue"
+import BaseButton from "@/shared/components/BaseButton.vue"
 import type { ButtonsColor } from "@/types/buttonsColor"
 
 const props = withDefaults(

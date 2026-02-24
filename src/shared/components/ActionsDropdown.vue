@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BaseButton from "@/components/BaseButton.vue"
-import ModalDialog from "@/components/ModalDialog.vue"
+import BaseButton from "@/shared/components/BaseButton.vue"
+import ModalDialog from "@/shared/components/ModalDialog.vue"
 import { Ellipsis } from "lucide-vue-next"
 import { v4 as uuidv4 } from "uuid"
 import { ref } from "vue"

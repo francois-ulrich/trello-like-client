@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import CardItem from "@/views/Board/CardItem.vue"
-import RoundedCard from "@/components/RoundedCard.vue"
+import RoundedCard from "@/shared/components/RoundedCard.vue"
 import type { Card } from "@/features/cards/domain/card.model"
 import type { Column } from "@/features/columns/domain/column.model"
 import { ref } from "vue"
 import draggable from "vuedraggable"
-import ColumnContainer from "@/components/ColumnContainer.vue"
+import ColumnContainer from "@/shared/components/ColumnContainer.vue"
 import CardCreation from "@/views/Board/CardCreation.vue"
 import { useCardStore } from "@/features/cards/stores/card"
 import type { DraggableChangeEvent } from "@/types/draggable"
-import BaseButton from "@/components/BaseButton.vue"
-import ActionsDropdown from "@/components/ActionsDropdown.vue"
-import HeaderWithTitleAndOptions from "@/components/HeaderWithTitleAndOptions.vue"
-import ModalDialog from "@/components/ModalDialog.vue"
+import BaseButton from "@/shared/components/BaseButton.vue"
+import ActionsDropdown from "@/shared/components/ActionsDropdown.vue"
+import HeaderWithTitleAndOptions from "@/shared/components/HeaderWithTitleAndOptions.vue"
+import ModalDialog from "@/shared/components/ModalDialog.vue"
 import { useGlobalStore } from "@/shared/stores/global"
 import { useColumnStore } from "@/features/columns/stores/column.store"
-import Renamable from "@/components/Renamable.vue"
+import Renamable from "@/shared/components/Renamable.vue"
 
 const props = defineProps<{ column: Column }>()
 

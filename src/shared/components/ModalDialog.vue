@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import BaseButton from "@/components/BaseButton.vue"
-import RoundedCard from "@/components/RoundedCard.vue"
+import BaseButton from "@/shared/components/BaseButton.vue"
+import RoundedCard from "@/shared/components/RoundedCard.vue"
 import useModal from "@/composables/useModal"
 import { useFocusTrap } from "@vueuse/integrations/useFocusTrap"
 import { X } from "lucide-vue-next"
