@@ -102,7 +102,7 @@ const handleBoardRename = async () => {
         <div class="flex flex-col gap-y-4 flex-auto w-screen overflow-x-scroll">
             <div class="p-4">
                 <ul class="flex flex-row gap-x-4">
-                    <li v-for="column in columns">
+                    <li v-for="column in columns" :key="column.id">
                         <ColumnItem :column="column" />
                     </li>
 
