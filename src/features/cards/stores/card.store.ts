@@ -20,13 +20,19 @@ export const useCardStore = defineStore("card", () => {
         }
     }
 
-    async function moveInsideColumn(
-        boardId: number,
-        columnId: number,
-        cardId: number,
-        payload: CardMoveRequestDTO,
-    ) {
-        await cardApi.moveInsideColumn(boardId, columnId, cardId, payload)
+    async function move(cardId: number, payload: CardMoveRequestDTO) {
+        const previousItems = [...items.value]
+
+        const movedCard = items.value.find((card) => card.id === cardId)
+
+        if (movedCard === undefined) throw new Error("Card to move wasn't found")
+
+        try {
+            await cardApi.move(cardId, payload)
+        } catch (e: unknown) {
+            items.value = previousItems
+            console.error(e)
+        }
     }
 
     function getCardsInColumn(columnId: number): Card[] {
@@ -39,5 +45,12 @@ export const useCardStore = defineStore("card", () => {
     //     return items.value.find((c) => c.columnId === columnId && c.position === position) ?? null
     // }
 
-    return { items, getCardsInColumn, create, moveInsideColumn }
+    function reorderfAfterDragAndDrop(cardsInColumn: Card[]) {
+        cardsInColumn.forEach((cardInColumn, index) => {
+            const storeCard = items.value.find((card) => card.id === cardInColumn.id)
+            if (storeCard) storeCard.position = index
+        })
+    }
+
+    return { items, getCardsInColumn, create, move, reorderfAfterDragAndDrop }
 })

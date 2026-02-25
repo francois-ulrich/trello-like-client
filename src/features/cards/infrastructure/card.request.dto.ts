@@ -5,4 +5,5 @@ export interface CardRequestDTO {
 
 export interface CardMoveRequestDTO {
     targetPosition: number
+    targetColumnId: number
 }

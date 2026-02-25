@@ -18,20 +18,15 @@ const create = async (
     return res.data
 }
 
-const moveInsideColumn = async (
-    boardId: number,
-    columnId: number,
+const move = async (
     cardId: number,
     payload: CardMoveRequestDTO,
 ): Promise<ApiResponse<CardResponseDTO>> => {
-    const res = await api.patch<ApiResponse<CardResponseDTO>>(
-        `/boards/${boardId}/columns/${columnId}/cards/${cardId}/move`,
-        payload,
-    )
+    const res = await api.patch<ApiResponse<CardResponseDTO>>(`/cards/${cardId}/move`, payload)
     return res.data
 }
 
 export const cardApi = {
     create,
-    moveInsideColumn,
+    move,
 }

@@ -3,7 +3,7 @@ import CardItem from "@/views/Board/CardItem.vue"
 import RoundedCard from "@/shared/components/RoundedCard.vue"
 import type { Card } from "@/features/cards/domain/card.model"
 import type { Column } from "@/features/columns/domain/column.model"
-import { computed, ref } from "vue"
+import { ref, watch } from "vue"
 import draggable from "vuedraggable"
 import ColumnContainer from "@/shared/components/ColumnContainer.vue"
 import CardCreation from "@/views/Board/CardCreation.vue"
@@ -23,72 +23,75 @@ const cardStore = useCardStore()
 
 const renamableRef = ref<InstanceType<typeof Renamable> | null>(null)
 
-const cardsPositionCompare = (a: Card, b: Card) => {
-    if (a.position < b.position) return -1
-    else if (a.position > b.position) return 1
-    return 0
-}
+// const cardsPositionCompare = (a: Card, b: Card) => {
+//     if (a.position < b.position) return -1
+//     else if (a.position > b.position) return 1
+//     return 0
+// }
+
+// let previousCardsValue = []
 
 const cards = ref<Card[]>(cardStore.getCardsInColumn(props.column.id))
 
-// const cards = computed<Card[]>(() =>
-//     cardStore.items
-//         .filter((card) => card.columnId === props.column.id)
-//         .sort((cardA, cardB) => cardA.position - cardB.position),
-// )
+watch(
+    () => cardStore.getCardsInColumn(props.column.id),
+    (newCards) => {
+        cards.value = [...newCards]
+    },
+    { immediate: true },
+)
 
-const updateCardsInStore = () => {
-    // cards.value.forEach((card) => cardStore.update(card))
+const updateCardPositionWithinColumn = async (move: { element: Card; newIndex: number }) => {
+    await cardStore.move(move.element.id, {
+        targetPosition: move.newIndex,
+        targetColumnId: move.element.columnId,
+    })
 }
 
-const updateCardsPositions = async (move: { element: Card; newIndex: number }) => {
+const updateCardPositionBetweenColumns = async (move: {
+    element: Card
+    oldIndex?: number
+    newIndex: number
+}) => {
     try {
-        await cardStore.moveInsideColumn(
-            props.column.boardId,
-            move.element.columnId,
-            move.element.id,
-            {
-                targetPosition: move.newIndex,
-            },
-        )
+        await cardStore.move(move.element.id, {
+            targetPosition: move.newIndex,
+            targetColumnId: move.element.columnId,
+        })
     } catch (e: unknown) {
-        cards.value = cardStore.getCardsInColumn(props.column.id)
+        // cards.value = cardStore.getCardsInColumn(props.column.id)
     }
-
-    // try {
-    // var res = await cardStore.move(props.column.boardId, props.column.id, {
-    //     name,
-    // })
-    // } catch (e: unknown) {
-    //     cards.value = previousValues
-    // }
 }
 
 const handleCardsMove = (e: DraggableChangeEvent<Card>) => {
+    console.log("handleCardsMove")
+
     if (e.moved) {
-        updateCardsPositions(e.moved)
-        updateCardsInStore()
+        updateCardPositionWithinColumn(e.moved)
+        return
     }
 
     if (e.added) {
-        updateCardsPositions()
+        updateCardPositionBetweenColumns(e.added)
+        // updateCardPositionWithinColumn()
+        // const index = cards.value.findIndex((_, index) => index === e.added.newIndex)
+        // if (index !== -1 && cards.value[index]) {
+        //     cards.value[index] = {
+        //         ...cards.value[index],
+        //         columnId: props.column.id,
+        //     }
+        // }
+        // updateCardsInStore()
 
-        const index = cards.value.findIndex((_, index) => index === e.added.newIndex)
-
-        if (index !== -1 && cards.value[index]) {
-            cards.value[index] = {
-                ...cards.value[index],
-                columnId: props.column.id,
-            }
-        }
-
-        updateCardsInStore()
+        console.log("added")
+        return
     }
 
-    if (e.removed) {
-        updateCardsPositions()
-        updateCardsInStore()
-    }
+    // if (e.removed) {
+    //     updateCardPositionWithinColumn()
+    //     // updateCardsInStore()
+    //     return
+    // }
 }
 
 const columnDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
