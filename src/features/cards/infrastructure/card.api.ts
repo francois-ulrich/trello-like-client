@@ -19,10 +19,15 @@ const create = async (
 }
 
 const move = async (
+    boardId: number,
+    columnId: number,
     cardId: number,
     payload: CardMoveRequestDTO,
 ): Promise<ApiResponse<CardResponseDTO>> => {
-    const res = await api.patch<ApiResponse<CardResponseDTO>>(`/cards/${cardId}/move`, payload)
+    const res = await api.patch<ApiResponse<CardResponseDTO>>(
+        `/boards/${boardId}/columns/${columnId}/cards/${cardId}/move`,
+        payload,
+    )
     return res.data
 }
 
