@@ -41,57 +41,38 @@ watch(
     { immediate: true },
 )
 
-const updateCardPositionWithinColumn = async (move: { element: Card; newIndex: number }) => {
+const moveCardInsideColumn = async (move: { element: Card; newIndex: number }) => {
     await cardStore.move(move.element.id, {
         targetPosition: move.newIndex,
         targetColumnId: move.element.columnId,
     })
 }
 
-const updateCardPositionBetweenColumns = async (move: {
+const moveCardToOtherColumn = async (addMove: {
     element: Card
     oldIndex?: number
     newIndex: number
 }) => {
     try {
-        await cardStore.move(move.element.id, {
-            targetPosition: move.newIndex,
-            targetColumnId: move.element.columnId,
+        await cardStore.move(addMove.element.id, {
+            targetPosition: addMove.newIndex,
+            targetColumnId: props.column.id,
         })
     } catch (e: unknown) {
-        // cards.value = cardStore.getCardsInColumn(props.column.id)
+        console.error(e)
     }
 }
 
 const handleCardsMove = (e: DraggableChangeEvent<Card>) => {
-    console.log("handleCardsMove")
-
     if (e.moved) {
-        updateCardPositionWithinColumn(e.moved)
+        moveCardInsideColumn(e.moved)
         return
     }
 
     if (e.added) {
-        updateCardPositionBetweenColumns(e.added)
-        // updateCardPositionWithinColumn()
-        // const index = cards.value.findIndex((_, index) => index === e.added.newIndex)
-        // if (index !== -1 && cards.value[index]) {
-        //     cards.value[index] = {
-        //         ...cards.value[index],
-        //         columnId: props.column.id,
-        //     }
-        // }
-        // updateCardsInStore()
-
-        console.log("added")
+        moveCardToOtherColumn(e.added)
         return
     }
-
-    // if (e.removed) {
-    //     updateCardPositionWithinColumn()
-    //     // updateCardsInStore()
-    //     return
-    // }
 }
 
 const columnDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
