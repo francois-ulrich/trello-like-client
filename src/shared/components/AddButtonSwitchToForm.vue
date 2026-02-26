@@ -2,7 +2,7 @@
 import { ref } from "vue"
 import { Plus } from "lucide-vue-next"
 import BaseButton from "@/shared/components/BaseButton.vue"
-import type { ButtonsColor } from "@/types/buttonsColor"
+import type { ButtonsColor } from "@/shared/types/buttonsColor"
 
 const props = withDefaults(
     defineProps<{

@@ -20,17 +20,8 @@ const handleModalOpen = () => {
     boardDeleteModalRef?.value.open()
 }
 
-const handleTitleUpdate = (value: string) => {
-    const cardItem = card.value
-
-    if (cardItem === undefined) return
-
-    const cardToUpdate = cardStore.items.find((c) => c.id === cardItem.id)
-
-    if (cardToUpdate === undefined) return
-
-    cardToUpdate.name = value
-    cardStore.update(cardToUpdate)
+const handleNameUpdate = (value: string) => {
+    cardStore.update(props.cardId, { name: value })
 }
 
 const handleDescriptionUpdate = (value: string) => {
@@ -43,7 +34,7 @@ const handleDescriptionUpdate = (value: string) => {
     if (cardToUpdate === undefined) return
 
     cardToUpdate.description = value
-    cardStore.update(cardToUpdate)
+    cardStore.update(props.cardId, { description: value })
 }
 </script>
 
@@ -69,7 +60,7 @@ const handleDescriptionUpdate = (value: string) => {
                     ref="titleFieldRef"
                     textClass="text-xl font-medium"
                     :text="card.name"
-                    @textUpdate="handleTitleUpdate"
+                    @textUpdate="handleNameUpdate"
                 ></Renamable>
 
                 <div class="space-y-3">

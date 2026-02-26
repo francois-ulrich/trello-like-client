@@ -12,6 +12,10 @@ export const useColumnStore = defineStore("column", () => {
     const items = ref<Column[]>([])
     const cardStore = useCardStore()
 
+    function get(id: number) {
+        return items.value.find((i) => i.id === id)
+    }
+
     async function create(boardId: number, payload: CreateBoardRequestDTO) {
         try {
             const res = await columnApi.create(boardId, payload)
@@ -49,5 +53,5 @@ export const useColumnStore = defineStore("column", () => {
         }
     }
 
-    return { items, create, update, remove }
+    return { items, get, create, update, remove }
 })

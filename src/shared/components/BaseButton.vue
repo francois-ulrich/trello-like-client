@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ButtonsColor } from "@/types/buttonsColor"
+import type { ButtonsColor } from "@/shared/types/buttonsColor"
 import { useSlots, type Component } from "vue"
 import router from "@/router"
 

@@ -57,6 +57,12 @@ export const useBoardStore = defineStore("board", () => {
         return items.value.find((i) => i.id === id)
     }
 
+    function getByColumnId(columnId: number) {
+        const column = columnStore.get(columnId)
+        if (!column) return undefined
+        return items.value.find((b) => b.id === column.boardId)
+    }
+
     async function create(payload: CreateBoardRequestDTO) {
         try {
             const res = await boardApi.create(payload)
@@ -98,5 +104,5 @@ export const useBoardStore = defineStore("board", () => {
         }
     }
 
-    return { items, get, getAll, create, update, remove }
+    return { items, get, getAll, getByColumnId, create, update, remove }
 })
