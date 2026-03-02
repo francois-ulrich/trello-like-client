@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect } from "vue"
+import { computed, onMounted, ref, watch, watchEffect } from "vue"
 import { useColumnStore } from "@/features/columns/stores/column.store"
 import { useRoute } from "vue-router"
 import { useBoardStore } from "@/features/boards/stores/board.store"
@@ -12,6 +12,9 @@ import Renamable from "@/shared/components/Renamable.vue"
 import ColumnCreation from "@/features/columns/components/ColumnCreation.vue"
 import ColumnItem from "@/features/columns/components/ColumnItem.vue"
 import { useAuthStore } from "@/features/auth/stores/authStore"
+import type { Column } from "@/features/columns/domain/column.model"
+import draggable from "vuedraggable"
+import type { Board } from "@/features/boards/domain/board.model"
 
 const route = useRoute()
 
@@ -23,12 +26,30 @@ const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 const renamableRef = ref<InstanceType<typeof Renamable> | null>(null)
 
 const board = computed(() => boardStore.get(Number(route.params.id)))
+const columns = ref<Column[]>()
 
-const columns = computed(() => {
-    if (board.value === undefined) return []
+watch(
+    () => board.value,
+    (boardValue) => {
+        if (boardValue !== undefined) {
+            columns.value = boardStore.getColumnsInBoard(boardValue.id)
 
-    return columnStore.items.filter((column) => column.boardId === board.value?.id)
-})
+            console.log(columns.value)
+        }
+    },
+    { immediate: true },
+)
+
+// const columns = computed(() => {
+//     if (board.value === undefined) return []
+
+//     return columnStore.items.filter((column) => column.boardId === board.value?.id)
+// })
+// board.value = boardStore.get(Number(route.params.id))
+
+// console.log(board.value)
+
+// if (board.value !== undefined) columns.value = boardStore.getColumnsInBoard(board.value.id)
 
 const handleBoardDeleteModalOpen = async () => {
     boardDeleteModalRef.value?.open()
@@ -59,6 +80,10 @@ const handleBoardRename = async () => {
     boardDeleteModalRef.value?.close()
     renamableRef.value?.open()
 }
+
+onMounted(() => {
+    boardStore.get(Number(route.params.id))
+})
 </script>
 
 <template>
@@ -101,13 +126,24 @@ const handleBoardRename = async () => {
 
         <div class="flex flex-col gap-y-4 flex-auto w-screen overflow-x-scroll">
             <div class="p-4">
-                <ul class="flex flex-row gap-x-4">
+                <!-- <ul class="flex flex-row gap-x-4">
                     <li v-for="column in columns" :key="column.id">
                         <ColumnItem :column="column" />
                     </li>
 
                     <li><ColumnCreation :boardId="board.id" /></li>
-                </ul>
+                </ul> -->
+
+                <draggable
+                    v-model="columns"
+                    item-key="id"
+                    group="columns"
+                    class="flex flex-row gap-x-4"
+                >
+                    <template #item="{ element }: { element: Column }">
+                        <ColumnItem :column="element" />
+                    </template>
+                </draggable>
             </div>
         </div>
 

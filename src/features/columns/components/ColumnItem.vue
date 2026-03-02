@@ -23,14 +23,6 @@ const cardStore = useCardStore()
 
 const renamableRef = ref<InstanceType<typeof Renamable> | null>(null)
 
-// const cardsPositionCompare = (a: Card, b: Card) => {
-//     if (a.position < b.position) return -1
-//     else if (a.position > b.position) return 1
-//     return 0
-// }
-
-// let previousCardsValue = []
-
 const cards = ref<Card[]>(cardStore.getCardsInColumn(props.column.id))
 
 watch(

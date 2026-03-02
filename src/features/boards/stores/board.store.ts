@@ -57,8 +57,15 @@ export const useBoardStore = defineStore("board", () => {
         return items.value.find((i) => i.id === id)
     }
 
+    function getColumnsInBoard(boardId: number) {
+        const board = get(boardId)
+        if (board === undefined) throw new Error("Linked board hasn't been found")
+
+        return columnStore.items.filter((column) => column.boardId === boardId)
+    }
+
     function getByColumnId(columnId: number) {
-        const column = columnStore.get(columnId)
+        const column = columnStore.getById(columnId)
         if (!column) return undefined
         return items.value.find((b) => b.id === column.boardId)
     }
@@ -104,5 +111,5 @@ export const useBoardStore = defineStore("board", () => {
         }
     }
 
-    return { items, get, getAll, getByColumnId, create, update, remove }
+    return { items, get, getAll, getByColumnId, getColumnsInBoard, create, update, remove }
 })
