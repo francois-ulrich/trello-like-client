@@ -7,6 +7,7 @@ import Renamable from "@/shared/components/Renamable.vue"
 import { useCardStore } from "@/features/cards/stores/card.store"
 import type { Card } from "@/features/cards/domain/card.model"
 import type { Column } from "@/features/columns/domain/column.model"
+import BaseButton from "@/shared/components/BaseButton.vue"
 
 const props = defineProps<{ cardId: number; column: Column }>()
 
@@ -35,6 +36,17 @@ const handleDescriptionUpdate = (value: string) => {
 
     cardToUpdate.description = value
     cardStore.update(props.cardId, { description: value })
+}
+
+const cardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
+
+const handleCardDeleteModalOpen = async () => {
+    cardDeleteModalRef.value?.open()
+}
+
+const handleCardDeletion = () => {
+    cardStore.remove(props.cardId)
+    cardDeleteModalRef.value?.close()
 }
 </script>
 
@@ -83,6 +95,26 @@ const handleDescriptionUpdate = (value: string) => {
                         </template>
                     </Renamable>
                 </div>
+            </div>
+
+            <template #footer>
+                <BaseButton color="danger" @click="handleCardDeleteModalOpen">
+                    <p class="text-center">Delete card</p>
+                </BaseButton>
+            </template>
+        </ModalDialog>
+
+        <ModalDialog ref="cardDeleteModalRef" :withBackdrop="true">
+            <template #header
+                ><p class="text-center font-medium">Delete card "{{ card.name }}" ?</p>
+            </template>
+
+            <div class="flex flex-col gap-4">
+                <p>Are you sure you want to delete this card&nbsp;? This action is irreversible.</p>
+
+                <BaseButton color="danger" @click="handleCardDeletion">
+                    <p class="text-center">Delete card</p>
+                </BaseButton>
             </div>
         </ModalDialog>
     </RoundedCard>

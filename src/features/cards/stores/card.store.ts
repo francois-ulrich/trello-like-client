@@ -6,6 +6,7 @@ import type {
     CardCreationRequestDTO,
     CardUpdateRequestDTO,
 } from "@/features/cards/infrastructure/card.request.dto"
+import { useColumnStore } from "@/features/columns/stores/column.store"
 import { defineStore } from "pinia"
 import { ref, type Ref } from "vue"
 
@@ -13,6 +14,24 @@ export const useCardStore = defineStore("card", () => {
     const items = ref<Card[]>([]) as Ref<Card[]>
 
     const boardStore = useBoardStore()
+    const columnStore = useColumnStore()
+
+    function getById(id: number): Card | undefined {
+        return items.value.find((card) => card.id === id)
+    }
+
+    function getCardsInColumn(columnId: number): Card[] {
+        return items.value
+            .filter((card) => card.columnId === columnId)
+            .sort((cardA, cardB) => cardA.position - cardB.position)
+    }
+
+    function reorderfAfterDragAndDrop(cardsInColumn: Card[]) {
+        cardsInColumn.forEach((cardInColumn, index) => {
+            const storeCard = items.value.find((card) => card.id === cardInColumn.id)
+            if (storeCard) storeCard.position = index
+        })
+    }
 
     async function create(boardId: number, columnId: number, payload: CardCreationRequestDTO) {
         try {
@@ -46,38 +65,40 @@ export const useCardStore = defineStore("card", () => {
         }
     }
 
-    async function move(
-        boardId: number,
-        columnId: number,
-        cardId: number,
-        payload: CardMoveRequestDTO,
-    ) {
+    async function move(cardId: number, payload: CardMoveRequestDTO) {
         const previousItems = [...items.value]
 
         const movedCard = items.value.find((card) => card.id === cardId)
-
         if (movedCard === undefined) throw new Error("Card to move wasn't found")
 
+        const column = columnStore.getById(movedCard.columnId)
+        if (column === undefined) throw new Error("Linked column wasn't found")
+
         try {
-            await cardApi.move(boardId, columnId, cardId, payload)
+            await cardApi.move(column.boardId, column.id, cardId, payload)
         } catch (e: unknown) {
             items.value = previousItems
             console.error(e)
         }
     }
 
-    function getCardsInColumn(columnId: number): Card[] {
-        return items.value
-            .filter((card) => card.columnId === columnId)
-            .sort((cardA, cardB) => cardA.position - cardB.position)
+    async function remove(cardId: number) {
+        const previousItems = [...items.value]
+
+        const cardToDelete = getById(cardId)
+        if (cardToDelete === undefined) throw new Error("Card to delete wasn't found")
+
+        const column = columnStore.getById(cardToDelete.columnId)
+        if (column === undefined) throw new Error("Linked column wasn't found")
+
+        try {
+            await cardApi.remove(column.boardId, column.id, cardId)
+            items.value = items.value.filter((card) => card.id !== cardId)
+        } catch (e: unknown) {
+            items.value = previousItems
+            console.error(e)
+        }
     }
 
-    function reorderfAfterDragAndDrop(cardsInColumn: Card[]) {
-        cardsInColumn.forEach((cardInColumn, index) => {
-            const storeCard = items.value.find((card) => card.id === cardInColumn.id)
-            if (storeCard) storeCard.position = index
-        })
-    }
-
-    return { items, getCardsInColumn, create, update, move, reorderfAfterDragAndDrop }
+    return { items, getCardsInColumn, create, update, move, remove, reorderfAfterDragAndDrop }
 })

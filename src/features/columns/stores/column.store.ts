@@ -12,7 +12,7 @@ export const useColumnStore = defineStore("column", () => {
     const items = ref<Column[]>([])
     const cardStore = useCardStore()
 
-    function get(id: number) {
+    function getById(id: number) {
         return items.value.find((i) => i.id === id)
     }
 
@@ -53,5 +53,5 @@ export const useColumnStore = defineStore("column", () => {
         }
     }
 
-    return { items, get, create, update, remove }
+    return { items, getById, create, update, remove }
 })

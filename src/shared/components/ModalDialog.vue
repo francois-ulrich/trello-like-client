@@ -5,11 +5,13 @@ import useModal from "@/composables/useModal"
 import { useFocusTrap } from "@vueuse/integrations/useFocusTrap"
 import { X } from "lucide-vue-next"
 import { v4 as uuidv4 } from "uuid"
-import { nextTick, useTemplateRef, watch } from "vue"
+import { useSlots, nextTick, useTemplateRef, watch } from "vue"
 
 const { openModal, closeModal, isModalOpen } = useModal()
 const modalId = `modal-${uuidv4()}`
 const rootElementRef = useTemplateRef("rootElementRef")
+
+const slots = useSlots()
 
 type ModalSizes = "xl" | "lg" | "md" | "sm"
 
@@ -70,6 +72,7 @@ const emit = defineEmits<{
 }>()
 
 const open = () => {
+    close()
     openModal(modalId)
 }
 
@@ -125,18 +128,28 @@ defineExpose({
                     <div class="relative">
                         <div>
                             <header class="p-4 border-b border-gray-400">
-                                <BaseButton
-                                    @click="close"
-                                    color="white"
-                                    class="absolute top-3 right-3 group-hover:opacity-100 cursor-pointer color rounded-full!"
-                                >
-                                    <X :size="18" />
-                                </BaseButton>
+                                <div class="flex flex-row gap-1 absolute top-3 right-3">
+                                    <slot name="options"></slot>
+
+                                    <BaseButton
+                                        @click="close"
+                                        color="white"
+                                        class="group-hover:opacity-100 cursor-pointer color rounded-full!"
+                                    >
+                                        <X :size="18" />
+                                    </BaseButton>
+                                </div>
+
                                 <slot name="header"></slot>
                             </header>
                             <main :class="classOnBody + ' p-4'">
                                 <slot></slot>
                             </main>
+                            <div class="border-t border-gray-400">
+                                <footer v-if="slots.footer" class="p-4">
+                                    <slot name="footer"></slot>
+                                </footer>
+                            </div>
                         </div>
                     </div>
                 </RoundedCard>

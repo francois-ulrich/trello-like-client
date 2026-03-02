@@ -42,7 +42,7 @@ watch(
 )
 
 const moveCardInsideColumn = async (move: { element: Card; newIndex: number }) => {
-    await cardStore.move(props.column.boardId, move.element.columnId, move.element.id, {
+    await cardStore.move(move.element.id, {
         targetPosition: move.newIndex,
         targetColumnId: props.column.id,
     })
@@ -54,7 +54,7 @@ const moveCardToOtherColumn = async (addMove: {
     newIndex: number
 }) => {
     try {
-        await cardStore.move(props.column.boardId, addMove.element.columnId, addMove.element.id, {
+        await cardStore.move(addMove.element.id, {
             targetPosition: addMove.newIndex,
             targetColumnId: props.column.id,
         })

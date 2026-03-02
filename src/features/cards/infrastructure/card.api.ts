@@ -45,8 +45,20 @@ const move = async (
     return res.data
 }
 
+const remove = async (
+    boardId: number,
+    columnId: number,
+    cardId: number,
+): Promise<ApiResponse<CardResponseDTO>> => {
+    const res = await api.delete<ApiResponse<CardResponseDTO>>(
+        `/boards/${boardId}/columns/${columnId}/cards/${cardId}`,
+    )
+    return res.data
+}
+
 export const cardApi = {
     create,
     update,
     move,
+    remove,
 }
