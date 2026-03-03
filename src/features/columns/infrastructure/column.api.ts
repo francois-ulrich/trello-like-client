@@ -35,6 +35,8 @@ const move = async (
     columnId: number,
     payload: ColumnMoveRequestDTO,
 ): Promise<ApiResponse<ColumnResponseDTO>> => {
+    // throw new Error("fail")
+
     const res = await api.patch<ApiResponse<ColumnResponseDTO>>(
         `/boards/${boardId}/columns/${columnId}/move`,
         payload,

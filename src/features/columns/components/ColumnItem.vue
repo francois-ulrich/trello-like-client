@@ -7,7 +7,11 @@ import { ref, watch } from "vue"
 import draggable from "vuedraggable"
 import CardCreation from "@/features/cards/components/CardCreation.vue"
 import { useCardStore } from "@/features/cards/stores/card.store"
-import type { DraggableChangeEvent } from "@/shared/types/draggable"
+import type {
+    DraggableChangeEvent,
+    DraggableChangeEventPayloadAdded,
+    DraggableChangeEventPayloadMoved,
+} from "@/shared/types/draggable"
 import BaseButton from "@/shared/components/BaseButton.vue"
 import ActionsDropdown from "@/shared/components/ActionsDropdown.vue"
 import HeaderWithTitleAndOptions from "@/shared/components/HeaderWithTitleAndOptions.vue"
@@ -32,26 +36,18 @@ watch(
     { immediate: true },
 )
 
-const moveCardInsideColumn = async (move: { element: Card; newIndex: number }) => {
+const moveCardInsideColumn = async (move: DraggableChangeEventPayloadMoved<Card>) => {
     await cardStore.move(move.element.id, {
         targetPosition: move.newIndex,
         targetColumnId: props.column.id,
     })
 }
 
-const moveCardToOtherColumn = async (addMove: {
-    element: Card
-    oldIndex?: number
-    newIndex: number
-}) => {
-    try {
-        await cardStore.move(addMove.element.id, {
-            targetPosition: addMove.newIndex,
-            targetColumnId: props.column.id,
-        })
-    } catch (e: unknown) {
-        console.error(e)
-    }
+const moveCardToOtherColumn = async (addMove: DraggableChangeEventPayloadAdded<Card>) => {
+    await cardStore.move(addMove.element.id, {
+        targetPosition: addMove.newIndex,
+        targetColumnId: props.column.id,
+    })
 }
 
 const handleCardsMove = (e: DraggableChangeEvent<Card>) => {

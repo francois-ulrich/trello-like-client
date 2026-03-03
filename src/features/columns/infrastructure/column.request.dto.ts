@@ -8,5 +8,4 @@ export interface UpdateColumnRequestDTO {
 
 export interface ColumnMoveRequestDTO {
     targetPosition: number
-    targeyColumnId: number
 }

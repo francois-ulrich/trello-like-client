@@ -13,11 +13,17 @@ import ColumnItem from "@/features/columns/components/ColumnItem.vue"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import type { Column } from "@/features/columns/domain/column.model"
 import draggable from "vuedraggable"
+import type {
+    DraggableChangeEvent,
+    DraggableChangeEventPayloadMoved,
+} from "@/shared/types/draggable"
+import { useColumnStore } from "@/features/columns/stores/column.store"
 
 const route = useRoute()
 
 const authStore = useAuthStore()
 const boardStore = useBoardStore()
+const columnStore = useColumnStore()
 
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 const renamableRef = ref<InstanceType<typeof Renamable> | null>(null)
@@ -30,23 +36,24 @@ watch(
     (boardValue) => {
         if (boardValue !== undefined) {
             columns.value = boardStore.getColumnsInBoard(boardValue.id)
-
-            console.log(columns.value)
         }
     },
     { immediate: true },
 )
 
-// const columns = computed(() => {
-//     if (board.value === undefined) return []
+const moveColumn = async (move: DraggableChangeEventPayloadMoved<Column>) => {
+    console.log("moveColumn")
+    await columnStore.move(move.element.id, {
+        targetPosition: move.newIndex,
+    })
+}
 
-//     return columnStore.items.filter((column) => column.boardId === board.value?.id)
-// })
-// board.value = boardStore.get(Number(route.params.id))
-
-// console.log(board.value)
-
-// if (board.value !== undefined) columns.value = boardStore.getColumnsInBoard(board.value.id)
+const handleColumnsMove = (e: DraggableChangeEvent<Column>) => {
+    if (e.moved) {
+        moveColumn(e.moved)
+        return
+    }
+}
 
 const handleBoardDeleteModalOpen = async () => {
     boardDeleteModalRef.value?.open()
@@ -77,10 +84,6 @@ const handleBoardRename = async () => {
     boardDeleteModalRef.value?.close()
     renamableRef.value?.open()
 }
-
-onMounted(() => {
-    boardStore.getById(Number(route.params.id))
-})
 </script>
 
 <template>
@@ -128,6 +131,7 @@ onMounted(() => {
                     item-key="id"
                     group="columns"
                     class="flex flex-row gap-x-4"
+                    @change="handleColumnsMove"
                 >
                     <template #item="{ element }: { element: Column }">
                         <ColumnItem :column="element" />
