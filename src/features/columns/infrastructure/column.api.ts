@@ -1,4 +1,7 @@
-import type { CreateColumnRequestDTO } from "@/features/columns/infrastructure/column.request.dto"
+import type {
+    ColumnMoveRequestDTO,
+    CreateColumnRequestDTO,
+} from "@/features/columns/infrastructure/column.request.dto"
 import type { ColumnResponseDTO } from "@/features/columns/infrastructure/column.response.dto"
 import type { ApiResponse } from "@/shared/models"
 import api from "@/api"
@@ -27,6 +30,18 @@ const update = async (
     return res.data
 }
 
+const move = async (
+    boardId: number,
+    columnId: number,
+    payload: ColumnMoveRequestDTO,
+): Promise<ApiResponse<ColumnResponseDTO>> => {
+    const res = await api.patch<ApiResponse<ColumnResponseDTO>>(
+        `/boards/${boardId}/columns/${columnId}/move`,
+        payload,
+    )
+    return res.data
+}
+
 const remove = async (
     boardId: number,
     columnId: number,
@@ -40,5 +55,6 @@ const remove = async (
 export const columnApi = {
     create,
     update,
+    move,
     remove,
 }

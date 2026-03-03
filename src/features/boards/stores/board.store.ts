@@ -53,12 +53,12 @@ export const useBoardStore = defineStore("board", () => {
         )
     }
 
-    function get(id: number) {
+    function getById(id: number): Board | undefined {
         return items.value.find((i) => i.id === id)
     }
 
     function getColumnsInBoard(boardId: number) {
-        const board = get(boardId)
+        const board = getById(boardId)
         if (board === undefined) throw new Error("Linked board hasn't been found")
 
         return columnStore.items
@@ -113,5 +113,5 @@ export const useBoardStore = defineStore("board", () => {
         }
     }
 
-    return { items, get, getAll, getByColumnId, getColumnsInBoard, create, update, remove }
+    return { items, getById, getAll, getByColumnId, getColumnsInBoard, create, update, remove }
 })

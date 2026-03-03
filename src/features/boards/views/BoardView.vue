@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch, watchEffect } from "vue"
-import { useColumnStore } from "@/features/columns/stores/column.store"
 import { useRoute } from "vue-router"
 import { useBoardStore } from "@/features/boards/stores/board.store"
 import HeaderWithTitleAndOptions from "@/shared/components/HeaderWithTitleAndOptions.vue"
@@ -14,18 +13,16 @@ import ColumnItem from "@/features/columns/components/ColumnItem.vue"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import type { Column } from "@/features/columns/domain/column.model"
 import draggable from "vuedraggable"
-import type { Board } from "@/features/boards/domain/board.model"
 
 const route = useRoute()
 
 const authStore = useAuthStore()
 const boardStore = useBoardStore()
-const columnStore = useColumnStore()
 
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 const renamableRef = ref<InstanceType<typeof Renamable> | null>(null)
 
-const board = computed(() => boardStore.get(Number(route.params.id)))
+const board = computed(() => boardStore.getById(Number(route.params.id)))
 const columns = ref<Column[]>()
 
 watch(
@@ -82,7 +79,7 @@ const handleBoardRename = async () => {
 }
 
 onMounted(() => {
-    boardStore.get(Number(route.params.id))
+    boardStore.getById(Number(route.params.id))
 })
 </script>
 

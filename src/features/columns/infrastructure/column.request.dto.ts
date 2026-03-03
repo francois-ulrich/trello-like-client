@@ -5,3 +5,8 @@ export interface CreateColumnRequestDTO {
 export interface UpdateColumnRequestDTO {
     name: string
 }
+
+export interface ColumnMoveRequestDTO {
+    targetPosition: number
+    targeyColumnId: number
+}
