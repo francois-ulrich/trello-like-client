@@ -5,7 +5,6 @@ import type { Card } from "@/features/cards/domain/card.model"
 import type { Column } from "@/features/columns/domain/column.model"
 import { ref, watch } from "vue"
 import draggable from "vuedraggable"
-import ColumnContainer from "@/shared/components/ColumnContainer.vue"
 import CardCreation from "@/features/cards/components/CardCreation.vue"
 import { useCardStore } from "@/features/cards/stores/card.store"
 import type { DraggableChangeEvent } from "@/shared/types/draggable"
@@ -95,7 +94,7 @@ const handleColumnRename = () => {
 </script>
 
 <template>
-    <ColumnContainer>
+    <div class="w-80 shrink-0">
         <RoundedCard class="bg-gray-200 flex flex-col gap-y-4 board-column-item w-full">
             <HeaderWithTitleAndOptions>
                 <Renamable
@@ -160,5 +159,5 @@ const handleColumnRename = () => {
                 </BaseButton>
             </div>
         </ModalDialog>
-    </ColumnContainer>
+    </div>
 </template>

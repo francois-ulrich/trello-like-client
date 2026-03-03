@@ -19,8 +19,8 @@ export const useColumnStore = defineStore("column", () => {
     async function create(boardId: number, payload: CreateBoardRequestDTO) {
         try {
             const res = await columnApi.create(boardId, payload)
-            const { id, name, board_id } = res.data
-            items.value = [...items.value, { id, name, boardId: board_id }]
+            const { id, name, board_id, position } = res.data
+            items.value = [...items.value, { id, name, position, boardId: board_id }]
         } catch (e: unknown) {
             console.error(e)
         }
@@ -29,10 +29,10 @@ export const useColumnStore = defineStore("column", () => {
     async function update(boardId: number, columnId: number, payload: UpdateBoardRequestDTO) {
         try {
             const res = await columnApi.update(boardId, columnId, payload)
-            const { id, name, board_id } = res.data
+            const { id, name, board_id, position } = res.data
             items.value = [
                 ...items.value.filter((item) => item.id != id),
-                { id, name, boardId: board_id },
+                { id, name, position, boardId: board_id },
             ]
         } catch (e: unknown) {
             console.error(e)

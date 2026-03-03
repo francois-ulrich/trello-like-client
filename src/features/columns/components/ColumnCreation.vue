@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AddButtonSwitchToForm from "@/shared/components/AddButtonSwitchToForm.vue"
-import ColumnContainer from "@/shared/components/ColumnContainer.vue"
 import ItemCreationForm from "@/shared/components/ItemCreationForm.vue"
 import { useColumnStore } from "@/features/columns/stores/column.store"
 
@@ -13,7 +12,7 @@ const handleSubmit = (name: string) => {
 </script>
 
 <template>
-    <ColumnContainer>
+    <div class="w-80 shrink-0">
         <AddButtonSwitchToForm addButtonLabel="Add new column" buttonColor="lightgray">
             <template #default="{ handleClose, addButtonLabel }">
                 <ItemCreationForm
@@ -23,5 +22,5 @@ const handleSubmit = (name: string) => {
                 />
             </template>
         </AddButtonSwitchToForm>
-    </ColumnContainer>
+    </div>
 </template>

@@ -61,7 +61,9 @@ export const useBoardStore = defineStore("board", () => {
         const board = get(boardId)
         if (board === undefined) throw new Error("Linked board hasn't been found")
 
-        return columnStore.items.filter((column) => column.boardId === boardId)
+        return columnStore.items
+            .filter((column) => column.boardId === boardId)
+            .sort((columnA, columnB) => columnA.position - columnB.position)
     }
 
     function getByColumnId(columnId: number) {

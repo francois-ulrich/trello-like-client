@@ -124,16 +124,8 @@ onMounted(() => {
             </template>
         </HeaderWithTitleAndOptions>
 
-        <div class="flex flex-col gap-y-4 flex-auto w-screen overflow-x-scroll">
-            <div class="p-4">
-                <!-- <ul class="flex flex-row gap-x-4">
-                    <li v-for="column in columns" :key="column.id">
-                        <ColumnItem :column="column" />
-                    </li>
-
-                    <li><ColumnCreation :boardId="board.id" /></li>
-                </ul> -->
-
+        <div class="overflow-x-scroll w-screen">
+            <div class="flex flex-row gap-x-4 flex-auto p-4 max-w-none w-full">
                 <draggable
                     v-model="columns"
                     item-key="id"
@@ -144,6 +136,8 @@ onMounted(() => {
                         <ColumnItem :column="element" />
                     </template>
                 </draggable>
+
+                <ColumnCreation :boardId="board.id" />
             </div>
         </div>
 
