@@ -57,6 +57,7 @@ const handleCardDeletion = () => {
         v-if="card"
     >
         <p class="font-medium">{{ card.name }}</p>
+        <p>position : {{ card.position }}</p>
 
         <TextAlignStart v-if="card?.description !== undefined" :size="14" class="m-1" />
 

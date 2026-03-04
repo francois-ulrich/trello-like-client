@@ -68,14 +68,47 @@ export const useCardStore = defineStore("card", () => {
     async function move(cardId: number, payload: CardMoveRequestDTO) {
         const previousItems = [...items.value]
 
-        const movedCard = items.value.find((card) => card.id === cardId)
-        if (movedCard === undefined) throw new Error("Card to move wasn't found")
+        // const cardToMove = items.value.find((card) => card.id === cardId)
+        const cardToMove = getById(cardId)
+        if (cardToMove === undefined) throw new Error("Card to move wasn't found")
 
-        const column = columnStore.getById(movedCard.columnId)
+        const oldPosition = cardToMove.position
+
+        const column = columnStore.getById(cardToMove.columnId)
         if (column === undefined) throw new Error("Linked column wasn't found")
 
         try {
-            await cardApi.move(column.boardId, column.id, cardId, payload)
+            const res = await cardApi.move(column.boardId, column.id, cardId, payload)
+
+            cardToMove.position = res.data.movedCard.position
+
+            const newPosition = cardToMove.position
+
+            if (newPosition > oldPosition) {
+                items.value.forEach((card) => {
+                    if (
+                        card.id !== cardToMove.id &&
+                        card.columnId === column.id &&
+                        card.position > oldPosition &&
+                        card.position <= newPosition
+                    ) {
+                        card.position--
+                    }
+                })
+            } else {
+                items.value.forEach((card) => {
+                    if (
+                        card.id !== cardToMove.id &&
+                        card.columnId === column.id &&
+                        card.position >= newPosition &&
+                        card.position < oldPosition
+                    ) {
+                        card.position++
+                    }
+                })
+            }
+
+            console.log(res)
         } catch (e: unknown) {
             items.value = previousItems
             console.error(e)

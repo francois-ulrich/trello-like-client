@@ -5,3 +5,7 @@ export interface CardResponseDTO {
     position: number
     column_id: number
 }
+
+export interface CardMoveResponseDTO {
+    movedCard: CardResponseDTO
+}

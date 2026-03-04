@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, watchEffect } from "vue"
+import { computed, ref, watch, watchEffect } from "vue"
 import { useRoute } from "vue-router"
 import { useBoardStore } from "@/features/boards/stores/board.store"
 import HeaderWithTitleAndOptions from "@/shared/components/HeaderWithTitleAndOptions.vue"
@@ -32,11 +32,9 @@ const board = computed(() => boardStore.getById(Number(route.params.id)))
 const columns = ref<Column[]>()
 
 watch(
-    () => board.value,
-    (boardValue) => {
-        if (boardValue !== undefined) {
-            columns.value = boardStore.getColumnsInBoard(boardValue.id)
-        }
+    () => (board.value !== undefined ? boardStore.getColumnsInBoard(board.value.id) : []),
+    (newColumns) => {
+        columns.value = [...newColumns]
     },
     { immediate: true },
 )

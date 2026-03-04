@@ -3,7 +3,10 @@ import type {
     CardCreationRequestDTO,
     CardUpdateRequestDTO,
 } from "@/features/cards/infrastructure/card.request.dto"
-import type { CardResponseDTO } from "@/features/cards/infrastructure/card.response.dto"
+import type {
+    CardMoveResponseDTO,
+    CardResponseDTO,
+} from "@/features/cards/infrastructure/card.response.dto"
 import type { ApiResponse } from "@/shared/models"
 import api from "@/api"
 
@@ -37,8 +40,8 @@ const move = async (
     columnId: number,
     cardId: number,
     payload: CardMoveRequestDTO,
-): Promise<ApiResponse<CardResponseDTO>> => {
-    const res = await api.patch<ApiResponse<CardResponseDTO>>(
+): Promise<ApiResponse<CardMoveResponseDTO>> => {
+    const res = await api.patch<ApiResponse<CardMoveResponseDTO>>(
         `/boards/${boardId}/columns/${columnId}/cards/${cardId}/move`,
         payload,
     )
