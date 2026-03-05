@@ -7,3 +7,7 @@ export interface ColumnResponseDTO {
     board_id: number
     cards: CardResponseDTO[]
 }
+
+export interface ColumnMoveResponseDTO {
+    movedColumn: ColumnResponseDTO
+}

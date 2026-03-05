@@ -1,3 +1,4 @@
+import { useBoardStore } from "@/features/boards/stores/board.store"
 import { useCardStore } from "@/features/cards/stores/card.store"
 import type { Column } from "@/features/columns/domain/column.model"
 import { columnApi } from "@/features/columns/infrastructure/column.api"
@@ -12,6 +13,7 @@ import { ref } from "vue"
 export const useColumnStore = defineStore("column", () => {
     const items = ref<Column[]>([])
 
+    const boardStore = useBoardStore()
     const cardStore = useCardStore()
 
     function getById(id: number) {
@@ -44,11 +46,44 @@ export const useColumnStore = defineStore("column", () => {
     async function move(columnId: number, payload: ColumnMoveRequestDTO) {
         const previousItems = [...items.value]
 
-        const movedColumn = items.value.find((column) => column.id === columnId)
-        if (movedColumn === undefined) throw new Error("Column to move wasn't found")
+        const columnToMove = getById(columnId)
+        if (columnToMove === undefined) throw new Error("Column to move wasn't found in store")
+
+        const oldPosition = columnToMove.position
+
+        const board = boardStore.getById(columnToMove.boardId)
+        if (board === undefined) throw new Error("Linked board wasn't found in store")
 
         try {
-            await columnApi.move(movedColumn.boardId, movedColumn.id, payload)
+            const res = await columnApi.move(columnToMove.boardId, columnToMove.id, payload)
+
+            columnToMove.position = res.data.movedColumn.position
+
+            const newPosition = columnToMove.position
+
+            if (newPosition > oldPosition) {
+                items.value.forEach((column) => {
+                    if (
+                        column.id !== columnToMove.id &&
+                        column.boardId === board.id &&
+                        column.position > oldPosition &&
+                        column.position <= newPosition
+                    ) {
+                        column.position--
+                    }
+                })
+            } else {
+                items.value.forEach((column) => {
+                    if (
+                        column.id !== columnToMove.id &&
+                        column.boardId === board.id &&
+                        column.position >= newPosition &&
+                        column.position < oldPosition
+                    ) {
+                        column.position++
+                    }
+                })
+            }
         } catch (e: unknown) {
             items.value = previousItems
             console.error(e)

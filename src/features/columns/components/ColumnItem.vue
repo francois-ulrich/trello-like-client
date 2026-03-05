@@ -100,6 +100,8 @@ const handleColumnRename = () => {
                     @textUpdate="handleColumnNameUpdate"
                 ></Renamable>
 
+                <p>position : {{ column.position }}</p>
+
                 <template #options>
                     <ActionsDropdown :buttonIconSize="24">
                         <template #header>

@@ -2,7 +2,10 @@ import type {
     ColumnMoveRequestDTO,
     CreateColumnRequestDTO,
 } from "@/features/columns/infrastructure/column.request.dto"
-import type { ColumnResponseDTO } from "@/features/columns/infrastructure/column.response.dto"
+import type {
+    ColumnMoveResponseDTO,
+    ColumnResponseDTO,
+} from "@/features/columns/infrastructure/column.response.dto"
 import type { ApiResponse } from "@/shared/models"
 import api from "@/api"
 import type { UpdateBoardRequestDTO } from "@/features/boards/infrastructure/board.request.dto"
@@ -34,10 +37,8 @@ const move = async (
     boardId: number,
     columnId: number,
     payload: ColumnMoveRequestDTO,
-): Promise<ApiResponse<ColumnResponseDTO>> => {
-    // throw new Error("fail")
-
-    const res = await api.patch<ApiResponse<ColumnResponseDTO>>(
+): Promise<ApiResponse<ColumnMoveResponseDTO>> => {
+    const res = await api.patch<ApiResponse<ColumnMoveResponseDTO>>(
         `/boards/${boardId}/columns/${columnId}/move`,
         payload,
     )

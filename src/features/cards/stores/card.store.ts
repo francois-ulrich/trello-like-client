@@ -68,14 +68,13 @@ export const useCardStore = defineStore("card", () => {
     async function move(cardId: number, payload: CardMoveRequestDTO) {
         const previousItems = [...items.value]
 
-        // const cardToMove = items.value.find((card) => card.id === cardId)
         const cardToMove = getById(cardId)
-        if (cardToMove === undefined) throw new Error("Card to move wasn't found")
+        if (cardToMove === undefined) throw new Error("Card to move wasn't found in store")
 
         const oldPosition = cardToMove.position
 
         const column = columnStore.getById(cardToMove.columnId)
-        if (column === undefined) throw new Error("Linked column wasn't found")
+        if (column === undefined) throw new Error("Linked column wasn't found in store")
 
         try {
             const res = await cardApi.move(column.boardId, column.id, cardId, payload)
