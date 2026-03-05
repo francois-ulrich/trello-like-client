@@ -80,31 +80,52 @@ export const useCardStore = defineStore("card", () => {
             const res = await cardApi.move(column.boardId, column.id, cardId, payload)
 
             cardToMove.position = res.data.movedCard.position
+            cardToMove.columnId = res.data.movedCard.column_id
 
             const newPosition = cardToMove.position
 
-            if (newPosition > oldPosition) {
+            if (cardToMove.columnId != column.id) {
                 items.value.forEach((card) => {
                     if (
                         card.id !== cardToMove.id &&
                         card.columnId === column.id &&
-                        card.position > oldPosition &&
-                        card.position <= newPosition
+                        card.position > oldPosition
                     ) {
                         card.position--
                     }
-                })
-            } else {
-                items.value.forEach((card) => {
+
                     if (
                         card.id !== cardToMove.id &&
-                        card.columnId === column.id &&
-                        card.position >= newPosition &&
-                        card.position < oldPosition
+                        card.columnId === cardToMove.columnId &&
+                        card.position >= newPosition
                     ) {
                         card.position++
                     }
                 })
+            } else {
+                if (newPosition > oldPosition) {
+                    items.value.forEach((card) => {
+                        if (
+                            card.id !== cardToMove.id &&
+                            card.columnId === column.id &&
+                            card.position > oldPosition &&
+                            card.position <= newPosition
+                        ) {
+                            card.position--
+                        }
+                    })
+                } else {
+                    items.value.forEach((card) => {
+                        if (
+                            card.id !== cardToMove.id &&
+                            card.columnId === column.id &&
+                            card.position >= newPosition &&
+                            card.position < oldPosition
+                        ) {
+                            card.position++
+                        }
+                    })
+                }
             }
 
             console.log(res)
