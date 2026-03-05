@@ -1,4 +1,3 @@
-import type { LoginFormData, RegisterFormData, UserResponseData } from "@/features/auth/models"
 import {
     getLoginFromApi,
     getRegisterFromApi,
@@ -12,19 +11,24 @@ import type {
     RegisterOneUser,
 } from "@/features/auth/custom-types"
 import type { ApiResponse } from "@/shared/models"
+import type { UserResponseDTO } from "@/features/auth/infrastructure/auth.response.dto"
+import type {
+    LoginRequestDTO,
+    RegisterRequestDTO,
+} from "@/features/auth/infrastructure/auth.request.dto"
 
 async function register(
-    formData: RegisterFormData,
+    formData: RegisterRequestDTO,
     api: RegisterOneUser,
-): Promise<ApiResponse<UserResponseData>> {
+): Promise<ApiResponse<UserResponseDTO>> {
     const result = await api(formData)
     return result
 }
 
 async function login(
-    formData: LoginFormData,
+    formData: LoginRequestDTO,
     api: PostOneUser,
-): Promise<ApiResponse<UserResponseData>> {
+): Promise<ApiResponse<UserResponseDTO>> {
     const result = await api(formData)
     return result
 }
@@ -34,22 +38,22 @@ async function logout(api: LogoutOneUser): Promise<ApiResponse<null>> {
     return result
 }
 
-async function getMe(api: GetOneUser): Promise<ApiResponse<UserResponseData>> {
+async function getMe(api: GetOneUser): Promise<ApiResponse<UserResponseDTO>> {
     const result = await api()
     return result
 }
 
 // factories
 
-function factoryGetMe(): Promise<ApiResponse<UserResponseData>> {
+function factoryGetMe(): Promise<ApiResponse<UserResponseDTO>> {
     return getMe(getMeFromApi)
 }
 
-function factoryRegisterUser(formData: RegisterFormData): Promise<ApiResponse<UserResponseData>> {
+function factoryRegisterUser(formData: RegisterRequestDTO): Promise<ApiResponse<UserResponseDTO>> {
     return register(formData, getRegisterFromApi)
 }
 
-function factoryLogInUser(formData: LoginFormData): Promise<ApiResponse<UserResponseData>> {
+function factoryLogInUser(formData: LoginRequestDTO): Promise<ApiResponse<UserResponseDTO>> {
     return login(formData, getLoginFromApi)
 }
 

@@ -1,10 +1,15 @@
-import type { LoginFormData, RegisterFormData, User } from "@/features/auth/models"
+import type { User } from "@/features/auth/models"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
 import business from "@/features/auth/services/auth.application"
 import { useBoardStore } from "@/features/boards/stores/board.store"
 import { useColumnStore } from "@/features/columns/stores/column.store"
 import { useCardStore } from "@/features/cards/stores/card.store"
+import type {
+    LoginRequestDTO,
+    RegisterRequestDTO,
+} from "@/features/auth/infrastructure/auth.request.dto"
+import type { UserResponseDTO } from "@/features/auth/infrastructure/auth.response.dto"
 
 export const useAuthStore = defineStore("auth", () => {
     const user = ref<User | null>(null)
@@ -17,20 +22,20 @@ export const useAuthStore = defineStore("auth", () => {
     const fetchMe = async () => {
         try {
             const res = await business.getMe()
-            user.value = res.data.user
+            user.value = buildUserFromDTO(res.data)
         } catch {
             user.value = null
         }
     }
 
-    const register = async (data: RegisterFormData) => {
+    const register = async (data: RegisterRequestDTO) => {
         const res = await business.register(data)
-        user.value = res.data.user
+        user.value = buildUserFromDTO(res.data)
     }
 
-    const login = async (data: LoginFormData) => {
+    const login = async (data: LoginRequestDTO) => {
         const res = await business.login(data)
-        user.value = res.data.user
+        user.value = buildUserFromDTO(res.data)
 
         boardStore.getAll()
     }
@@ -46,6 +51,11 @@ export const useAuthStore = defineStore("auth", () => {
 
     const initialize = async () => {
         await fetchMe()
+    }
+
+    const buildUserFromDTO = (dto: UserResponseDTO): User => {
+        const { name, email, role } = dto.user
+        return { name, email, role }
     }
 
     return { isAuthenticated, user, initialize, register, login, logout }
