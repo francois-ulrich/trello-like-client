@@ -14,6 +14,7 @@ import type { UserResponseDTO } from "@/features/auth/infrastructure/auth.respon
 export const useAuthStore = defineStore("auth", () => {
     const user = ref<User | null>(null)
     const isAuthenticated = computed(() => user.value !== null)
+    const isAdmin = computed(() => user.value?.role === "admin")
 
     const boardStore = useBoardStore()
     const columnStore = useColumnStore()
@@ -58,5 +59,5 @@ export const useAuthStore = defineStore("auth", () => {
         return { name, email, role }
     }
 
-    return { isAuthenticated, user, initialize, register, login, logout }
+    return { isAuthenticated, isAdmin, user, initialize, register, login, logout }
 })

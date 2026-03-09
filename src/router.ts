@@ -1,10 +1,32 @@
-import { createRouter, createWebHistory } from "vue-router"
+import { createRouter, createWebHistory, type RouteLocationNormalized } from "vue-router"
 import BoardView from "@/features/boards/views/BoardView.vue"
 import LoginView from "@/features/auth/views/LoginView.vue"
 import RegisterView from "@/features/auth/views/RegisterView.vue"
 import HomeView from "@/features/boards/views/HomeView.vue"
+import AdminView from "@/features/admin/views/AdminView.vue"
+import { useAuthStore } from "@/features/auth/stores/authStore"
+
+function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized) {
+    const auth = useAuthStore()
+
+    if (!auth.isAdmin) {
+        if (from.fullPath && from.fullPath !== to.fullPath) {
+            return from.fullPath
+        }
+
+        return "/"
+    }
+
+    return true
+}
 
 const routes = [
+    {
+        path: "/admin",
+        name: "admin",
+        component: AdminView,
+        beforeEnter: requireAdmin,
+    },
     {
         path: "/board/:id",
         name: "board",

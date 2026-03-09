@@ -2,7 +2,7 @@
 import BaseButton from "@/shared/components/BaseButton.vue"
 import HeaderWithTitleAndOptions from "@/shared/components/HeaderWithTitleAndOptions.vue"
 import { useAuthStore } from "@/features/auth/stores/authStore"
-import { House } from "lucide-vue-next"
+import { House, ShieldUser } from "lucide-vue-next"
 import { RouterView } from "vue-router"
 import router from "@/router"
 
@@ -29,10 +29,18 @@ const handleLogout = async () => {
                         class="text-lg font-medium text-gray-900 bg-gray-300 hover:bg-gray-400 px-2 py-1 rounded-sm w-fit transition-colors"
                         >{{ title }}</RouterLink
                     >
+
                     <RouterLink
                         :to="{ name: 'home' }"
                         class="text-gray-600 bg-gray-300 hover:bg-gray-400 px-2 py-1 w-fit transition-colors rounded-full header-rounded-button flex justify-center items-center"
                         ><House :size="32" />
+                    </RouterLink>
+
+                    <RouterLink
+                        v-if="authStore.isAdmin"
+                        :to="{ name: 'admin' }"
+                        class="text-gray-600 bg-gray-300 hover:bg-gray-400 px-2 py-1 w-fit transition-colors rounded-full header-rounded-button flex justify-center items-center"
+                        ><ShieldUser :size="32" />
                     </RouterLink>
                 </div>
 
