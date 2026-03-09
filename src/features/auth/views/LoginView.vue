@@ -1,21 +1,22 @@
 <script setup lang="ts">
 import BaseButton from "@/shared/components/BaseButton.vue"
 import TextInput from "@/shared/components/form/TextInput.vue"
-import type { LoginFormData } from "@/features/auth/models"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import { ref } from "vue"
 import router from "@/router"
+import type { LoginRequestDTO } from "@/features/auth/infrastructure/auth.request.dto"
 
-const formData = ref<LoginFormData>({ email: "", password: "" })
+const formData = ref<LoginRequestDTO>({ email: "", password: "" })
 
 const authStore = useAuthStore()
 
 const tryLogin = async () => {
     try {
         await authStore.login(formData.value)
-
         if (authStore.isAuthenticated) router.push({ name: "home" })
-    } catch {}
+    } catch (e: unknown) {
+        console.error(e)
+    }
 }
 
 const handleSubmit = () => {

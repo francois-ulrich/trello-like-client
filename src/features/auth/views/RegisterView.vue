@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import BaseButton from "@/shared/components/BaseButton.vue"
 import TextInput from "@/shared/components/form/TextInput.vue"
-import type { RegisterFormData } from "@/features/auth/models"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import { ref } from "vue"
+import type { RegisterRequestDTO } from "@/features/auth/infrastructure/auth.request.dto"
+import router from "@/router"
 
-const formData = ref<RegisterFormData>({
+const formData = ref<RegisterRequestDTO>({
     name: "",
     email: "",
     password: "",
@@ -14,8 +15,13 @@ const formData = ref<RegisterFormData>({
 
 const authStore = useAuthStore()
 
-const handleSubmit = () => {
-    authStore.register(formData.value)
+const handleSubmit = async () => {
+    try {
+        await authStore.register(formData.value)
+        if (authStore.isAuthenticated) router.push({ name: "home" })
+    } catch (e: unknown) {
+        console.error(e)
+    }
 }
 </script>
 
