@@ -1,18 +1,14 @@
 <script setup lang="ts">
 import type { UserDashboardEntry } from "@/features/admin/infrastructure/admin.response.dto"
 import { useAdminStore } from "@/features/admin/stores/admin.store"
-import { computed, onMounted, ref } from "vue"
+import { onMounted, ref } from "vue"
 
 import VueTableLite from "vue3-table-lite/ts"
 
 const adminStore = useAdminStore()
 
-const page = ref<number>(1)
-const perPage = ref<number>(10)
-
-const paginatedUsers = computed(() =>
-    adminStore.users.slice((page.value - 1) * perPage.value, page.value * perPage.value),
-)
+const users = ref<UserDashboardEntry[]>([])
+const paginatedUsers = ref<UserDashboardEntry[]>([])
 
 const columns = [
     {
@@ -28,44 +24,53 @@ const columns = [
     {
         label: "Email",
         field: "email",
+        sortable: true,
     },
     {
         label: "Role",
         field: "role",
+        sortable: true,
     },
     {
         label: "Created",
         field: "createdAt",
+        sortable: true,
         display: (row: UserDashboardEntry) =>
-            new Intl.DateTimeFormat("fr-FR", {
+            new Intl.DateTimeFormat("en-US", {
                 dateStyle: "medium",
                 timeStyle: "short",
             }).format(row.createdAt),
     },
 ]
 
-const sortable = ref<{ order: string; sort: string }>({ order: "id", sort: "asc" })
+const doSearch = (
+    offset: number,
+    limit: number,
+    field: keyof UserDashboardEntry,
+    direction: "asc" | "desc",
+) => {
+    const modifier = direction === "asc" ? 1 : -1
 
-// const doSearch = (offset: number, limit: number, order: string, sort: string) => {
-//     table.isLoading = true
-//     setTimeout(() => {
-//         table.isReSearch = offset == undefined ? true : false
-//         if (offset >= 10 || limit >= 20) {
-//             limit = 20
-//         }
-//         if (sort == "asc") {
-//             table.rows = sampleData1(offset, limit)
-//         } else {
-//             table.rows = sampleData2(offset, limit)
-//         }
-//         table.totalRecordCount = 20
-//         table.sortable.order = order
-//         table.sortable.sort = sort
-//     }, 600)
-// }
+    users.value.sort((userA, userB) => {
+        const valA = userA[field]
+        const valB = userB[field]
 
-onMounted(() => {
-    adminStore.getAllUsers()
+        if (typeof valA === "string" && typeof valB === "string") {
+            return valA.localeCompare(valB) * modifier
+        }
+
+        if (valA < valB) return -1 * modifier
+        if (valA > valB) return 1 * modifier
+        return 0
+    })
+
+    paginatedUsers.value = users.value.slice(offset, offset + limit)
+}
+
+onMounted(async () => {
+    await adminStore.getAllUsers()
+    users.value = adminStore.users
+    doSearch(0, 10, "id", "asc")
 })
 </script>
 
@@ -80,7 +85,7 @@ onMounted(() => {
                 :columns="columns"
                 :rows="paginatedUsers"
                 :total="adminStore.users.length"
-                :sortable="sortable"
+                @do-search="doSearch"
                 class="w-full"
             ></VueTableLite>
         </div>
