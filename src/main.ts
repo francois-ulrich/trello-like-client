@@ -6,6 +6,7 @@ import App from "./App.vue"
 import router from "@/router"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import { useBoardStore } from "@/features/boards/stores/board.store"
+import PrimeVue from "primevue/config"
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -21,5 +22,6 @@ await authStore.initialize()
 if (authStore.isAuthenticated) boardStore.getAll()
 
 app.use(router)
+app.use(PrimeVue)
 
 app.mount("#app")

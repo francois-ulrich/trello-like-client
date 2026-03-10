@@ -5,6 +5,7 @@ import RegisterView from "@/features/auth/views/RegisterView.vue"
 import HomeView from "@/features/boards/views/HomeView.vue"
 import AdminView from "@/features/admin/views/AdminView.vue"
 import { useAuthStore } from "@/features/auth/stores/authStore"
+import AdminUserView from "@/features/admin/views/AdminUserView.vue"
 
 function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized) {
     const auth = useAuthStore()
@@ -21,6 +22,12 @@ function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized
 }
 
 const routes = [
+    {
+        path: "/admin/user/:id",
+        name: "admin/user",
+        component: AdminUserView,
+        beforeEnter: requireAdmin,
+    },
     {
         path: "/admin",
         name: "admin",

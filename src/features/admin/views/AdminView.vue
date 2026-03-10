@@ -3,75 +3,24 @@ import type { UserDashboardEntry } from "@/features/admin/infrastructure/admin.r
 import { useAdminStore } from "@/features/admin/stores/admin.store"
 import { onMounted, ref } from "vue"
 
-import VueTableLite from "vue3-table-lite/ts"
-
+import DataTable from "primevue/datatable"
+import Column from "primevue/column"
+import BaseButton from "@/shared/components/BaseButton.vue"
 const adminStore = useAdminStore()
 
-const users = ref<UserDashboardEntry[]>([])
-const paginatedUsers = ref<UserDashboardEntry[]>([])
-
-const columns = [
-    {
-        label: "Id",
-        field: "id",
-        sortable: true,
-    },
-    {
-        label: "Name",
-        field: "name",
-        sortable: true,
-    },
-    {
-        label: "Email",
-        field: "email",
-        sortable: true,
-    },
-    {
-        label: "Role",
-        field: "role",
-        sortable: true,
-    },
-    {
-        label: "Created",
-        field: "createdAt",
-        sortable: true,
-        display: (row: UserDashboardEntry) =>
-            new Intl.DateTimeFormat("en-US", {
-                dateStyle: "medium",
-                timeStyle: "short",
-            }).format(row.createdAt),
-    },
-]
-
-const doSearch = (
-    offset: number,
-    limit: number,
-    field: keyof UserDashboardEntry,
-    direction: "asc" | "desc",
-) => {
-    const modifier = direction === "asc" ? 1 : -1
-
-    users.value.sort((userA, userB) => {
-        const valA = userA[field]
-        const valB = userB[field]
-
-        if (typeof valA === "string" && typeof valB === "string") {
-            return valA.localeCompare(valB) * modifier
-        }
-
-        if (valA < valB) return -1 * modifier
-        if (valA > valB) return 1 * modifier
-        return 0
-    })
-
-    paginatedUsers.value = users.value.slice(offset, offset + limit)
-}
+const users = ref<UserDashboardEntry[]>()
 
 onMounted(async () => {
     await adminStore.getAllUsers()
-    users.value = adminStore.users
-    doSearch(0, 10, "id", "asc")
+    users.value = adminStore.users.map((u) => ({ ...u }))
 })
+
+// const formatDate = (date: Date): string => {
+//     return new Intl.DateTimeFormat("en-US", {
+//         dateStyle: "medium",
+//         timeStyle: "short",
+//     }).format(date)
+// }
 </script>
 
 <template>
@@ -81,13 +30,19 @@ onMounted(async () => {
         <h2 class="text-xl">Users</h2>
 
         <div class="w-full">
-            <VueTableLite
-                :columns="columns"
-                :rows="paginatedUsers"
-                :total="adminStore.users.length"
-                @do-search="doSearch"
-                class="w-full"
-            ></VueTableLite>
+            <DataTable :value="users" paginator :rows="10">
+                <Column field="id" header="Id" sortable></Column>
+                <Column field="name" header="Name" sortable></Column>
+                <Column field="email" header="Email" sortable></Column>
+                <Column field="role" header="Role" sortable></Column>
+                <Column field="actions" header="Actions">
+                    <template #body="slotProps">
+                        <BaseButton :to="{ name: 'admin/user', params: { id: slotProps.data.id } }"
+                            >View</BaseButton
+                        >
+                    </template>
+                </Column>
+            </DataTable>
         </div>
     </div>
 </template>
