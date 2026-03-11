@@ -2,7 +2,7 @@
 import type { ButtonsColor } from "@/shared/types/buttonsColor"
 import { useSlots, type Component } from "vue"
 import router from "@/router"
-import type { RouteParamsRawGeneric } from "vue-router"
+import type { RouteLocationRaw } from "vue-router"
 
 const colorClassesOptions: Record<string, Record<string, string>> = {
     primary: {
@@ -47,6 +47,8 @@ const shapeClassesOptions: Record<string, string> = {
     rounded: "rounded-md",
 }
 
+// type RouteTo = { name: string; params?: RouteParamsRawGeneric }
+
 const props = withDefaults(
     defineProps<{
         icon?: Component
@@ -56,7 +58,7 @@ const props = withDefaults(
         variant?: "solid" | "outline" | "ghost"
         shape?: "rounded" | "rectangle"
         class?: string
-        to?: null | { name: string; params?: RouteParamsRawGeneric }
+        to?: null | RouteLocationRaw
     }>(),
     {
         as: "button",
@@ -82,7 +84,7 @@ const emit = defineEmits<{
 
 const onClick = () => {
     if (props.to != null) {
-        router.push({ name: props.to.name, params: props.to.params })
+        router.push(props.to)
         return
     }
 
