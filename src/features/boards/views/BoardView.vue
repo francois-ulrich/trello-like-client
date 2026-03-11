@@ -18,6 +18,7 @@ import type {
     DraggableChangeEventPayloadMoved,
 } from "@/shared/types/draggable"
 import { useColumnStore } from "@/features/columns/stores/column.store"
+import type { Board } from "@/features/boards/domain/board.model"
 
 const route = useRoute()
 
@@ -28,7 +29,7 @@ const columnStore = useColumnStore()
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 const renamableRef = ref<InstanceType<typeof Renamable> | null>(null)
 
-const board = computed(() => boardStore.getById(Number(route.params.id)))
+const board = computed<Board | undefined>(() => boardStore.getById(Number(route.params.id)))
 const columns = ref<Column[]>()
 
 watch(

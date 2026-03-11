@@ -47,8 +47,6 @@ const shapeClassesOptions: Record<string, string> = {
     rounded: "rounded-md",
 }
 
-// type RouteTo = { name: string; params?: RouteParamsRawGeneric }
-
 const props = withDefaults(
     defineProps<{
         icon?: Component

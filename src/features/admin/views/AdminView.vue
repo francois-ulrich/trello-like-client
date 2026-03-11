@@ -6,6 +6,7 @@ import { onMounted, ref } from "vue"
 import DataTable from "primevue/datatable"
 import Column from "primevue/column"
 import BaseButton from "@/shared/components/BaseButton.vue"
+import { formatDate } from "@/shared/utils/date"
 const adminStore = useAdminStore()
 
 const users = ref<UserDashboardEntry[]>()
@@ -14,13 +15,6 @@ onMounted(async () => {
     await adminStore.getAllUsers()
     users.value = adminStore.users.map((u) => ({ ...u }))
 })
-
-// const formatDate = (date: Date): string => {
-//     return new Intl.DateTimeFormat("en-US", {
-//         dateStyle: "medium",
-//         timeStyle: "short",
-//     }).format(date)
-// }
 </script>
 
 <template>
@@ -35,6 +29,11 @@ onMounted(async () => {
                 <Column field="name" header="Name" sortable></Column>
                 <Column field="email" header="Email" sortable></Column>
                 <Column field="role" header="Role" sortable></Column>
+                <Column field="createdAt" header="CreatedAt" sortable>
+                    <template #body="slotProps">
+                        {{ formatDate(slotProps.data.createdAt) }}
+                    </template>
+                </Column>
                 <Column field="actions" header="Actions">
                     <template #body="slotProps">
                         <BaseButton :to="{ name: 'admin/user', params: { id: slotProps.data.id } }"

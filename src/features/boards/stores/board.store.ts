@@ -8,6 +8,7 @@ import type {
     CreateBoardRequestDTO,
     UpdateBoardRequestDTO,
 } from "@/features/boards/infrastructure/board.request.dto"
+import { mapApiBoards } from "@/features/boards/utils"
 
 export const useBoardStore = defineStore("board", () => {
     const columnStore = useColumnStore()
@@ -18,39 +19,45 @@ export const useBoardStore = defineStore("board", () => {
     async function getAll() {
         const res = await boardApi.getAll()
 
-        items.value = res.data.map((board) => ({
-            id: board.id,
-            name: board.name,
-        }))
+        // items.value = res.data.map((board) => ({
+        //     id: board.id,
+        //     name: board.name,
+        // }))
 
-        columnStore.items = res.data.flatMap((board) =>
-            board.columns.map((columnDto) => {
-                const { id, name, position } = columnDto
+        // columnStore.items = res.data.flatMap((board) =>
+        //     board.columns.map((columnDto) => {
+        //         const { id, name, position } = columnDto
 
-                return {
-                    id,
-                    name,
-                    position,
-                    boardId: columnDto.board_id,
-                }
-            }),
-        )
+        //         return {
+        //             id,
+        //             name,
+        //             position,
+        //             boardId: columnDto.board_id,
+        //         }
+        //     }),
+        // )
 
-        cardStore.items = res.data.flatMap((board) =>
-            board.columns.flatMap((columnDto) =>
-                columnDto.cards.map((cardDto) => {
-                    const { id, name, description, position } = cardDto
+        // cardStore.items = res.data.flatMap((board) =>
+        //     board.columns.flatMap((columnDto) =>
+        //         columnDto.cards.map((cardDto) => {
+        //             const { id, name, description, position } = cardDto
 
-                    return {
-                        id,
-                        name,
-                        description,
-                        position,
-                        columnId: cardDto.column_id,
-                    }
-                }),
-            ),
-        )
+        //             return {
+        //                 id,
+        //                 name,
+        //                 description,
+        //                 position,
+        //                 columnId: cardDto.column_id,
+        //             }
+        //         }),
+        //     ),
+        // )
+
+        const { boards, columns, cards } = mapApiBoards(res.data)
+
+        items.value = boards
+        columnStore.items = columns
+        cardStore.items = cards
     }
 
     function getById(id: number): Board | undefined {
