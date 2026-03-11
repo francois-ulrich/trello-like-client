@@ -6,8 +6,9 @@ import HomeView from "@/features/boards/views/HomeView.vue"
 import AdminView from "@/features/admin/views/AdminView.vue"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import AdminUserView from "@/features/admin/views/AdminUserView.vue"
+import { useAdminStore } from "@/features/admin/stores/admin.store"
 
-function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized) {
+async function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized) {
     const auth = useAuthStore()
 
     if (!auth.isAdmin) {
@@ -17,6 +18,9 @@ function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized
 
         return "/"
     }
+
+    const adminStore = useAdminStore()
+    await adminStore.ensureUsersAreLoaded()
 
     return true
 }

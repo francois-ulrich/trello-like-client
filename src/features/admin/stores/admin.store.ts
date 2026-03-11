@@ -12,8 +12,8 @@ export const useAdminStore = defineStore("admin", () => {
         return users.value.find((i) => i.id === id)
     }
 
-    async function getAllUsers() {
-        const res = await adminApi.getAllUsers()
+    async function loadAllUsers() {
+        const res = await adminApi.loadAllUsers()
 
         users.value = res.data.map((userDto) => ({
             id: userDto.id,
@@ -24,17 +24,23 @@ export const useAdminStore = defineStore("admin", () => {
         }))
     }
 
-    async function getUserBoards(id: number) {
-        const res = await adminApi.getUserBoards(id)
+    async function loadUserBoards(id: number) {
+        const res = await adminApi.loadUserBoards(id)
+        userBoards.value = res.data
+    }
 
-        // userBoards.value =
-        console.log(res)
+    async function ensureUsersAreLoaded() {
+        if (users.value.length === 0) {
+            await loadAllUsers()
+        }
     }
 
     return {
         users,
+        userBoards,
         getUserById,
-        getAllUsers,
-        getUserBoards,
+        loadAllUsers,
+        loadUserBoards,
+        ensureUsersAreLoaded,
     }
 })

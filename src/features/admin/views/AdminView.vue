@@ -7,12 +7,12 @@ import DataTable from "primevue/datatable"
 import Column from "primevue/column"
 import BaseButton from "@/shared/components/BaseButton.vue"
 import { formatDate } from "@/shared/utils/date"
+
 const adminStore = useAdminStore()
 
 const users = ref<UserDashboardEntry[]>()
 
 onMounted(async () => {
-    await adminStore.getAllUsers()
     users.value = adminStore.users.map((u) => ({ ...u }))
 })
 </script>
