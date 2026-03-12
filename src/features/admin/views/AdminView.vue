@@ -29,7 +29,7 @@ onMounted(async () => {
                 <Column field="name" header="Name" sortable></Column>
                 <Column field="email" header="Email" sortable></Column>
                 <Column field="role" header="Role" sortable></Column>
-                <Column field="createdAt" header="CreatedAt" sortable>
+                <Column field="createdAt" header="Created at" sortable>
                     <template #body="slotProps">
                         {{ formatDate(slotProps.data.createdAt) }}
                     </template>

@@ -16,48 +16,28 @@ export const useBoardStore = defineStore("board", () => {
 
     const items = ref<Board[]>([])
 
-    async function getAll() {
+    async function loadAll() {
         const res = await boardApi.getAll()
-
-        // items.value = res.data.map((board) => ({
-        //     id: board.id,
-        //     name: board.name,
-        // }))
-
-        // columnStore.items = res.data.flatMap((board) =>
-        //     board.columns.map((columnDto) => {
-        //         const { id, name, position } = columnDto
-
-        //         return {
-        //             id,
-        //             name,
-        //             position,
-        //             boardId: columnDto.board_id,
-        //         }
-        //     }),
-        // )
-
-        // cardStore.items = res.data.flatMap((board) =>
-        //     board.columns.flatMap((columnDto) =>
-        //         columnDto.cards.map((cardDto) => {
-        //             const { id, name, description, position } = cardDto
-
-        //             return {
-        //                 id,
-        //                 name,
-        //                 description,
-        //                 position,
-        //                 columnId: cardDto.column_id,
-        //             }
-        //         }),
-        //     ),
-        // )
 
         const { boards, columns, cards } = mapApiBoards(res.data)
 
         items.value = boards
         columnStore.items = columns
         cardStore.items = cards
+    }
+
+    async function loadById(id: number) {
+        const res = await boardApi.get(id)
+
+        const { boards, columns, cards } = mapApiBoards([res.data])
+
+        items.value = { ...items.value, ...boards }
+        columnStore.items = { ...columnStore.items, ...columns }
+        cardStore.items = { ...cardStore.items, ...cards }
+    }
+
+    async function ensureBoardIsLoaded(id: number) {
+        if (!items.value.find((board) => board.id === id)) loadById(id)
     }
 
     function getById(id: number): Board | undefined {
@@ -120,5 +100,16 @@ export const useBoardStore = defineStore("board", () => {
         }
     }
 
-    return { items, getById, getAll, getByColumnId, getColumnsInBoard, create, update, remove }
+    return {
+        items,
+        getById,
+        loadById,
+        ensureBoardIsLoaded,
+        loadAll,
+        getByColumnId,
+        getColumnsInBoard,
+        create,
+        update,
+        remove,
+    }
 })

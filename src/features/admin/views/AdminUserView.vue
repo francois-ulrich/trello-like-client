@@ -38,10 +38,21 @@ onMounted(async () => {
             <DataTable :value="boards" paginator :rows="10">
                 <Column field="id" header="Id" sortable></Column>
                 <Column field="name" header="Name" sortable></Column>
+                <Column field="createdAt" header="Created at" sortable>
+                    <template #body="slotProps">
+                        {{ formatDate(slotProps.data.createdAt) }}
+                    </template>
+                </Column>
                 <Column field="actions" header="Actions">
                     <template #body="slotProps">
                         <BaseButton
-                            :to="{ name: 'admin/user/board', params: { id: slotProps.data.id } }"
+                            :to="{
+                                name: 'admin/user/board',
+                                params: {
+                                    userId: user.id,
+                                    boardId: slotProps.data.id,
+                                },
+                            }"
                             >View</BaseButton
                         >
                     </template>

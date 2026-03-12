@@ -7,6 +7,8 @@ import AdminView from "@/features/admin/views/AdminView.vue"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import AdminUserView from "@/features/admin/views/AdminUserView.vue"
 import { useAdminStore } from "@/features/admin/stores/admin.store"
+import AdminUserBoardView from "@/features/admin/views/AdminUserBoardView.vue"
+import { useBoardStore } from "@/features/boards/stores/board.store"
 
 async function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized) {
     const auth = useAuthStore()
@@ -26,6 +28,18 @@ async function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNorm
 }
 
 const routes = [
+    {
+        path: "/admin/user/:userId/board/:boardId",
+        name: "admin/user/board",
+        component: AdminUserBoardView,
+        beforeEnter: [
+            requireAdmin,
+            (to: RouteLocationNormalized) => {
+                const boardStore = useBoardStore()
+                return boardStore.ensureBoardIsLoaded(Number(to.params.boardId))
+            },
+        ],
+    },
     {
         path: "/admin/user/:id",
         name: "admin/user",
