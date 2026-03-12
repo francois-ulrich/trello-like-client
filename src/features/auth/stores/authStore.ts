@@ -38,7 +38,7 @@ export const useAuthStore = defineStore("auth", () => {
         const res = await business.login(data)
         user.value = buildUserFromDTO(res.data)
 
-        boardStore.getAll()
+        boardStore.loadAll()
     }
 
     const logout = async () => {

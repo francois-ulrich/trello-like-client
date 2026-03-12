@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BoardItemBase from "@/shared/components/BoardItemBase.vue"
+import BoardOpenButtonBase from "@/shared/components/BoardOpenButtonBase.vue"
 import { useBoardStore } from "@/features/boards/stores/board.store"
 import type { Board } from "@/features/boards/domain/board.model"
 import { computed } from "vue"
@@ -26,7 +26,7 @@ const boards = computed<Board[]>(() => boardStore.items)
 
             <ul class="flex flex-row gap-4 flex-auto overflow-x-auto pb-4 w-full">
                 <li v-for="board in boards">
-                    <BoardItemBase>
+                    <BoardOpenButtonBase>
                         <RouterLink :to="{ name: 'board', params: { id: board.id } }">
                             <div class="flex flex-col-reverse h-full overflow-hidden">
                                 <div class="bg-gray-200 p-2 flex-none text-center">
@@ -39,7 +39,7 @@ const boards = computed<Board[]>(() => boardStore.items)
                                 ></div>
                             </div>
                         </RouterLink>
-                    </BoardItemBase>
+                    </BoardOpenButtonBase>
                 </li>
                 <li>
                     <BoardCreationButton />

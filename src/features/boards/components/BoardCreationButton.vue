@@ -5,7 +5,7 @@ import BaseButton from "@/shared/components/BaseButton.vue"
 import type { ComponentExposed } from "vue-component-type-helpers"
 import { nextTick, ref, useTemplateRef } from "vue"
 import { useBoardStore } from "@/features/boards/stores/board.store"
-import BoardItemBase from "@/shared/components/BoardItemBase.vue"
+import BoardOpenButtonBase from "@/shared/components/BoardOpenButtonBase.vue"
 
 const boardStore = useBoardStore()
 
@@ -35,13 +35,13 @@ const handleBoardCreationFormSubmit = () => {
 
 <template>
     <div>
-        <BoardItemBase
+        <BoardOpenButtonBase
             class="bg-gray-200 flex justify-center items-center text-gray-600 font-semibold text-sm"
         >
             <button class="cursor-pointer w-full h-full" @click="handleBoardCreationModalOpen">
                 <p>Create new board</p>
             </button>
-        </BoardItemBase>
+        </BoardOpenButtonBase>
 
         <ModalDialog ref="boardDeleteModalRef" :withBackdrop="true">
             <template #header>

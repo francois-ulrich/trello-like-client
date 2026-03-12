@@ -31,9 +31,9 @@ export const useBoardStore = defineStore("board", () => {
 
         const { boards, columns, cards } = mapApiBoards([res.data])
 
-        items.value = { ...items.value, ...boards }
-        columnStore.items = { ...columnStore.items, ...columns }
-        cardStore.items = { ...cardStore.items, ...cards }
+        items.value = [...items.value, ...boards]
+        columnStore.items = [...columnStore.items, ...columns]
+        cardStore.items = [...cardStore.items, ...cards]
     }
 
     async function ensureBoardIsLoaded(id: number) {
@@ -41,6 +41,7 @@ export const useBoardStore = defineStore("board", () => {
     }
 
     function getById(id: number): Board | undefined {
+        console.log()
         return items.value.find((i) => i.id === id)
     }
 
