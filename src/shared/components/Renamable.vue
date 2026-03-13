@@ -7,8 +7,9 @@ const props = withDefaults(
         textClass?: string
         inputType?: "input" | "textarea"
         closeOnFocusOut?: boolean
+        disabled?: boolean
     }>(),
-    { inputType: "input", closeOnFocusOut: true },
+    { inputType: "input", closeOnFocusOut: true, enabled: false },
 )
 
 const inputRef = useTemplateRef<HTMLInputElement | HTMLTextAreaElement>("inputRef")
@@ -42,7 +43,7 @@ const handleSubmit = () => {
 }
 
 const open = () => {
-    handleSwitchToEditMode()
+    if (!props.disabled) handleSwitchToEditMode()
 }
 
 defineExpose({
@@ -55,7 +56,7 @@ const textareaElClass =
 
 <template>
     <div>
-        <div v-if="!isInEditMode" class="cursor-pointer" @click="handleSwitchToEditMode">
+        <div v-if="!isInEditMode" :class="{ 'cursor-pointer': !props.disabled }" @click="open">
             <span :class="textClass" v-if="inputValue.length > 0">{{ inputValue }}</span>
             <div v-else>
                 <slot name="if-value-empty"></slot>

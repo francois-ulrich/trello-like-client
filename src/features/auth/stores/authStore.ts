@@ -29,6 +29,10 @@ export const useAuthStore = defineStore("auth", () => {
         }
     }
 
+    const can = (role: string) => {
+        return user.value?.role === role
+    }
+
     const register = async (data: RegisterRequestDTO) => {
         const res = await business.register(data)
         user.value = buildUserFromDTO(res.data)
@@ -59,5 +63,5 @@ export const useAuthStore = defineStore("auth", () => {
         return { name, email, role }
     }
 
-    return { isAuthenticated, isAdmin, user, initialize, register, login, logout }
+    return { isAuthenticated, isAdmin, user, initialize, register, login, logout, can }
 })

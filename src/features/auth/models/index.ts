@@ -5,3 +5,8 @@ export type User = {
 }
 
 export type UserRole = "user" | "admin"
+
+export type UserPermissions = {
+    update: boolean
+    delete: boolean
+}

@@ -11,16 +11,17 @@ export function mapApiBoards(data: BoardResponseDTO[]): {
     const boards: Board[] = data.map((board) => ({
         id: board.id,
         name: board.name,
+        can: board.can,
     }))
 
-    const columns: Column[] = data.flatMap((board) =>
-        board.columns.map((column) => ({
+    const columns: Column[] = data.flatMap((board) => {
+        return board.columns.map((column) => ({
             id: column.id,
             name: column.name,
             position: column.position,
             boardId: column.board_id,
-        })),
-    )
+        }))
+    })
 
     const cards: Card[] = data.flatMap((board) =>
         board.columns.flatMap((column) =>

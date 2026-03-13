@@ -90,12 +90,13 @@ const handleBoardRename = async () => {
 
             <Renamable
                 ref="renamableRef"
+                :disabled="!boardStore.canEdit(board.id)"
                 textClass="text-lg font-medium"
                 :text="props.board.name"
                 @textUpdate="handleBoardNameUpdate"
             ></Renamable>
 
-            <template #options>
+            <template #options v-if="boardStore.canEdit(board.id)">
                 <ActionsDropdown :buttonIconSize="24" alignModal="right">
                     <template #header>
                         <p class="font-medium text-center">Board actions</p>
@@ -129,13 +130,14 @@ const handleBoardRename = async () => {
                     group="columns"
                     class="flex flex-row gap-x-4"
                     @change="handleColumnsMove"
+                    :disabled="!boardStore.canEdit(board.id)"
                 >
                     <template #item="{ element }: { element: Column }">
                         <ColumnItem :column="element" />
                     </template>
                 </draggable>
 
-                <ColumnCreation :boardId="props.board.id" />
+                <ColumnCreation :boardId="props.board.id" v-if="boardStore.canEdit(board.id)" />
             </div>
         </div>
 

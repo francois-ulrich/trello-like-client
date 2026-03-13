@@ -8,9 +8,11 @@ import { useCardStore } from "@/features/cards/stores/card.store"
 import type { Card } from "@/features/cards/domain/card.model"
 import type { Column } from "@/features/columns/domain/column.model"
 import BaseButton from "@/shared/components/BaseButton.vue"
+import { useBoardStore } from "@/features/boards/stores/board.store"
 
 const props = defineProps<{ cardId: number; column: Column }>()
 
+const boardStore = useBoardStore()
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 const cardStore = useCardStore()
 
@@ -70,6 +72,7 @@ const handleCardDeletion = () => {
 
             <div class="space-y-8">
                 <Renamable
+                    :disabled="!boardStore.canEdit(column.boardId)"
                     ref="titleFieldRef"
                     textClass="text-xl font-medium"
                     :text="card.name"
@@ -83,6 +86,7 @@ const handleCardDeletion = () => {
                     </div>
 
                     <Renamable
+                        :disabled="!boardStore.canEdit(column.boardId)"
                         ref="titleFieldRef"
                         :text="card.description ?? ''"
                         inputType="textarea"
@@ -90,15 +94,16 @@ const handleCardDeletion = () => {
                         @textUpdate="handleDescriptionUpdate"
                     >
                         <template #if-value-empty>
-                            <div class="outline-input">
+                            <div class="outline-input" v-if="boardStore.canEdit(column.boardId)">
                                 <p>Add a more detailed description...</p>
                             </div>
+                            <p class="text-gray-600 italic" v-else>No description</p>
                         </template>
                     </Renamable>
                 </div>
             </div>
 
-            <template #footer>
+            <template #footer v-if="boardStore.canEdit(column.boardId)">
                 <BaseButton color="danger" @click="handleCardDeleteModalOpen">
                     <p class="text-center">Delete card</p>
                 </BaseButton>

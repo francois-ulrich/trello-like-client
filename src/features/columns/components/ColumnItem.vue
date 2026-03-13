@@ -18,9 +18,11 @@ import HeaderWithTitleAndOptions from "@/shared/components/HeaderWithTitleAndOpt
 import ModalDialog from "@/shared/components/ModalDialog.vue"
 import { useColumnStore } from "@/features/columns/stores/column.store"
 import Renamable from "@/shared/components/Renamable.vue"
+import { useBoardStore } from "@/features/boards/stores/board.store"
 
 const props = defineProps<{ column: Column }>()
 
+const boardStore = useBoardStore()
 const columnStore = useColumnStore()
 const cardStore = useCardStore()
 
@@ -94,6 +96,7 @@ const handleColumnRename = () => {
         <RoundedCard class="bg-gray-200 flex flex-col gap-y-4 board-column-item w-full">
             <HeaderWithTitleAndOptions>
                 <Renamable
+                    :disabled="!boardStore.canEdit(column.boardId)"
                     ref="renamableRef"
                     textClass="font-medium"
                     :text="column.name"
@@ -102,7 +105,7 @@ const handleColumnRename = () => {
 
                 <p>position : {{ column.position }}</p>
 
-                <template #options>
+                <template #options v-if="boardStore.canEdit(column.boardId)">
                     <ActionsDropdown :buttonIconSize="24">
                         <template #header>
                             <p class="font-medium text-center">Column actions</p>
@@ -128,6 +131,7 @@ const handleColumnRename = () => {
             </HeaderWithTitleAndOptions>
 
             <draggable
+                :disabled="!boardStore.canEdit(column.boardId)"
                 v-model="cards"
                 item-key="id"
                 :group="column.boardId"
@@ -139,7 +143,7 @@ const handleColumnRename = () => {
                 </template>
             </draggable>
 
-            <CardCreation :column="column" />
+            <CardCreation :column="column" v-if="boardStore.canEdit(column.boardId)" />
         </RoundedCard>
 
         <ModalDialog ref="columnDeleteModalRef" :withBackdrop="true">

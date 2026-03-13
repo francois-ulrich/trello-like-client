@@ -8,7 +8,7 @@ import type {
     CreateBoardRequestDTO,
     UpdateBoardRequestDTO,
 } from "@/features/boards/infrastructure/board.request.dto"
-import { mapApiBoards } from "@/features/boards/utils"
+import { mapApiBoards } from "@/features/boards/utils/board.util.index"
 
 export const useBoardStore = defineStore("board", () => {
     const columnStore = useColumnStore()
@@ -41,7 +41,6 @@ export const useBoardStore = defineStore("board", () => {
     }
 
     function getById(id: number): Board | undefined {
-        console.log()
         return items.value.find((i) => i.id === id)
     }
 
@@ -64,9 +63,9 @@ export const useBoardStore = defineStore("board", () => {
         try {
             const res = await boardApi.create(payload)
 
-            const { id, name } = res.data
+            const { id, name, can } = res.data
 
-            items.value = [...items.value, { id, name }]
+            items.value = [...items.value, { id, name, can }]
         } catch (e: unknown) {
             console.error(e)
         }
@@ -76,9 +75,9 @@ export const useBoardStore = defineStore("board", () => {
         try {
             const res = await boardApi.update(boardId, payload)
 
-            const { id, name } = res.data
+            const { id, name, can } = res.data
 
-            items.value = [...items.value.filter((item) => item.id != id), { id, name }]
+            items.value = [...items.value.filter((item) => item.id != id), { id, name, can }]
         } catch (e: unknown) {
             console.error(e)
         }
@@ -101,6 +100,12 @@ export const useBoardStore = defineStore("board", () => {
         }
     }
 
+    function canEdit(boardId: number) {
+        const board = getById(boardId)
+        if (!board) return false
+        return board.can.update
+    }
+
     return {
         items,
         getById,
@@ -112,5 +117,6 @@ export const useBoardStore = defineStore("board", () => {
         create,
         update,
         remove,
+        canEdit,
     }
 })

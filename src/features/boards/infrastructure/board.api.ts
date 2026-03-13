@@ -6,13 +6,13 @@ import type {
 import type { BoardResponseDTO } from "@/features/boards/infrastructure/board.response.dto"
 import type { ApiResponse } from "@/shared/models"
 
-const get = async (id: number): Promise<ApiResponse<BoardResponseDTO>> => {
-    const res = await api.get<ApiResponse<BoardResponseDTO>>(`/boards/${id}`)
+const getAll = async (): Promise<ApiResponse<BoardResponseDTO[]>> => {
+    const res = await api.get<ApiResponse<BoardResponseDTO[]>>("/boards")
     return res.data
 }
 
-const getAll = async (): Promise<ApiResponse<BoardResponseDTO[]>> => {
-    const res = await api.get<ApiResponse<BoardResponseDTO[]>>("/boards")
+const get = async (id: number): Promise<ApiResponse<BoardResponseDTO>> => {
+    const res = await api.get<ApiResponse<BoardResponseDTO>>(`/boards/${id}`)
     return res.data
 }
 
