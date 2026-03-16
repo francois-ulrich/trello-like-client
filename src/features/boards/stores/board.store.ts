@@ -93,8 +93,6 @@ export const useBoardStore = defineStore("board", () => {
             })
 
             columnStore.items = columnStore.items.filter((item) => item.boardId !== boardId)
-
-            console.log(items.value)
         } catch (e: unknown) {
             console.error(e)
         }

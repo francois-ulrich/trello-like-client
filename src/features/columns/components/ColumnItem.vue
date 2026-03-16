@@ -103,8 +103,6 @@ const handleColumnRename = () => {
                     @textUpdate="handleColumnNameUpdate"
                 ></Renamable>
 
-                <p>position : {{ column.position }}</p>
-
                 <template #options v-if="boardStore.canEdit(column.boardId)">
                     <ActionsDropdown :buttonIconSize="24">
                         <template #header>

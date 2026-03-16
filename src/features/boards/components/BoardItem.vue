@@ -143,17 +143,18 @@ const handleBoardRename = async () => {
 
         <ModalDialog ref="boardDeleteModalRef" :withBackdrop="true">
             <template #header
-                ><p class="text-center font-medium">Delete props.board ?</p>
+                ><p class="text-center font-medium">Delete board {{ props.board.name }} ?</p>
             </template>
 
             <div class="flex flex-col gap-4">
                 <p>
-                    Are you sure you want to delete this props.board&nbsp;? This action is
-                    irreversible.
+                    Are you sure you want to delete this board&nbsp;? This action is irreversible.
                 </p>
 
                 <BaseButton color="danger" @click="handleBoardDeletion">
-                    <p class="text-center">Delete props.board</p>
+                    <p class="text-center">
+                        Delete board <span class="font-semibold">{{ props.board.name }}</span>
+                    </p>
                 </BaseButton>
             </div>
         </ModalDialog>
