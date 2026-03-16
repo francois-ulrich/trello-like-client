@@ -62,7 +62,11 @@ const handleCardDeletion = () => {
 
         <TextAlignStart v-if="card?.description !== undefined" :size="14" class="m-1" />
 
-        <SquarePen class="absolute top-2 right-2 opacity-0 group-hover:opacity-100" :size="16" />
+        <SquarePen
+            v-if="boardStore.canEdit(column.boardId)"
+            class="absolute top-2 right-2 opacity-0 group-hover:opacity-100"
+            :size="16"
+        />
 
         <ModalDialog :withBackdrop="true" positioning="screenCenter" ref="boardDeleteModalRef">
             <template #header>

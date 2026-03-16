@@ -13,7 +13,19 @@ const loadUserBoards = async (id: number): Promise<ApiResponse<BoardResponseDTO[
     return res.data
 }
 
+const banUser = async (id: number): Promise<ApiResponse<UserEntryResponseDTO>> => {
+    const res = await api.patch<ApiResponse<UserEntryResponseDTO>>(`/admin/users/${id}/ban`)
+    return res.data
+}
+
+const unbanUser = async (id: number): Promise<ApiResponse<UserEntryResponseDTO>> => {
+    const res = await api.patch<ApiResponse<UserEntryResponseDTO>>(`/admin/users/${id}/unban`)
+    return res.data
+}
+
 export const adminApi = {
     loadAllUsers,
     loadUserBoards,
+    banUser,
+    unbanUser,
 }

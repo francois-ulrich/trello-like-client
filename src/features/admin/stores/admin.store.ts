@@ -21,6 +21,7 @@ export const useAdminStore = defineStore("admin", () => {
             email: userDto.email,
             role: userDto.role.name,
             createdAt: new Date(userDto.created_at),
+            bannedAt: userDto.banned_at ? new Date(userDto.banned_at) : null,
         }))
     }
 
@@ -35,6 +36,38 @@ export const useAdminStore = defineStore("admin", () => {
         }
     }
 
+    async function banUser(id: number) {
+        const user = getUserById(id)
+
+        if (!user) return
+
+        const res = await adminApi.banUser(id)
+
+        users.value = [
+            ...users.value.filter((otherUser) => otherUser.id != id),
+            { ...user, bannedAt: res.data.banned_at ? new Date(res.data.banned_at) : null },
+        ]
+    }
+
+    async function unbanUser(id: number) {
+        const user = getUserById(id)
+
+        if (!user) return
+
+        const res = await adminApi.unbanUser(id)
+
+        users.value = [
+            ...users.value.filter((otherUser) => otherUser.id != id),
+            { ...user, bannedAt: res.data.banned_at ? new Date(res.data.banned_at) : null },
+        ]
+    }
+
+    function isUserBanned(id: number): boolean {
+        const user = getUserById(id)
+        if (!user) return false
+        return user.bannedAt !== null
+    }
+
     return {
         users,
         userBoards,
@@ -42,5 +75,8 @@ export const useAdminStore = defineStore("admin", () => {
         loadAllUsers,
         loadUserBoards,
         ensureUsersAreLoaded,
+        banUser,
+        unbanUser,
+        isUserBanned,
     }
 })

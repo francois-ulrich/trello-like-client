@@ -34,11 +34,22 @@ onMounted(async () => {
                         {{ formatDate(slotProps.data.createdAt) }}
                     </template>
                 </Column>
+                <Column field="bannedAt" header="Banned at" sortable>
+                    <template #body="slotProps">
+                        <p v-if="slotProps.data.bannedAt !== null">
+                            {{ formatDate(slotProps.data.bannedAt) }}
+                        </p>
+                        <p v-else class="select-none">-</p>
+                    </template>
+                </Column>
                 <Column field="actions" header="Actions">
                     <template #body="slotProps">
-                        <BaseButton :to="{ name: 'admin/user', params: { id: slotProps.data.id } }"
-                            >View</BaseButton
-                        >
+                        <div class="m-1">
+                            <BaseButton
+                                :to="{ name: 'admin/user', params: { id: slotProps.data.id } }"
+                                >View</BaseButton
+                            >
+                        </div>
                     </template>
                 </Column>
             </DataTable>
