@@ -19,7 +19,7 @@ const boardStore = useBoardStore()
 
 await authStore.initialize()
 
-if (authStore.isAuthenticated) boardStore.loadAll()
+if (authStore.isAuthenticated && !authStore.isUserBanned) boardStore.loadAll()
 
 app.use(router)
 app.use(PrimeVue)

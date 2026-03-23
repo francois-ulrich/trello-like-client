@@ -9,6 +9,7 @@ import AdminUserView from "@/features/admin/views/AdminUserView.vue"
 import { useAdminStore } from "@/features/admin/stores/admin.store"
 import AdminUserBoardView from "@/features/admin/views/AdminUserBoardView.vue"
 import { useBoardStore } from "@/features/boards/stores/board.store"
+import BannedView from "@/features/auth/views/BannedView.vue"
 
 async function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized) {
     const auth = useAuthStore()
@@ -23,6 +24,22 @@ async function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNorm
 
     const adminStore = useAdminStore()
     await adminStore.ensureUsersAreLoaded()
+
+    return true
+}
+
+function requireNotBanned(to: RouteLocationNormalized): boolean | string {
+    const auth = useAuthStore()
+
+    if (to.path === "/banned") {
+        if (!auth.isAuthenticated) return "/"
+
+        return true
+    }
+
+    if (auth.isUserBanned) {
+        return "/banned"
+    }
 
     return true
 }
@@ -58,6 +75,11 @@ const routes = [
         component: BoardView,
     },
     {
+        path: "/banned",
+        name: "banned",
+        component: BannedView,
+    },
+    {
         path: "/login",
         name: "login",
         component: LoginView,
@@ -78,5 +100,7 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes,
 })
+
+router.beforeEach(requireNotBanned)
 
 export default router

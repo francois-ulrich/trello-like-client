@@ -13,8 +13,11 @@ import type { UserResponseDTO } from "@/features/auth/infrastructure/auth.respon
 
 export const useAuthStore = defineStore("auth", () => {
     const user = ref<User | null>(null)
-    const isAuthenticated = computed(() => user.value !== null)
-    const isAdmin = computed(() => user.value?.role === "admin")
+    const isAuthenticated = computed<boolean>(() => user.value !== null)
+    const isAdmin = computed<boolean>(() => user.value?.role === "admin")
+    const isUserBanned = computed<boolean>(() =>
+        user.value !== null ? user.value.isBanned : false,
+    )
 
     const boardStore = useBoardStore()
     const columnStore = useColumnStore()
@@ -23,7 +26,7 @@ export const useAuthStore = defineStore("auth", () => {
     const fetchMe = async () => {
         try {
             const res = await business.getMe()
-            user.value = buildUserFromDTO(res.data)
+            persistUser(res.data)
         } catch {
             user.value = null
         }
@@ -35,14 +38,19 @@ export const useAuthStore = defineStore("auth", () => {
 
     const register = async (data: RegisterRequestDTO) => {
         const res = await business.register(data)
-        user.value = buildUserFromDTO(res.data)
+        persistUser(res.data)
     }
 
     const login = async (data: LoginRequestDTO) => {
         const res = await business.login(data)
-        user.value = buildUserFromDTO(res.data)
+        persistUser(res.data)
 
         boardStore.loadAll()
+    }
+
+    const persistUser = (data: UserResponseDTO) => {
+        const userToPersist = buildUserFromDTO(data)
+        if (userToPersist !== null) user.value = userToPersist
     }
 
     const logout = async () => {
@@ -59,9 +67,19 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     const buildUserFromDTO = (dto: UserResponseDTO): User => {
-        const { name, email, role } = dto.user
-        return { name, email, role }
+        const { name, email, role, isBanned } = dto.user
+        return { name, email, role, isBanned }
     }
 
-    return { isAuthenticated, isAdmin, user, initialize, register, login, logout, can }
+    return {
+        isAuthenticated,
+        isAdmin,
+        isUserBanned,
+        user,
+        initialize,
+        register,
+        login,
+        logout,
+        can,
+    }
 })
