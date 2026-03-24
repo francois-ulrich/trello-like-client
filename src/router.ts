@@ -28,8 +28,12 @@ async function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNorm
     return true
 }
 
-function requireNotBanned(to: RouteLocationNormalized): boolean | string {
+function handleBeforeEnter(to: RouteLocationNormalized): boolean | string {
     const auth = useAuthStore()
+
+    if (to.path !== "/") {
+        if (auth.isAuthenticated && !auth.isEmailVerified) return "/"
+    }
 
     if (to.path === "/banned") {
         if (!auth.isAuthenticated) return "/"
@@ -101,6 +105,6 @@ const router = createRouter({
     routes,
 })
 
-router.beforeEach(requireNotBanned)
+router.beforeEach(handleBeforeEnter)
 
 export default router

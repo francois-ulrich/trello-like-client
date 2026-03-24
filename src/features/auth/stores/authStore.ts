@@ -18,6 +18,9 @@ export const useAuthStore = defineStore("auth", () => {
     const isUserBanned = computed<boolean>(() =>
         user.value !== null ? user.value.isBanned : false,
     )
+    const isEmailVerified = computed<boolean>(() =>
+        user.value !== null ? user.value.emailIsVerified : false,
+    )
 
     const boardStore = useBoardStore()
     const columnStore = useColumnStore()
@@ -67,14 +70,15 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     const buildUserFromDTO = (dto: UserResponseDTO): User => {
-        const { name, email, role, isBanned } = dto.user
-        return { name, email, role, isBanned }
+        const { name, email, role, isBanned, emailIsVerified } = dto.user
+        return { name, email, role, isBanned, emailIsVerified }
     }
 
     return {
         isAuthenticated,
         isAdmin,
         isUserBanned,
+        isEmailVerified,
         user,
         initialize,
         register,

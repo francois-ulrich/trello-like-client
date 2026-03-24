@@ -1,16 +1,8 @@
 <script setup lang="ts">
-import BoardOpenButtonBase from "@/shared/components/BoardOpenButtonBase.vue"
-import { useBoardStore } from "@/features/boards/stores/board.store"
-import type { Board } from "@/features/boards/domain/board.model"
-import { computed } from "vue"
-
 import { useAuthStore } from "@/features/auth/stores/authStore"
-import BoardCreationButton from "@/features/boards/components/BoardCreationButton.vue"
+import HomeUserBoards from "@/features/boards/components/HomeUserBoards.vue"
 
 const authStore = useAuthStore()
-const boardStore = useBoardStore()
-
-const boards = computed<Board[]>(() => boardStore.items)
 </script>
 
 <template>
@@ -20,31 +12,16 @@ const boards = computed<Board[]>(() => boardStore.items)
                 <p>Welcome, {{ authStore.user?.name }}</p>
             </div>
 
-            <div>
-                <h2 class="text-xl font-medium uppercase">Your boards</h2>
+            <div
+                v-if="authStore.isAuthenticated && !authStore.isEmailVerified"
+                class="p-4 bg-blue-100 rounded border border-blue-200"
+            >
+                <p class="text-blue-800">
+                    Your email address is not verified yet. Please check your inbox and verify your
+                    email to continue.
+                </p>
             </div>
-
-            <ul class="flex flex-row gap-4 flex-auto overflow-x-auto pb-4 w-full">
-                <li v-for="board in boards">
-                    <BoardOpenButtonBase>
-                        <RouterLink :to="{ name: 'board', params: { id: board.id } }">
-                            <div class="flex flex-col-reverse h-full overflow-hidden">
-                                <div class="bg-gray-200 p-2 flex-none text-center">
-                                    <h3 class="text-gray-800 font-semibold text-sm">
-                                        {{ board.name }}
-                                    </h3>
-                                </div>
-                                <div
-                                    class="bg-linear-to-b from-gray-300 to-gray-400 to-100% flex-auto"
-                                ></div>
-                            </div>
-                        </RouterLink>
-                    </BoardOpenButtonBase>
-                </li>
-                <li>
-                    <BoardCreationButton />
-                </li>
-            </ul>
+            <HomeUserBoards v-else />
         </div>
     </div>
 </template>

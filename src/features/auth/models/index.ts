@@ -3,6 +3,7 @@ export type User = {
     email: string
     role: UserRole
     isBanned: boolean
+    emailIsVerified: boolean
 }
 
 export type UserRole = "user" | "admin"
