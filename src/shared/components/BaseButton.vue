@@ -57,6 +57,7 @@ const props = withDefaults(
         shape?: "rounded" | "rectangle"
         class?: string
         to?: null | RouteLocationRaw
+        disabled?: boolean
     }>(),
     {
         as: "button",
@@ -66,15 +67,17 @@ const props = withDefaults(
         shape: "rounded",
         class: "",
         to: null,
+        disabled: false,
     },
 )
 
-const { color, variant, shape } = props
+const { color, variant, shape, disabled } = props
 
 const colorClasses = colorClassesOptions[color]?.[variant] ?? ""
 const shapeClasses = shapeClassesOptions[shape] ?? ""
+const disabledClasses = !disabled ? "cursor-pointer" : "opacity-50 pointer-events-none select-none"
 
-const classes = [colorClasses, shapeClasses, props.class].join(" ")
+const classes = [colorClasses, shapeClasses, disabledClasses, props.class].join(" ")
 
 const emit = defineEmits<{
     (e: "click"): void
@@ -94,7 +97,7 @@ const onClick = () => {
     <component
         :is="props.as"
         @click="onClick"
-        class="p-2 cursor-pointer text-left flex flex-row transition-colors"
+        class="p-2 text-left flex flex-row transition-colors"
         :class="classes"
         :type="type"
         :to="props.to"
@@ -106,4 +109,5 @@ const onClick = () => {
         />
         <slot></slot>
     </component>
+    {{ disabled }}
 </template>

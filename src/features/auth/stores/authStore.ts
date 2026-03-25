@@ -1,7 +1,6 @@
 import type { User } from "@/features/auth/models"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
-import business from "@/features/auth/services/auth.application"
 import { useBoardStore } from "@/features/boards/stores/board.store"
 import { useColumnStore } from "@/features/columns/stores/column.store"
 import { useCardStore } from "@/features/cards/stores/card.store"
@@ -10,6 +9,7 @@ import type {
     RegisterRequestDTO,
 } from "@/features/auth/infrastructure/auth.request.dto"
 import type { UserResponseDTO } from "@/features/auth/infrastructure/auth.response.dto"
+import { authApi } from "@/features/auth/infrastructure/auth.api"
 
 export const useAuthStore = defineStore("auth", () => {
     const user = ref<User | null>(null)
@@ -28,7 +28,7 @@ export const useAuthStore = defineStore("auth", () => {
 
     const fetchMe = async () => {
         try {
-            const res = await business.getMe()
+            const res = await authApi.fetchMe()
             persistUser(res.data)
         } catch {
             user.value = null
@@ -40,12 +40,12 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     const register = async (data: RegisterRequestDTO) => {
-        const res = await business.register(data)
+        const res = await authApi.register(data)
         persistUser(res.data)
     }
 
     const login = async (data: LoginRequestDTO) => {
-        const res = await business.login(data)
+        const res = await authApi.login(data)
         persistUser(res.data)
 
         boardStore.loadAll()
@@ -57,7 +57,7 @@ export const useAuthStore = defineStore("auth", () => {
     }
 
     const logout = async () => {
-        await business.logout()
+        await authApi.logout()
         user.value = null
 
         boardStore.items = []
@@ -74,6 +74,11 @@ export const useAuthStore = defineStore("auth", () => {
         return { name, email, role, isBanned, emailIsVerified }
     }
 
+    const sendVerificationEmail = async () => {
+        const res = await authApi.sendVerificationEmail()
+        return res
+    }
+
     return {
         isAuthenticated,
         isAdmin,
@@ -85,5 +90,6 @@ export const useAuthStore = defineStore("auth", () => {
         login,
         logout,
         can,
+        sendVerificationEmail,
     }
 })
