@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ButtonsColor } from "@/shared/types/buttonsColor"
-import { useSlots, type Component } from "vue"
+import { computed, useSlots, type Component } from "vue"
 import router from "@/router"
 import type { RouteLocationRaw } from "vue-router"
 
@@ -71,19 +71,25 @@ const props = withDefaults(
     },
 )
 
-const { color, variant, shape, disabled } = props
+const { color, variant, shape } = props
 
 const colorClasses = colorClassesOptions[color]?.[variant] ?? ""
 const shapeClasses = shapeClassesOptions[shape] ?? ""
-const disabledClasses = !disabled ? "cursor-pointer" : "opacity-50 pointer-events-none select-none"
+const disabledClasses = computed<string>(() =>
+    props.disabled ? "opacity-50 pointer-events-none select-none" : "cursor-pointer",
+)
 
-const classes = [colorClasses, shapeClasses, disabledClasses, props.class].join(" ")
+const classes = computed<string>(() =>
+    [colorClasses, shapeClasses, disabledClasses.value, props.class].join(" "),
+)
 
 const emit = defineEmits<{
     (e: "click"): void
 }>()
 
 const onClick = () => {
+    if (props.disabled) return
+
     if (props.to != null) {
         router.push(props.to)
         return
@@ -109,5 +115,4 @@ const onClick = () => {
         />
         <slot></slot>
     </component>
-    {{ disabled }}
 </template>

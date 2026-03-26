@@ -2,18 +2,26 @@
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import HomeUserBoards from "@/features/boards/components/HomeUserBoards.vue"
 import BaseButton from "@/shared/components/BaseButton.vue"
-import { ref } from "vue"
+import { computed, ref } from "vue"
 
 const authStore = useAuthStore()
 
 const verificationRequested = ref<boolean>(false)
 const emailSent = ref<boolean>(false)
+const errorOccurred = ref<boolean>(false)
+const buttonIsDisabled = computed<boolean>(() => verificationRequested.value)
 
 const handleSendVerificationEmail = async () => {
     verificationRequested.value = true
-    console.log("handleSendVerificationEmail")
-    // const res = await authStore.sendVerificationEmail()
-    // emailSent.value = true
+    errorOccurred.value = false
+
+    try {
+        await authStore.sendVerificationEmail()
+        emailSent.value = true
+    } catch (e: unknown) {
+        verificationRequested.value = false
+        errorOccurred.value = true
+    }
 }
 </script>
 
@@ -28,19 +36,26 @@ const handleSendVerificationEmail = async () => {
                 v-if="authStore.isAuthenticated && !authStore.isEmailVerified"
                 class="p-4 bg-blue-100 rounded border border-blue-200 space-y-4"
             >
-                <p class="text-blue-800">
-                    Your email address is not verified yet. Please check your inbox and verify your
-                    email to continue.
+                <p class="text-xl">Verify your e-mail address</p>
+
+                <p>
+                    We've sent an email to your specified address. Please check your inbox and
+                    verify your email to activate your account.
                 </p>
+
+                <p>You can request a new verification email by clicking the button below :</p>
 
                 <BaseButton
                     color="primary"
                     @click="handleSendVerificationEmail"
-                    :disabled="verificationRequested && !emailSent"
+                    :disabled="buttonIsDisabled"
                     >Re-send verification email</BaseButton
                 >
 
-                {{ verificationRequested && !emailSent }}
+                <p v-if="emailSent">Verification email has been sent !</p>
+                <p v-if="errorOccurred" class="text-red-900">
+                    An error has occurred, please try again later.
+                </p>
             </div>
             <HomeUserBoards v-else />
         </div>
