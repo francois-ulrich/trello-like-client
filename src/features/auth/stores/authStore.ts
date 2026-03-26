@@ -21,6 +21,7 @@ export const useAuthStore = defineStore("auth", () => {
     const isEmailVerified = computed<boolean>(() =>
         user.value !== null ? user.value.emailIsVerified : false,
     )
+    const showVerifiedMessage = ref<boolean>(false)
 
     const boardStore = useBoardStore()
     const columnStore = useColumnStore()
@@ -84,6 +85,7 @@ export const useAuthStore = defineStore("auth", () => {
         isAdmin,
         isUserBanned,
         isEmailVerified,
+        showVerifiedMessage,
         user,
         initialize,
         register,

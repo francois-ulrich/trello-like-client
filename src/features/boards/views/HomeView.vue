@@ -2,7 +2,8 @@
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import HomeUserBoards from "@/features/boards/components/HomeUserBoards.vue"
 import BaseButton from "@/shared/components/BaseButton.vue"
-import { computed, ref } from "vue"
+import { computed, onMounted, ref } from "vue"
+import router from "@/router"
 
 const authStore = useAuthStore()
 
@@ -23,11 +24,24 @@ const handleSendVerificationEmail = async () => {
         errorOccurred.value = true
     }
 }
+
+onMounted(() => {
+    if (authStore.isUserBanned) {
+        router.push({ name: "banned" })
+    }
+})
 </script>
 
 <template>
     <div class="p-4 w-full">
         <div class="flex flex-col gap-4">
+            <div
+                v-if="authStore.showVerifiedMessage"
+                class="p-4 bg-green-100 rounded border border-green-200 space-y-4"
+            >
+                <p>Your account has been verified !</p>
+            </div>
+
             <div v-if="authStore.isAuthenticated">
                 <p>Welcome, {{ authStore.user?.name }}</p>
             </div>

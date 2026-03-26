@@ -10,6 +10,7 @@ import { useAdminStore } from "@/features/admin/stores/admin.store"
 import AdminUserBoardView from "@/features/admin/views/AdminUserBoardView.vue"
 import { useBoardStore } from "@/features/boards/stores/board.store"
 import BannedView from "@/features/auth/views/BannedView.vue"
+import EmailVerified from "@/features/auth/views/EmailVerified.vue"
 
 async function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized) {
     const auth = useAuthStore()
@@ -28,12 +29,8 @@ async function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNorm
     return true
 }
 
-function handleBeforeEnter(to: RouteLocationNormalized): boolean | string {
+function requireUserIsAuthenticated(to: RouteLocationNormalized): boolean | string {
     const auth = useAuthStore()
-
-    if (to.path !== "/") {
-        if (auth.isAuthenticated && !auth.isEmailVerified) return "/"
-    }
 
     if (to.path === "/banned") {
         if (!auth.isAuthenticated) return "/"
@@ -45,15 +42,38 @@ function handleBeforeEnter(to: RouteLocationNormalized): boolean | string {
         return "/banned"
     }
 
+    if (!auth.isAuthenticated) {
+        return "/login"
+    }
+
+    if (to.path !== "/" && to.path !== "/email-verified") {
+        if (auth.isAuthenticated && !auth.isEmailVerified) {
+            return "/"
+        }
+    }
+
     return true
 }
 
 const routes = [
     {
+        path: "/banned",
+        name: "banned",
+        component: BannedView,
+        beforeEnter: requireUserIsAuthenticated,
+    },
+    {
+        path: "/email-verified",
+        name: "emailVerified",
+        component: EmailVerified,
+        beforeEnter: [requireUserIsAuthenticated],
+    },
+    {
         path: "/admin/user/:userId/board/:boardId",
         name: "admin/user/board",
         component: AdminUserBoardView,
         beforeEnter: [
+            requireUserIsAuthenticated,
             requireAdmin,
             (to: RouteLocationNormalized) => {
                 const boardStore = useBoardStore()
@@ -65,23 +85,19 @@ const routes = [
         path: "/admin/user/:id",
         name: "admin/user",
         component: AdminUserView,
-        beforeEnter: requireAdmin,
+        beforeEnter: [requireUserIsAuthenticated, requireAdmin],
     },
     {
         path: "/admin",
         name: "admin",
         component: AdminView,
-        beforeEnter: requireAdmin,
+        beforeEnter: [requireUserIsAuthenticated, requireAdmin],
     },
     {
         path: "/board/:id",
         name: "board",
         component: BoardView,
-    },
-    {
-        path: "/banned",
-        name: "banned",
-        component: BannedView,
+        beforeEnter: requireUserIsAuthenticated,
     },
     {
         path: "/login",
@@ -104,7 +120,5 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes,
 })
-
-router.beforeEach(handleBeforeEnter)
 
 export default router
