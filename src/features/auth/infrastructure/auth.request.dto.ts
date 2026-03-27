@@ -13,3 +13,10 @@ export interface RegisterRequestDTO {
 export interface ForgotPasswordRequestDTO {
     email: string
 }
+
+export interface ResetPasswordRequestDTO {
+    token: string
+    email: string
+    password: string
+    passwordConfirmation: string
+}

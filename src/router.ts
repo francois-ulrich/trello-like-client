@@ -12,7 +12,7 @@ import { useBoardStore } from "@/features/boards/stores/board.store"
 import BannedView from "@/features/auth/views/BannedView.vue"
 import EmailVerified from "@/features/auth/views/EmailVerified.vue"
 import ForgotPassword from "@/features/auth/views/ForgotPassword.vue"
-import PasswordChange from "@/features/auth/views/PasswordChange.vue"
+import ResetPassword from "@/features/auth/views/ResetPassword.vue"
 
 async function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized) {
     const auth = useAuthStore()
@@ -66,7 +66,7 @@ const routes = [
     {
         path: "/reset-password",
         name: "reset-password",
-        component: PasswordChange,
+        component: ResetPassword,
     },
     {
         path: "/banned",

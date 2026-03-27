@@ -3,39 +3,37 @@ import BaseButton from "@/shared/components/BaseButton.vue"
 import TextInput from "@/shared/components/form/TextInput.vue"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import { ref } from "vue"
+import type { ResetPasswordRequestDTO } from "@/features/auth/infrastructure/auth.request.dto"
 import router from "@/router"
-import type { LoginRequestDTO } from "@/features/auth/infrastructure/auth.request.dto"
+import { useRoute } from "vue-router"
 
-const formData = ref<LoginRequestDTO>({ email: "", password: "" })
+const route = useRoute()
+
+const formData = ref<ResetPasswordRequestDTO>({
+    email: (route.query.email as string) || "",
+    token: (route.query.token as string) || "",
+    password: "",
+    passwordConfirmation: "",
+})
 
 const authStore = useAuthStore()
 
-const tryLogin = async () => {
+const handleSubmit = async () => {
     try {
-        await authStore.login(formData.value)
+        await authStore.resetPassword(formData.value)
         if (authStore.isAuthenticated) router.push({ name: "home" })
     } catch (e: unknown) {
         console.error(e)
     }
 }
-
-const handleSubmit = () => {
-    tryLogin()
-}
 </script>
 
 <template>
     <div class="p-4 flex flex-col gap-4">
-        <p class="text-xl">Sign in</p>
+        <p class="text-xl">Reset password</p>
 
         <div>
             <form @submit.prevent="handleSubmit" class="flex flex-col gap-2">
-                <TextInput
-                    id="email"
-                    label="Email ID"
-                    v-model="formData.email"
-                    class="w-full mb-2"
-                />
                 <TextInput
                     id="password"
                     label="Password"
@@ -44,12 +42,16 @@ const handleSubmit = () => {
                     type="password"
                 />
 
+                <TextInput
+                    id="passwordConfirmation"
+                    label="Confirm password"
+                    v-model="formData.passwordConfirmation"
+                    class="w-full mb-2"
+                    type="password"
+                />
+
                 <BaseButton type="submit">Submit</BaseButton>
             </form>
-
-            <RouterLink to="/forgot-password" class="text-blue-600 text-sm underline">
-                Forgot password ?
-            </RouterLink>
         </div>
     </div>
 </template>

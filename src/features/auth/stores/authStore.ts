@@ -8,6 +8,7 @@ import type {
     ForgotPasswordRequestDTO,
     LoginRequestDTO,
     RegisterRequestDTO,
+    ResetPasswordRequestDTO,
 } from "@/features/auth/infrastructure/auth.request.dto"
 import type { UserResponseDTO } from "@/features/auth/infrastructure/auth.response.dto"
 import { authApi } from "@/features/auth/infrastructure/auth.api"
@@ -65,6 +66,8 @@ export const useAuthStore = defineStore("auth", () => {
         boardStore.items = []
         columnStore.items = []
         cardStore.items = []
+
+        showVerifiedMessage.value = false
     }
 
     const initialize = async () => {
@@ -86,6 +89,11 @@ export const useAuthStore = defineStore("auth", () => {
         return res
     }
 
+    const resetPassword = async (dto: ResetPasswordRequestDTO) => {
+        const res = await authApi.resetPassword(dto)
+        return res
+    }
+
     return {
         isAuthenticated,
         isAdmin,
@@ -100,5 +108,6 @@ export const useAuthStore = defineStore("auth", () => {
         can,
         sendVerificationEmail,
         sendPasswordChangeEmail,
+        resetPassword,
     }
 })

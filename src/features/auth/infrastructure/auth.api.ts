@@ -2,6 +2,7 @@ import type {
     ForgotPasswordRequestDTO,
     LoginRequestDTO,
     RegisterRequestDTO,
+    ResetPasswordRequestDTO,
 } from "@/features/auth/infrastructure/auth.request.dto"
 import type { UserResponseDTO } from "@/features/auth/infrastructure/auth.response.dto"
 import type { ApiResponse } from "@/shared/models"
@@ -49,6 +50,16 @@ export async function sendPasswordChangeEmail(
     return response.data
 }
 
+export async function resetPassword(
+    requestDto: ResetPasswordRequestDTO,
+): Promise<ApiResponse<null>> {
+    const { token, email, password, passwordConfirmation } = requestDto
+
+    const dto = { token, email, password, password_confirmation: passwordConfirmation }
+    const response = await api.post<ApiResponse<null>>("/auth/reset-password", dto)
+    return response.data
+}
+
 export const authApi = {
     login,
     register,
@@ -56,4 +67,5 @@ export const authApi = {
     fetchMe,
     sendVerificationEmail,
     sendPasswordChangeEmail,
+    resetPassword,
 }
