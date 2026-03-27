@@ -1,4 +1,5 @@
 import type {
+    ForgotPasswordRequestDTO,
     LoginRequestDTO,
     RegisterRequestDTO,
 } from "@/features/auth/infrastructure/auth.request.dto"
@@ -41,10 +42,18 @@ export async function sendVerificationEmail(): Promise<ApiResponse<null>> {
     return response.data
 }
 
+export async function sendPasswordChangeEmail(
+    requestDto: ForgotPasswordRequestDTO,
+): Promise<ApiResponse<null>> {
+    const response = await api.post<ApiResponse<null>>("/auth/forgot-password", requestDto)
+    return response.data
+}
+
 export const authApi = {
     login,
     register,
     logout,
     fetchMe,
     sendVerificationEmail,
+    sendPasswordChangeEmail,
 }

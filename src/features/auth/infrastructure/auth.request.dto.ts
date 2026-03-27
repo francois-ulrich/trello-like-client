@@ -9,3 +9,7 @@ export interface RegisterRequestDTO {
     password: string
     passwordConfirmation: string
 }
+
+export interface ForgotPasswordRequestDTO {
+    email: string
+}

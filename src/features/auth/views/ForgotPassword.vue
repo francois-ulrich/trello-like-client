@@ -3,30 +3,27 @@ import BaseButton from "@/shared/components/BaseButton.vue"
 import TextInput from "@/shared/components/form/TextInput.vue"
 import { useAuthStore } from "@/features/auth/stores/authStore"
 import { ref } from "vue"
-import router from "@/router"
-import type { LoginRequestDTO } from "@/features/auth/infrastructure/auth.request.dto"
+import type { ForgotPasswordRequestDTO } from "@/features/auth/infrastructure/auth.request.dto"
 
-const formData = ref<LoginRequestDTO>({ email: "", password: "" })
+const formData = ref<ForgotPasswordRequestDTO>({ email: "" })
 
 const authStore = useAuthStore()
 
-const tryLogin = async () => {
+const handleSubmit = async () => {
     try {
-        await authStore.login(formData.value)
-        if (authStore.isAuthenticated) router.push({ name: "home" })
+        await authStore.sendPasswordChangeEmail(formData.value)
+        // if (authStore.isAuthenticated) router.push({ name: "home" })
     } catch (e: unknown) {
         console.error(e)
     }
-}
-
-const handleSubmit = () => {
-    tryLogin()
 }
 </script>
 
 <template>
     <div class="p-4 flex flex-col gap-4">
-        <p class="text-xl">Sign in</p>
+        <p class="text-xl">Forgot your password</p>
+
+        <p>Enter your email address and we'll send you a link yo reset your password.</p>
 
         <div>
             <form @submit.prevent="handleSubmit" class="flex flex-col gap-2">
@@ -39,10 +36,6 @@ const handleSubmit = () => {
 
                 <BaseButton type="submit">Submit</BaseButton>
             </form>
-
-            <RouterLink to="/forgot-password" class="text-blue-600 text-sm underline">
-                Forgot password ?
-            </RouterLink>
         </div>
     </div>
 </template>

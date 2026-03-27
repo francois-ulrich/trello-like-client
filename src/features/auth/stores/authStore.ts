@@ -5,6 +5,7 @@ import { useBoardStore } from "@/features/boards/stores/board.store"
 import { useColumnStore } from "@/features/columns/stores/column.store"
 import { useCardStore } from "@/features/cards/stores/card.store"
 import type {
+    ForgotPasswordRequestDTO,
     LoginRequestDTO,
     RegisterRequestDTO,
 } from "@/features/auth/infrastructure/auth.request.dto"
@@ -80,6 +81,11 @@ export const useAuthStore = defineStore("auth", () => {
         return res
     }
 
+    const sendPasswordChangeEmail = async (dto: ForgotPasswordRequestDTO) => {
+        const res = await authApi.sendPasswordChangeEmail(dto)
+        return res
+    }
+
     return {
         isAuthenticated,
         isAdmin,
@@ -93,5 +99,6 @@ export const useAuthStore = defineStore("auth", () => {
         logout,
         can,
         sendVerificationEmail,
+        sendPasswordChangeEmail,
     }
 })
