@@ -1,5 +1,5 @@
 import { useBoardStore } from "@/features/boards/stores/board.store"
-import type { Card } from "@/features/cards/domain/card.model"
+import type { Card, CardStore } from "@/features/cards/domain/card.model"
 import { cardApi } from "@/features/cards/infrastructure/card.api"
 import type {
     CardMoveRequestDTO,
@@ -10,7 +10,7 @@ import { useColumnStore } from "@/features/columns/stores/column.store"
 import { defineStore } from "pinia"
 import { ref, type Ref } from "vue"
 
-export const useCardStore = defineStore("card", () => {
+export const useCardStore = defineStore("card", (): CardStore => {
     const items = ref<Card[]>([]) as Ref<Card[]>
 
     const boardStore = useBoardStore()
@@ -24,13 +24,6 @@ export const useCardStore = defineStore("card", () => {
         return items.value
             .filter((card) => card.columnId === columnId)
             .sort((cardA, cardB) => cardA.position - cardB.position)
-    }
-
-    function reorderfAfterDragAndDrop(cardsInColumn: Card[]) {
-        cardsInColumn.forEach((cardInColumn, index) => {
-            const storeCard = items.value.find((card) => card.id === cardInColumn.id)
-            if (storeCard) storeCard.position = index
-        })
     }
 
     async function create(boardId: number, columnId: number, payload: CardCreationRequestDTO) {
@@ -153,5 +146,5 @@ export const useCardStore = defineStore("card", () => {
         }
     }
 
-    return { items, getCardsInColumn, create, update, move, remove, reorderfAfterDragAndDrop }
+    return { items, getCardsInColumn, create, update, move, remove }
 })

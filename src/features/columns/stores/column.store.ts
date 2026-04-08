@@ -1,6 +1,6 @@
 import { useBoardStore } from "@/features/boards/stores/board.store"
 import { useCardStore } from "@/features/cards/stores/card.store"
-import type { Column } from "@/features/columns/domain/column.model"
+import type { Column, ColumnStore } from "@/features/columns/domain/column.model"
 import { columnApi } from "@/features/columns/infrastructure/column.api"
 import type {
     ColumnMoveRequestDTO,
@@ -8,10 +8,10 @@ import type {
     UpdateColumnRequestDTO,
 } from "@/features/columns/infrastructure/column.request.dto"
 import { defineStore } from "pinia"
-import { ref } from "vue"
+import { ref, type Ref } from "vue"
 
-export const useColumnStore = defineStore("column", () => {
-    const items = ref<Column[]>([])
+export const useColumnStore = defineStore("column", (): ColumnStore => {
+    const items = ref<Column[]>([]) as Ref<Column[]>
 
     const boardStore = useBoardStore()
     const cardStore = useCardStore()

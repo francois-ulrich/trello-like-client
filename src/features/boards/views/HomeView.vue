@@ -72,6 +72,16 @@ onMounted(() => {
                 </p>
             </div>
             <HomeUserBoards v-else />
+
+            <div
+                v-if="!authStore.isAuthenticated"
+                class="p-4 bg-orange-100 rounded border border-orange-200 space-y-4"
+            >
+                <p class="text-orange-900">
+                    You are not signed in. Your boards will be saved in your browser's local
+                    storage.
+                </p>
+            </div>
         </div>
     </div>
 </template>

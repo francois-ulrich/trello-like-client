@@ -1,20 +1,21 @@
-import type { Board } from "@/features/boards/domain/board.model"
+import type { Board, BoardStore } from "@/features/boards/domain/board.model"
 import { boardApi } from "@/features/boards/infrastructure/board.api"
 import { useColumnStore } from "@/features/columns/stores/column.store"
 import { useCardStore } from "@/features/cards/stores/card.store"
 import { defineStore } from "pinia"
-import { ref } from "vue"
+import { ref, type Ref } from "vue"
 import type {
     CreateBoardRequestDTO,
     UpdateBoardRequestDTO,
 } from "@/features/boards/infrastructure/board.request.dto"
 import { mapApiBoards } from "@/features/boards/utils/board.util.index"
+import type { Column } from "@/features/columns/domain/column.model"
 
-export const useBoardStore = defineStore("board", () => {
+export const useBoardStore = defineStore("board", (): BoardStore => {
     const columnStore = useColumnStore()
     const cardStore = useCardStore()
 
-    const items = ref<Board[]>([])
+    const items = ref<Board[]>([]) as Ref<Board[]>
 
     async function loadAll() {
         const res = await boardApi.getAll()
@@ -44,7 +45,7 @@ export const useBoardStore = defineStore("board", () => {
         return items.value.find((i) => i.id === id)
     }
 
-    function getColumnsInBoard(boardId: number) {
+    function getColumnsInBoard(boardId: number): Column[] {
         const board = getById(boardId)
         if (board === undefined) throw new Error("Linked board hasn't been found")
 
@@ -53,10 +54,10 @@ export const useBoardStore = defineStore("board", () => {
             .sort((columnA, columnB) => columnA.position - columnB.position)
     }
 
-    function getByColumnId(columnId: number) {
+    function getByColumnId(columnId: number): Board | undefined {
         const column = columnStore.getById(columnId)
         if (!column) return undefined
-        return items.value.find((b) => b.id === column.boardId)
+        return items.value.find((board) => board.id === column.boardId)
     }
 
     async function create(payload: CreateBoardRequestDTO) {
