@@ -60,7 +60,7 @@ const handleCardDeletion = () => {
     >
         <p class="font-medium">{{ card.name }}</p>
 
-        <TextAlignStart v-if="card?.description !== undefined" :size="14" class="m-1" />
+        <TextAlignStart v-if="card?.description" :size="14" class="m-1" />
 
         <SquarePen
             v-if="boardStore.canEdit(column.boardId)"
