@@ -17,6 +17,25 @@ export const useBoardStore = defineStore("board", (): BoardStore => {
 
     const items = ref<Board[]>([]) as Ref<Board[]>
 
+    function getById(id: number): Board | undefined {
+        return items.value.find((i) => i.id === id)
+    }
+
+    function getColumnsInBoard(boardId: number): Column[] {
+        const board = getById(boardId)
+        if (board === undefined) throw new Error("Linked board hasn't been found")
+
+        return columnStore.items
+            .filter((column) => column.boardId === boardId)
+            .sort((columnA, columnB) => columnA.position - columnB.position)
+    }
+
+    function getByColumnId(columnId: number): Board | undefined {
+        const column = columnStore.getById(columnId)
+        if (!column) return undefined
+        return items.value.find((board) => board.id === column.boardId)
+    }
+
     async function loadAll() {
         const res = await boardApi.getAll()
 
@@ -39,25 +58,6 @@ export const useBoardStore = defineStore("board", (): BoardStore => {
 
     async function ensureBoardIsLoaded(id: number) {
         if (!items.value.find((board) => board.id === id)) loadById(id)
-    }
-
-    function getById(id: number): Board | undefined {
-        return items.value.find((i) => i.id === id)
-    }
-
-    function getColumnsInBoard(boardId: number): Column[] {
-        const board = getById(boardId)
-        if (board === undefined) throw new Error("Linked board hasn't been found")
-
-        return columnStore.items
-            .filter((column) => column.boardId === boardId)
-            .sort((columnA, columnB) => columnA.position - columnB.position)
-    }
-
-    function getByColumnId(columnId: number): Board | undefined {
-        const column = columnStore.getById(columnId)
-        if (!column) return undefined
-        return items.value.find((board) => board.id === column.boardId)
     }
 
     async function create(payload: CreateBoardRequestDTO) {
@@ -108,11 +108,11 @@ export const useBoardStore = defineStore("board", (): BoardStore => {
     return {
         items,
         getById,
+        getColumnsInBoard,
+        getByColumnId,
+        loadAll,
         loadById,
         ensureBoardIsLoaded,
-        loadAll,
-        getByColumnId,
-        getColumnsInBoard,
         create,
         update,
         remove,

@@ -15,12 +15,11 @@ export interface Board {
 export interface BoardStore {
     items: Ref<Board[]>
     getById(id: number): Board | undefined
-    loadById(id: number): Promise<void>
-    ensureBoardIsLoaded(id: number): Promise<void>
-    loadAll(): Promise<void>
-    getByColumnId(columnId: number): Board | undefined
     getColumnsInBoard(boardId: number): Column[]
     getByColumnId(columnId: number): Board | undefined
+    loadAll(): Promise<void>
+    loadById(id: number): Promise<void>
+    ensureBoardIsLoaded(id: number): Promise<void>
     create(payload: CreateBoardRequestDTO): Promise<void>
     update(boardId: number, payload: UpdateBoardRequestDTO): Promise<void>
     remove(boardId: number): Promise<void>
