@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { useAuthStore } from "@/features/auth/stores/authStore"
-import HomeUserBoards from "@/features/boards/components/HomeUserBoards.vue"
 import BaseButton from "@/shared/components/BaseButton.vue"
 import { computed, onMounted, ref } from "vue"
 import router from "@/router"
+import { useLocalBoardStore } from "@/features/boards/stores/board.store.local"
+import HomeBoardsList from "@/features/boards/components/HomeBoardsList.vue"
+import { useApiBoardStore } from "@/features/boards/stores/board.store.api"
 
 const authStore = useAuthStore()
+const apiBoardStore = useApiBoardStore()
+const localBoardStore = useLocalBoardStore()
 
 const verificationRequested = ref<boolean>(false)
 const emailSent = ref<boolean>(false)
@@ -35,8 +39,6 @@ onMounted(() => {
 <template>
     <div class="p-4 w-full">
         <div class="flex flex-col gap-4">
-            {{ authStore.isAuthenticated }}
-
             <div
                 v-if="authStore.showVerifiedMessage"
                 class="p-4 bg-green-100 rounded border border-green-200 space-y-4"
@@ -49,31 +51,48 @@ onMounted(() => {
             </div>
 
             <div
-                v-if="authStore.isAuthenticated && !authStore.isEmailVerified"
+                v-if="authStore.isAuthenticated"
                 class="p-4 bg-blue-100 rounded border border-blue-200 space-y-4"
             >
-                <p class="text-xl">Verify your e-mail address</p>
+                <p>Welcome, {{ authStore.user?.name }}</p>
 
-                <p>
-                    We've sent an email to your specified address. Please check your inbox and
-                    verify your email to activate your account.
-                </p>
+                <div v-if="!authStore.isEmailVerified">
+                    <p class="text-xl">Verify your e-mail address</p>
 
-                <p>You can request a new verification email by clicking the button below :</p>
+                    <p>
+                        We've sent an email to your specified address. Please check your inbox and
+                        verify your email to activate your account.
+                    </p>
 
-                <BaseButton
-                    color="primary"
-                    @click="handleSendVerificationEmail"
-                    :disabled="buttonIsDisabled"
-                    >Re-send verification email</BaseButton
-                >
+                    <p>You can request a new verification email by clicking the button below :</p>
 
-                <p v-if="emailSent">Verification email has been sent !</p>
-                <p v-if="errorOccurred" class="text-red-900">
-                    An error has occurred, please try again later.
-                </p>
+                    <BaseButton
+                        color="primary"
+                        @click="handleSendVerificationEmail"
+                        :disabled="buttonIsDisabled"
+                        >Re-send verification email</BaseButton
+                    >
+
+                    <p v-if="emailSent">Verification email has been sent !</p>
+                    <p v-if="errorOccurred" class="text-red-900">
+                        An error has occurred, please try again later.
+                    </p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <h2 class="text-xl font-medium uppercase">Your boards</h2>
+                    </div>
+                    <HomeBoardsList :boards="apiBoardStore.items" />
+                </div>
             </div>
-            <HomeUserBoards v-else />
+
+            <div class="space-y-4">
+                <div>
+                    <h2 class="text-xl font-medium uppercase">Your local boards</h2>
+                </div>
+                <HomeBoardsList :boards="localBoardStore.items" />
+            </div>
 
             <div
                 v-if="!authStore.isAuthenticated"

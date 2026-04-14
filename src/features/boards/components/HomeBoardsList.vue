@@ -1,19 +1,12 @@
 <script setup lang="ts">
 import BoardCreationButton from "@/features/boards/components/BoardCreationButton.vue"
 import type { Board } from "@/features/boards/domain/board.model"
-import { useBoardStore } from "@/features/boards/stores/useBoardStore"
 import BoardOpenButtonBase from "@/shared/components/BoardOpenButtonBase.vue"
-import { computed } from "vue"
 
-const boardStore = useBoardStore()
-const boards = computed<Board[]>(() => boardStore.items)
+const props = defineProps<{ boards: Board[] }>()
 </script>
 
 <template>
-    <div>
-        <h2 class="text-xl font-medium uppercase">Your boards</h2>
-    </div>
-
     <ul class="flex flex-row gap-4 flex-auto overflow-x-auto pb-4 w-full">
         <li v-for="board in boards">
             <BoardOpenButtonBase>
