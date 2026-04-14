@@ -3,7 +3,6 @@ import type {
     CardMoveRequestDTO,
     CardUpdateRequestDTO,
 } from "@/features/cards/infrastructure/card.request.dto"
-import type { Ref } from "vue"
 
 export interface Card {
     id: number
@@ -14,7 +13,7 @@ export interface Card {
 }
 
 export interface CardStore {
-    items: Ref<Card[]>
+    items: Card[]
     getCardsInColumn(columnId: number): Card[]
     create(boardId: number, columnId: number, payload: CardCreationRequestDTO): Promise<void>
     update(cardId: number, payload: CardUpdateRequestDTO): Promise<void>

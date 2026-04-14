@@ -1,6 +1,6 @@
-import { useBoardStore } from "@/features/boards/stores/board.store"
-import { useCardStore } from "@/features/cards/stores/card.store"
-import type { Column, ColumnStore } from "@/features/columns/domain/column.model"
+import { useLocalBoardStore } from "@/features/boards/stores/board.store.local"
+import { useLocalCardStore } from "@/features/cards/stores/card.store.local"
+import type { Column } from "@/features/columns/domain/column.model"
 import type {
     ColumnMoveRequestDTO,
     CreateColumnRequestDTO,
@@ -8,13 +8,13 @@ import type {
 } from "@/features/columns/infrastructure/column.request.dto"
 import { generateIdForLocalItem } from "@/shared/utils/store.util"
 import { defineStore } from "pinia"
-import { ref, type Ref } from "vue"
+import { ref } from "vue"
 
-export const useLocalColumnStore = defineStore("column", (): ColumnStore => {
-    const items = ref<Column[]>([]) as Ref<Column[]>
+export const useLocalColumnStore = defineStore("columnLocal", () => {
+    const items = ref<Column[]>([])
 
-    const boardStore = useBoardStore()
-    const cardStore = useCardStore()
+    const boardStore = useLocalBoardStore()
+    const cardStore = useLocalCardStore()
 
     function getById(id: number): Column | undefined {
         return items.value.find((i) => i.id === id)

@@ -3,8 +3,6 @@ import type {
     CreateColumnRequestDTO,
     UpdateColumnRequestDTO,
 } from "@/features/columns/infrastructure/column.request.dto"
-import type { Ref } from "vue"
-
 export interface Column {
     id: number
     boardId: number
@@ -13,7 +11,7 @@ export interface Column {
 }
 
 export interface ColumnStore {
-    items: Ref<Column[]>
+    items: Column[]
     getById(id: number): Column | undefined
     create(boardId: number, payload: CreateColumnRequestDTO): Promise<void>
     update(boardId: number, columnId: number, payload: UpdateColumnRequestDTO): Promise<void>

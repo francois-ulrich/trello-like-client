@@ -15,9 +15,9 @@ import type {
     DraggableChangeEvent,
     DraggableChangeEventPayloadMoved,
 } from "@/shared/types/draggable"
-import { useColumnStore } from "@/features/columns/stores/column.store"
+import { useColumnStore } from "@/features/columns/stores/useColumnStore"
 import type { Board } from "@/features/boards/domain/board.model"
-import { useBoardStore } from "@/features/boards/stores/board.store"
+import { useBoardStore } from "@/features/boards/stores/useBoardStore"
 
 const props = defineProps<{ board: Board }>()
 

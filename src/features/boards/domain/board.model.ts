@@ -4,7 +4,6 @@ import type {
     UpdateBoardRequestDTO,
 } from "@/features/boards/infrastructure/board.request.dto"
 import type { Column } from "@/features/columns/domain/column.model"
-import type { Ref } from "vue"
 
 export interface Board {
     id: number
@@ -13,7 +12,7 @@ export interface Board {
 }
 
 export interface BoardStore {
-    items: Ref<Board[]>
+    items: Board[]
     getById(id: number): Board | undefined
     getColumnsInBoard(boardId: number): Column[]
     getByColumnId(columnId: number): Board | undefined

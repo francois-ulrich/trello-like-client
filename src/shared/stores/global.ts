@@ -1,5 +1,5 @@
-import { useBoardStore } from "@/features/boards/stores/board.store"
-import { useCardStore } from "@/features/cards/stores/card.store"
+import { useBoardStore } from "@/features/boards/stores/useBoardStore"
+import { useCardStore } from "@/features/cards/stores/useCardStore"
 import { useColumnStore } from "@/features/columns/stores/column"
 import type { Card } from "@/features/cards/domain/card.model"
 import { defineStore } from "pinia"

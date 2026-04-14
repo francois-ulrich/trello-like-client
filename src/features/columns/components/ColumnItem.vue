@@ -6,7 +6,7 @@ import type { Column } from "@/features/columns/domain/column.model"
 import { ref, watch } from "vue"
 import draggable from "vuedraggable"
 import CardCreation from "@/features/cards/components/CardCreation.vue"
-import { useCardStore } from "@/features/cards/stores/card.store"
+import { useCardStore } from "@/features/cards/stores/useCardStore"
 import type {
     DraggableChangeEvent,
     DraggableChangeEventPayloadAdded,
@@ -16,9 +16,9 @@ import BaseButton from "@/shared/components/BaseButton.vue"
 import ActionsDropdown from "@/shared/components/ActionsDropdown.vue"
 import HeaderWithTitleAndOptions from "@/shared/components/HeaderWithTitleAndOptions.vue"
 import ModalDialog from "@/shared/components/ModalDialog.vue"
-import { useColumnStore } from "@/features/columns/stores/column.store"
+import { useColumnStore } from "@/features/columns/stores/useColumnStore"
 import Renamable from "@/shared/components/Renamable.vue"
-import { useBoardStore } from "@/features/boards/stores/board.store"
+import { useBoardStore } from "@/features/boards/stores/useBoardStore"
 
 const props = defineProps<{ column: Column }>()
 

@@ -1,18 +1,18 @@
-import type { Board, BoardStore } from "@/features/boards/domain/board.model"
+import type { Board } from "@/features/boards/domain/board.model"
 import type {
     CreateBoardRequestDTO,
     UpdateBoardRequestDTO,
 } from "@/features/boards/infrastructure/board.request.dto"
 import type { Column } from "@/features/columns/domain/column.model"
-import { useColumnStore } from "@/features/columns/stores/column.store"
+import { useLocalColumnStore } from "@/features/columns/stores/column.store.local"
 import { generateIdForLocalItem } from "@/shared/utils/store.util"
 import { defineStore } from "pinia"
-import { ref, type Ref } from "vue"
+import { ref } from "vue"
 
-export const useLocalBoardStore = defineStore("board", (): BoardStore => {
-    const items = ref<Board[]>([]) as Ref<Board[]>
+export const useLocalBoardStore = defineStore("boardLocal", () => {
+    const items = ref<Board[]>([])
 
-    const columnStore = useColumnStore()
+    const columnStore = useLocalColumnStore()
 
     function getById(id: number): Board | undefined {
         return items.value.find((i) => i.id === id)

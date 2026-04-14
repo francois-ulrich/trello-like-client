@@ -16,14 +16,13 @@ export function createLocalStoragePlugin(options: LocalStoragePluginOptions | un
 
         const storedState = localStorage.getItem(keyPrefix)
 
-        if (authStore.isAuthenticated && storedState) {
+        if (!authStore.isAuthenticated && storedState) {
             store.$patch(JSON.parse(storedState))
         }
 
         store.$subscribe((_, state) => {
-            if (authStore.isAuthenticated && !ignoredStoreIds.includes(store.$id)) {
+            if (!authStore.isAuthenticated && !ignoredStoreIds.includes(store.$id)) {
                 localStorage.setItem(keyPrefix, JSON.stringify(state))
-                console.log("hey")
             }
         })
     }

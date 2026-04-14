@@ -3,7 +3,7 @@ import { computed } from "vue"
 import { useRoute } from "vue-router"
 
 import type { Board } from "@/features/boards/domain/board.model"
-import { useBoardStore } from "@/features/boards/stores/board.store"
+import { useBoardStore } from "@/features/boards/stores/useBoardStore"
 import BoardItem from "@/features/boards/components/BoardItem.vue"
 
 const route = useRoute()

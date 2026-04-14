@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BoardCreationButton from "@/features/boards/components/BoardCreationButton.vue"
 import type { Board } from "@/features/boards/domain/board.model"
-import { useBoardStore } from "@/features/boards/stores/board.store"
+import { useBoardStore } from "@/features/boards/stores/useBoardStore"
 import BoardOpenButtonBase from "@/shared/components/BoardOpenButtonBase.vue"
 import { computed } from "vue"
 

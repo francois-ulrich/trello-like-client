@@ -1,9 +1,9 @@
-import type { Board, BoardStore } from "@/features/boards/domain/board.model"
+import type { Board } from "@/features/boards/domain/board.model"
 import { boardApi } from "@/features/boards/infrastructure/board.api"
-import { useColumnStore } from "@/features/columns/stores/column.store"
-import { useCardStore } from "@/features/cards/stores/card.store"
+import { useApiColumnStore } from "@/features/columns/stores/column.store.api"
+import { useApiCardStore } from "@/features/cards/stores/card.store.api"
 import { defineStore } from "pinia"
-import { ref, type Ref } from "vue"
+import { ref } from "vue"
 import type {
     CreateBoardRequestDTO,
     UpdateBoardRequestDTO,
@@ -11,11 +11,11 @@ import type {
 import { mapApiBoards } from "@/features/boards/utils/board.util.index"
 import type { Column } from "@/features/columns/domain/column.model"
 
-export const useBoardStore = defineStore("board", (): BoardStore => {
-    const columnStore = useColumnStore()
-    const cardStore = useCardStore()
+export const useApiBoardStore = defineStore("board", () => {
+    const columnStore = useApiColumnStore()
+    const cardStore = useApiCardStore()
 
-    const items = ref<Board[]>([]) as Ref<Board[]>
+    const items = ref<Board[]>([])
 
     function getById(id: number): Board | undefined {
         return items.value.find((i) => i.id === id)

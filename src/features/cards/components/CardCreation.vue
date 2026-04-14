@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AddButtonSwitchToForm from "@/shared/components/AddButtonSwitchToForm.vue"
 import ItemCreationForm from "@/shared/components/ItemCreationForm.vue"
-import { useCardStore } from "@/features/cards/stores/card.store"
+import { useCardStore } from "@/features/cards/stores/useCardStore"
 import type { Card } from "@/features/cards/domain/card.model"
 import type { Column } from "@/features/columns/domain/column.model"
 

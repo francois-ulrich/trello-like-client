@@ -35,6 +35,8 @@ onMounted(() => {
 <template>
     <div class="p-4 w-full">
         <div class="flex flex-col gap-4">
+            {{ authStore.isAuthenticated }}
+
             <div
                 v-if="authStore.showVerifiedMessage"
                 class="p-4 bg-green-100 rounded border border-green-200 space-y-4"

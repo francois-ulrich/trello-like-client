@@ -1,18 +1,18 @@
-import type { Card, CardStore } from "@/features/cards/domain/card.model"
+import type { Card } from "@/features/cards/domain/card.model"
 import type {
     CardCreationRequestDTO,
     CardMoveRequestDTO,
     CardUpdateRequestDTO,
 } from "@/features/cards/infrastructure/card.request.dto"
-import { useColumnStore } from "@/features/columns/stores/column.store"
+import { useLocalColumnStore } from "@/features/columns/stores/column.store.local"
 import { generateIdForLocalItem } from "@/shared/utils/store.util"
 import { defineStore } from "pinia"
-import { ref, type Ref } from "vue"
+import { ref } from "vue"
 
-export const useCardStore = defineStore("card", (): CardStore => {
-    const items = ref<Card[]>([]) as Ref<Card[]>
+export const useLocalCardStore = defineStore("cardLocal", () => {
+    const items = ref<Card[]>([])
 
-    const columnStore = useColumnStore()
+    const columnStore = useLocalColumnStore()
 
     function getById(id: number): Card | undefined {
         return items.value.find((card) => card.id === id)
@@ -24,7 +24,7 @@ export const useCardStore = defineStore("card", (): CardStore => {
             .sort((cardA, cardB) => cardA.position - cardB.position)
     }
 
-    async function create(boardId: number, columnId: number, payload: CardCreationRequestDTO) {
+    async function create(_: number, columnId: number, payload: CardCreationRequestDTO) {
         const id = generateIdForLocalItem(items.value)
         const { name, description } = payload
         const position = getCardsInColumn(columnId).length - 1

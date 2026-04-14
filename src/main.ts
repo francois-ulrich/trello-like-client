@@ -5,7 +5,7 @@ import App from "./App.vue"
 import { createLocalStoragePlugin } from "@/plugins/localStoragePlugin"
 import router from "@/router"
 import { useAuthStore } from "@/features/auth/stores/authStore"
-import { useBoardStore } from "@/features/boards/stores/board.store"
+import { useBoardStore } from "@/features/boards/stores/useBoardStore"
 import PrimeVue from "primevue/config"
 
 const app = createApp(App)

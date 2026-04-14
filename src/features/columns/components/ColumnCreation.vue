@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useColumnStore } from "@/features/columns/stores/useColumnStore";
 import AddButtonSwitchToForm from "@/shared/components/AddButtonSwitchToForm.vue"
 import ItemCreationForm from "@/shared/components/ItemCreationForm.vue"
-import { useColumnStore } from "@/features/columns/stores/column.store"
 
 const props = defineProps<{ boardId: number }>()
 const columnStore = useColumnStore()

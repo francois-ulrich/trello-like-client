@@ -1,9 +1,6 @@
 import type { User } from "@/features/auth/models"
 import { defineStore } from "pinia"
 import { computed, ref } from "vue"
-import { useBoardStore } from "@/features/boards/stores/board.store"
-import { useColumnStore } from "@/features/columns/stores/column.store"
-import { useCardStore } from "@/features/cards/stores/card.store"
 import type {
     ForgotPasswordRequestDTO,
     LoginRequestDTO,
@@ -12,6 +9,9 @@ import type {
 } from "@/features/auth/infrastructure/auth.request.dto"
 import type { UserResponseDTO } from "@/features/auth/infrastructure/auth.response.dto"
 import { authApi } from "@/features/auth/infrastructure/auth.api"
+import { useBoardStore } from "@/features/boards/stores/useBoardStore"
+import { useColumnStore } from "@/features/columns/stores/useColumnStore"
+import { useCardStore } from "@/features/cards/stores/useCardStore"
 
 export const useAuthStore = defineStore("auth", () => {
     const user = ref<User | null>(null)

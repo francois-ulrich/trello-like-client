@@ -4,7 +4,7 @@ import TextInput from "@/shared/components/form/TextInput.vue"
 import BaseButton from "@/shared/components/BaseButton.vue"
 import type { ComponentExposed } from "vue-component-type-helpers"
 import { nextTick, ref, useTemplateRef } from "vue"
-import { useBoardStore } from "@/features/boards/stores/board.store"
+import { useBoardStore } from "@/features/boards/stores/useBoardStore"
 import BoardOpenButtonBase from "@/shared/components/BoardOpenButtonBase.vue"
 
 const boardStore = useBoardStore()
