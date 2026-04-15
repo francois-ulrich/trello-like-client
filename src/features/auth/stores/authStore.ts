@@ -9,9 +9,7 @@ import type {
 } from "@/features/auth/infrastructure/auth.request.dto"
 import type { UserResponseDTO } from "@/features/auth/infrastructure/auth.response.dto"
 import { authApi } from "@/features/auth/infrastructure/auth.api"
-import { useBoardStore } from "@/features/boards/stores/useBoardStore"
-import { useColumnStore } from "@/features/columns/stores/useColumnStore"
-import { useCardStore } from "@/features/cards/stores/useCardStore"
+import { useApiBoardStore } from "@/features/boards/stores/board.store.api"
 
 export const useAuthStore = defineStore("auth", () => {
     const user = ref<User | null>(null)
@@ -25,9 +23,9 @@ export const useAuthStore = defineStore("auth", () => {
     )
     const showVerifiedMessage = ref<boolean>(false)
 
-    const boardStore = useBoardStore()
-    const columnStore = useColumnStore()
-    const cardStore = useCardStore()
+    const boardStore = useApiBoardStore()
+    const columnStore = useApiBoardStore()
+    const cardStore = useApiBoardStore()
 
     const fetchMe = async () => {
         try {

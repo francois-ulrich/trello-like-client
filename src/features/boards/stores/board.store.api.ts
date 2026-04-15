@@ -11,7 +11,7 @@ import type {
 import { mapApiBoards } from "@/features/boards/utils/board.util.index"
 import type { Column } from "@/features/columns/domain/column.model"
 
-export const useApiBoardStore = defineStore("board", () => {
+export const useApiBoardStore = defineStore("boardApi", () => {
     const columnStore = useApiColumnStore()
     const cardStore = useApiCardStore()
 

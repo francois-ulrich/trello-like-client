@@ -15,15 +15,14 @@ import type {
     DraggableChangeEvent,
     DraggableChangeEventPayloadMoved,
 } from "@/shared/types/draggable"
-import { useColumnStore } from "@/features/columns/stores/useColumnStore"
 import type { Board } from "@/features/boards/domain/board.model"
-import { useBoardStore } from "@/features/boards/stores/useBoardStore"
+import { useStores } from "@/composables/useStores"
 
 const props = defineProps<{ board: Board }>()
 
 const authStore = useAuthStore()
-const boardStore = useBoardStore()
-const columnStore = useColumnStore()
+
+const { boardStore, columnStore } = useStores()
 
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
 const renamableRef = ref<InstanceType<typeof Renamable> | null>(null)

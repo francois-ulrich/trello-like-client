@@ -1,4 +1,3 @@
-import { useAuthStore } from "@/features/auth/stores/authStore"
 import type { PiniaPluginContext } from "pinia"
 
 interface LocalStoragePluginOptions {
@@ -8,7 +7,6 @@ interface LocalStoragePluginOptions {
 export function createLocalStoragePlugin(options: LocalStoragePluginOptions | undefined) {
     return (context: PiniaPluginContext) => {
         const { store } = context
-        const authStore = useAuthStore()
 
         const ignoredStoreIds: string[] = options !== undefined ? options.ignoredStores : []
 
@@ -16,12 +14,12 @@ export function createLocalStoragePlugin(options: LocalStoragePluginOptions | un
 
         const storedState = localStorage.getItem(keyPrefix)
 
-        if (!authStore.isAuthenticated && storedState) {
+        if (storedState) {
             store.$patch(JSON.parse(storedState))
         }
 
         store.$subscribe((_, state) => {
-            if (!authStore.isAuthenticated && !ignoredStoreIds.includes(store.$id)) {
+            if (!ignoredStoreIds.includes(store.$id)) {
                 localStorage.setItem(keyPrefix, JSON.stringify(state))
             }
         })

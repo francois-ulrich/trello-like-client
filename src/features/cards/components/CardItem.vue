@@ -4,17 +4,15 @@ import RoundedCard from "@/shared/components/RoundedCard.vue"
 import { SquarePen, TextAlignStart } from "lucide-vue-next"
 import { computed, ref } from "vue"
 import Renamable from "@/shared/components/Renamable.vue"
-import { useCardStore } from "@/features/cards/stores/useCardStore"
 import type { Card } from "@/features/cards/domain/card.model"
 import type { Column } from "@/features/columns/domain/column.model"
 import BaseButton from "@/shared/components/BaseButton.vue"
-import { useBoardStore } from "@/features/boards/stores/useBoardStore"
+import { useStores } from "@/composables/useStores"
 
 const props = defineProps<{ cardId: number; column: Column }>()
 
-const boardStore = useBoardStore()
+const { boardStore, cardStore } = useStores()
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)
-const cardStore = useCardStore()
 
 const card = computed<Card | undefined>(() => cardStore.items.find((c) => c.id === props.cardId))
 

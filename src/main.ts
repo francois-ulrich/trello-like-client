@@ -5,21 +5,25 @@ import App from "./App.vue"
 import { createLocalStoragePlugin } from "@/plugins/localStoragePlugin"
 import router from "@/router"
 import { useAuthStore } from "@/features/auth/stores/authStore"
-import { useBoardStore } from "@/features/boards/stores/useBoardStore"
 import PrimeVue from "primevue/config"
-
+import { useApiBoardStore } from "@/features/boards/stores/board.store.api"
+import { useLocalBoardStore } from "@/features/boards/stores/board.store.local"
 const app = createApp(App)
 const pinia = createPinia()
 
-pinia.use(createLocalStoragePlugin({ ignoredStores: ["auth"] }))
+pinia.use(createLocalStoragePlugin({ ignoredStores: ["auth", "boardApi", "columnApi", "cardApi"] }))
 app.use(pinia)
 
 const authStore = useAuthStore()
-const boardStore = useBoardStore()
+const apiBoardStore = useApiBoardStore()
+const localBoardStore = useLocalBoardStore()
 
 await authStore.initialize()
 
-if (authStore.isAuthenticated && !authStore.isUserBanned) boardStore.loadAll()
+if (authStore.isAuthenticated && !authStore.isUserBanned) {
+    apiBoardStore.loadAll()
+}
+localBoardStore.loadAll()
 
 app.use(router)
 app.use(PrimeVue)

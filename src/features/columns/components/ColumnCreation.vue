@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useColumnStore } from "@/features/columns/stores/useColumnStore";
+import { useStores } from "@/composables/useStores"
 import AddButtonSwitchToForm from "@/shared/components/AddButtonSwitchToForm.vue"
 import ItemCreationForm from "@/shared/components/ItemCreationForm.vue"
 
 const props = defineProps<{ boardId: number }>()
-const columnStore = useColumnStore()
+const { columnStore } = useStores()
 
 const handleSubmit = (name: string) => {
     columnStore.create(props.boardId, { name })

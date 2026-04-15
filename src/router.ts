@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory, type RouteLocationNormalized } from "vue-router"
-import BoardView from "@/features/boards/views/BoardView.vue"
 import LoginView from "@/features/auth/views/LoginView.vue"
 import RegisterView from "@/features/auth/views/RegisterView.vue"
 import HomeView from "@/features/boards/views/HomeView.vue"
@@ -8,11 +7,13 @@ import { useAuthStore } from "@/features/auth/stores/authStore"
 import AdminUserView from "@/features/admin/views/AdminUserView.vue"
 import { useAdminStore } from "@/features/admin/stores/admin.store"
 import AdminUserBoardView from "@/features/admin/views/AdminUserBoardView.vue"
-import { useBoardStore } from "@/features/boards/stores/useBoardStore"
 import BannedView from "@/features/auth/views/BannedView.vue"
 import EmailVerified from "@/features/auth/views/EmailVerified.vue"
 import ForgotPassword from "@/features/auth/views/ForgotPassword.vue"
 import ResetPassword from "@/features/auth/views/ResetPassword.vue"
+import { useApiBoardStore } from "@/features/boards/stores/board.store.api"
+import BoardViewApi from "@/features/boards/views/BoardViewApi.vue"
+import BoardViewGuest from "@/features/boards/views/BoardViewGuest.vue"
 
 async function requireAdmin(to: RouteLocationNormalized, from: RouteLocationNormalized) {
     const auth = useAuthStore()
@@ -88,7 +89,7 @@ const routes = [
             requireUserIsAuthenticated,
             requireAdmin,
             (to: RouteLocationNormalized) => {
-                const boardStore = useBoardStore()
+                const boardStore = useApiBoardStore()
                 return boardStore.ensureBoardIsLoaded(Number(to.params.boardId))
             },
         ],
@@ -106,9 +107,14 @@ const routes = [
         beforeEnter: [requireUserIsAuthenticated, requireAdmin],
     },
     {
+        path: "/guest/board/:id",
+        name: "guest/board",
+        component: BoardViewGuest,
+    },
+    {
         path: "/board/:id",
         name: "board",
-        component: BoardView,
+        component: BoardViewApi,
         beforeEnter: requireUserIsAuthenticated,
     },
     {

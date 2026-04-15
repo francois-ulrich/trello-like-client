@@ -4,10 +4,10 @@ import TextInput from "@/shared/components/form/TextInput.vue"
 import BaseButton from "@/shared/components/BaseButton.vue"
 import type { ComponentExposed } from "vue-component-type-helpers"
 import { nextTick, ref, useTemplateRef } from "vue"
-import { useBoardStore } from "@/features/boards/stores/useBoardStore"
 import BoardOpenButtonBase from "@/shared/components/BoardOpenButtonBase.vue"
+import { useStores } from "@/composables/useStores"
 
-const boardStore = useBoardStore()
+const { boardStore } = useStores()
 
 const textInputRef = useTemplateRef<ComponentExposed<typeof TextInput>>("textInputRef")
 const boardDeleteModalRef = ref<InstanceType<typeof ModalDialog> | null>(null)

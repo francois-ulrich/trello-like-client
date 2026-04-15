@@ -1,14 +1,14 @@
 <script setup lang="ts">
+import { useStores } from "@/composables/useStores"
 import BoardCreationButton from "@/features/boards/components/BoardCreationButton.vue"
-import type { Board } from "@/features/boards/domain/board.model"
 import BoardOpenButtonBase from "@/shared/components/BoardOpenButtonBase.vue"
 
-const props = defineProps<{ boards: Board[] }>()
+const { boardStore } = useStores()
 </script>
 
 <template>
     <ul class="flex flex-row gap-4 flex-auto overflow-x-auto pb-4 w-full">
-        <li v-for="board in boards">
+        <li v-for="board in boardStore.items">
             <BoardOpenButtonBase>
                 <RouterLink :to="{ name: 'board', params: { id: board.id } }">
                     <div class="flex flex-col-reverse h-full overflow-hidden">
