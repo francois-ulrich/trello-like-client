@@ -10,7 +10,7 @@ import type {
 import { defineStore } from "pinia"
 import { ref } from "vue"
 
-export const useApiColumnStore = defineStore("column", () => {
+export const useApiColumnStore = defineStore("columnApi", () => {
     const items = ref<Column[]>([])
 
     const boardStore = useApiBoardStore()

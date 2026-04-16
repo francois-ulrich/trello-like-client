@@ -1,14 +1,14 @@
 import type { PiniaPluginContext } from "pinia"
 
 interface LocalStoragePluginOptions {
-    ignoredStores: string[]
+    persistedStores: string[]
 }
 
 export function createLocalStoragePlugin(options: LocalStoragePluginOptions | undefined) {
     return (context: PiniaPluginContext) => {
         const { store } = context
 
-        const ignoredStoreIds: string[] = options !== undefined ? options.ignoredStores : []
+        const persistedStoresIds: string[] = options !== undefined ? options.persistedStores : []
 
         const keyPrefix = `trelloLike-${store.$id}`
 
@@ -19,7 +19,7 @@ export function createLocalStoragePlugin(options: LocalStoragePluginOptions | un
         }
 
         store.$subscribe((_, state) => {
-            if (!ignoredStoreIds.includes(store.$id)) {
+            if (persistedStoresIds.includes(store.$id)) {
                 localStorage.setItem(keyPrefix, JSON.stringify(state))
             }
         })

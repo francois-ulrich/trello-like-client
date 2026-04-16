@@ -11,7 +11,7 @@ import { useLocalBoardStore } from "@/features/boards/stores/board.store.local"
 const app = createApp(App)
 const pinia = createPinia()
 
-pinia.use(createLocalStoragePlugin({ ignoredStores: ["auth", "boardApi", "columnApi", "cardApi"] }))
+pinia.use(createLocalStoragePlugin({ persistedStores: ["boardLocal", "columnLocal", "cardLocal"] }))
 app.use(pinia)
 
 const authStore = useAuthStore()

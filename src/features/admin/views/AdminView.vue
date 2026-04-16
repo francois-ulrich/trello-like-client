@@ -13,7 +13,7 @@ const adminStore = useAdminStore()
 const users = ref<UserDashboardEntry[]>()
 
 onMounted(async () => {
-    users.value = adminStore.users.map((u) => ({ ...u }))
+    users.value = adminStore.users.map((user) => ({ ...user }))
 })
 </script>
 

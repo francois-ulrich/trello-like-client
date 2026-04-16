@@ -10,7 +10,7 @@ import { useApiColumnStore } from "@/features/columns/stores/column.store.api"
 import { defineStore } from "pinia"
 import { ref } from "vue"
 
-export const useApiCardStore = defineStore("card", () => {
+export const useApiCardStore = defineStore("cardApi", () => {
     const items = ref<Card[]>([])
 
     const boardStore = useApiBoardStore()
