@@ -9,6 +9,7 @@ import { useLocalColumnStore } from "@/features/columns/stores/column.store.loca
 export function createStores(mode: "api" | "guest"): AppStores {
     if (mode === "api") {
         return {
+            mode,
             boardStore: useApiBoardStore(),
             columnStore: useApiColumnStore(),
             cardStore: useApiCardStore(),
@@ -16,6 +17,7 @@ export function createStores(mode: "api" | "guest"): AppStores {
     }
 
     return {
+        mode,
         boardStore: useLocalBoardStore(),
         columnStore: useLocalColumnStore(),
         cardStore: useLocalCardStore(),

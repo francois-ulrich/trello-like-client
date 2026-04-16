@@ -2,15 +2,17 @@
 import { useStores } from "@/composables/useStores"
 import BoardCreationButton from "@/features/boards/components/BoardCreationButton.vue"
 import BoardOpenButtonBase from "@/shared/components/BoardOpenButtonBase.vue"
+import { computed } from "vue"
 
-const { boardStore } = useStores()
+const { mode, boardStore } = useStores()
+const boardRouteName = computed(() => (mode === "api" ? `board` : `guest/board`))
 </script>
 
 <template>
     <ul class="flex flex-row gap-4 flex-auto overflow-x-auto pb-4 w-full">
         <li v-for="board in boardStore.items">
             <BoardOpenButtonBase>
-                <RouterLink :to="{ name: 'board', params: { id: board.id } }">
+                <RouterLink :to="{ name: boardRouteName, params: { id: board.id } }">
                     <div class="flex flex-col-reverse h-full overflow-hidden">
                         <div class="bg-gray-200 p-2 flex-none text-center">
                             <h3 class="text-gray-800 font-semibold text-sm">
